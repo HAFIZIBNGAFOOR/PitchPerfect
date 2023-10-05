@@ -1,0 +1,13 @@
+.text-center{
+    text-align: center;
+    margin-bottom: 1rem;
+}
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+.main-div{
+    background: #000000;
+}

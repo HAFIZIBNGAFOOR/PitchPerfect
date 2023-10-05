@@ -1,0 +1,13 @@
+<div fxLayoutAlign="center center" fxFlexFill class="main-div">
+    
+    <mat-card fxFlex="48" >
+        <mat-toolbar class="flex-center" color="primary">
+            <p >Verify OTP </p>
+          </mat-toolbar>
+            <form  fxLayoutAlign="stretch" (submit)="onSubmit($event)" fxLayout="column" class=" login-form">
+                <p class="mat-body-1 text-center">Please enter the OTP sent to your Phone </p>
+                <ng-otp-input   class="text-center" (onInputChange)="onOtpChange($event)"   [config]="{length:6,allowNumbersOnly:true}"></ng-otp-input>
+                  <button type="submit"   mat-raised-button color="accent"> Verify </button>
+            </form>       
+    </mat-card>
+</div>

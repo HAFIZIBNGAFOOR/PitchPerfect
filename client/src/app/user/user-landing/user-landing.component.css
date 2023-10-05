@@ -1,0 +1,13 @@
+.spacer{
+    flex: 1 1 auto;
+  }
+  .mat-toolbar{
+    background-color: cornflowerblue;
+    color: white;
+  }
+  .mat-button{
+     color: white;
+  }
+  mat-icon{
+    transform: scale(2);
+ }

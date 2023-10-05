@@ -1,0 +1,27 @@
+
+<div fxLayoutAlign="center center" fxFlexFill class="main-div">
+    
+    <mat-card fxFlex="45" class="container box-shadow mt-5 mb-5" >
+        <mat-toolbar class="text-white toolbar mt-5 mb-5"   >
+            <span> ADMIN LOGIN  </span>
+          </mat-toolbar>
+            <form [formGroup]="loginForm" (submit)="onSubmit()" fxLayoutAlign="stretch" fxLayout="column" class=" login-form">
+                <mat-form-field appearance="outline" >
+                  <!-- <mat-label>Favorite food</mat-label> -->
+                  <input matInput formControlName="email" placeholder="Email" >
+                  <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Email is required</mat-error>
+                  <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Enter a valid Email </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" >
+                    <!-- <mat-label>Favorite food</mat-label> -->
+                    <input matInput type="password" formControlName="password" placeholder="Password">
+                    <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
+                    <mat-error *ngIf="loginForm.get('password')?.hasError('minLength')">Password must be 8 chaarcaters long </mat-error>
+                  </mat-form-field>
+                  <mat-error *ngIf="serverError">{{serverError}}</mat-error>
+                  <button type="submit"  mat-raised-button color="primary"> Submit </button>
+              </form>  
+
+    </mat-card>
+</div>
+ 
