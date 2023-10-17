@@ -1,0 +1,1 @@
+<app-table *ngIf="initialised" [dataSource]="turfAdminData" actionType="Verify" [tableConfig]="columnData" (tableAction)="getVerifyId($event)" ></app-table>

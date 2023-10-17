@@ -1,0 +1,46 @@
+.spacer{
+    flex: 1 1 auto;
+}
+.icon-size {
+    transform: scale(2);
+    color: #374957;
+ }
+ button{
+    text-decoration: none;
+    color: white;
+ }
+.navigation-items{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+mat-toolbar{
+    border-radius: 3px ;
+}
+li:hover{
+    border-radius: 3px;
+    background: #2FB563;
+    color: #ffffff;
+}
+.play-icon{
+    color: #2FB563;
+}
+.menu-icon{
+    color: black;
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+a:hover, a:active{
+    color: lightgray;
+}
+.nav-caption{
+    display: inline-block;
+    padding-left: 17px;
+    background: #2FB563;
+}
+
+.remove-scroll{
+    overflow-y:hidden ;
+}

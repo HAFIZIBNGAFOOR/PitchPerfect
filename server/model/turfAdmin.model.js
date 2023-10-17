@@ -9,6 +9,10 @@ const turfAdminModel = new mongoose.Schema({
         type:String,
         required:true
     },
+    isVerified:{
+        type:Boolean,
+        default:false
+    },
     email:{
         type:String,
         required:true

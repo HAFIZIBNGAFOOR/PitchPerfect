@@ -1,0 +1,17 @@
+<mat-sidenav-content >
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-title>{{ turfData.turfName | uppercase}}</mat-card-title>
+      </mat-card-header>
+      <div class="card-image-container">
+        <img mat-card-image [src]="turfData.turfImages[0]" alt="Turf Images">
+      </div>
+      <mat-card-content>
+        <h3 class="text-black"> <b>Game:{{ turfData.sportsType }} </b>{{ turfData. sportsDimension }}  </h3>
+        <h4 class="text-black"> <b>Price:{{turfData.turfPrice}} </b></h4>
+      </mat-card-content>
+      <mat-card-actions>
+        <button class="text-white" mat-raised-button color="primary">Book Now</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-sidenav-content>

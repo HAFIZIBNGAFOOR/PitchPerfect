@@ -15,7 +15,6 @@ export class InterceptorInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
      const token = this.userService.getToken();
-     console.log(token,'inside intercepted user',req.url);
      if(!req.url.includes('admin') && !req.url.includes('turfAdmin'))
      if(token){
       const clonedreq = req.clone({

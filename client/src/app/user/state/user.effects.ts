@@ -5,7 +5,7 @@ import { Actions,createEffect,ofType } from "@ngrx/effects";
 import{UserService} from "../service/user.service"
 import { catchError, map, merge, mergeMap, switchMap } from "rxjs";
 import { UserData } from "./user.interface";
-import { FirebaseService } from "src/app/shared/firebaseService/firebase.service";
+import { FirebaseService } from "src/app/shared/firebase-service/firebase.service";
 
 import { userLogin, userLoginFailed, userLoginSuccess } from "./user.action";
 

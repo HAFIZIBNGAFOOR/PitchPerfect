@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
-import { VerifyOTPComponent } from './verify-otp/verify-otp.component';
+import { LoginComponent } from './generics-components/login/login.component';
+import { SignupComponent } from './generics-components/signup/signup.component';
+import { VerifyOTPComponent } from './generics-components/verify-otp/verify-otp.component';
 
-
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSortModule} from '@angular/material/sort';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -14,14 +17,33 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { NgOtpInputModule } from 'ng-otp-input';
+import {MatIconModule} from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { TableComponent } from './generics-components/table/table.component';
+import { IsBlockedComponent } from './generics-components/is-blocked/is-blocked.component';
+import { UserNavComponent } from './generics-components/navigationbar/user-nav.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { NavbarComponent } from './generics-components/navbar/navbar.component';
+import { MapDiologComponent } from './generics-components/map-diolog/map-diolog.component';
+import { TurfCardComponent } from './generics-components/turf-card/turf-card.component';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatDialogModule} from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
+
 
 
 @NgModule({
   declarations: [
     LoginComponent,
     SignupComponent,
-    VerifyOTPComponent
+    VerifyOTPComponent,
+    TableComponent,
+    IsBlockedComponent,
+    UserNavComponent,
+    NavbarComponent,
+    MapDiologComponent,
+    TurfCardComponent
   ],
   imports: [
     CommonModule,
@@ -34,13 +56,28 @@ import { RouterModule } from '@angular/router';
     MatToolbarModule,
     ReactiveFormsModule,
     NgOtpInputModule,
-    RouterModule
+    RouterModule,
+    MatTableModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatListModule,
+    FormsModule,
+    MatMenuModule,
+    MatDialogModule
   ],
   exports:[
     LoginComponent,
     SignupComponent,
     VerifyOTPComponent,
-    RouterModule
+    RouterModule,
+    TableComponent,
+    IsBlockedComponent,
+    UserNavComponent,
+    NavbarComponent,
+    TurfCardComponent
   ]
 })
 export class SharedModule {}

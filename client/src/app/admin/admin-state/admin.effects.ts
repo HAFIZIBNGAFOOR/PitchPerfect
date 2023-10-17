@@ -18,7 +18,7 @@ export class AdminEffects{
                 map((res:any)=>{
                   console.log(res);
                   this.adminService.setAdminToken(res.token);
-                  this.router.navigate(['admin/dashboard'])
+                  this.router.navigate(['admin'])
                   return adminLoginSuccess();
                 }),
                 catchError((err)=>{

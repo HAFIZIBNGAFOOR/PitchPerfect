@@ -1,0 +1,22 @@
+.main-div mat-card{
+    padding: 0px;
+}
+.login-form{
+    padding: 20px;
+}
+.toolbar{
+    border-radius: 5px;
+    background: #000000;
+    /* align-items: center; */
+    justify-content: center;
+}
+.box-shadow{
+    background-color: #aeeac5;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: rgba(0, 0, 0, 0.4) -5px 5px, ;
+}
+.green-theme{
+   background-color : #7fe2a5 ;
+}
+

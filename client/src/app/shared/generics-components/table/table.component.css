@@ -1,0 +1,11 @@
+button{
+    width: 6rem;
+    height: 2rem;    
+}
+button .no-button{
+    border: none; /* Remove border */
+  padding: 10px 20px; /* Add padding to provide spacing */
+  background-color: #e0e0e0; /* Add a background color if needed */
+  color: #000000;
+  box-sizing: content-box;
+}

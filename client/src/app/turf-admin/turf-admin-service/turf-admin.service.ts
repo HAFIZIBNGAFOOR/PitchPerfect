@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TurfAdmin } from '../state/turf-admin.state';
 import { Observable } from 'rxjs';
-import { login } from 'src/app/user/user-login/user-login.component';
+import { login } from '../../user/components/user-login/user-login.component';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -26,7 +26,18 @@ export class TurfAdminService {
     
     return this.http.post(`${this.url}/login`,data);
   }
-
+  getSportsType(){
+    return this.http.get(`${this.url}/get-sports`)
+  };
+  getTurfs(){
+    return this.http.get(`${this.url}/turf-lists`)
+  }
+  addTurf(turfData:FormData){
+    console.log(turfData,' this is inside service');
+    
+    return this.http.post(`${this.url}/add-turf`,turfData)
+  }
+  
   isLoggedIn(){
     let payload = this.getPayload();
     if(payload){

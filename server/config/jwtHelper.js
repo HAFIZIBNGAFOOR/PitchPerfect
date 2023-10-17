@@ -8,11 +8,9 @@ const verifyUserJwt = async(req,res,next)=>{
     if(token){
         try {
             const decoded = jwt.verify(token,process.env.JWT_SECRET);
-            req.id = decoded._id;
-            console.log(decoded,' decoded');
+            req.id = decoded.id;
             next()
         } catch (error) {
-            console.log(error, ' error from jwt verify');
            if(error instanceof jwt.TokenExpiredError) res.status(400).json({message:"token expired"}) ;
            else res.status(400).json({message:"token authentication failed"})
         }
@@ -24,10 +22,11 @@ const verifyTurfAdminJwt = async(req,res,next)=>{
         if('authorization' in req.headers) token = req.headers['authorization'].split(' ')[1];
         if(token){
             const decoded = jwt.verify(token,process.env.JWT_TURFSECRET);
-            req.id= decoded._id;
+            req.id= decoded.id;
             next()
         }
     } catch (error) {
+        console.log(error,'error from jwt verify in turf admin');
         if(error instanceof jwt.TokenExpiredError) res.status(401).status({messge:' token expired '})
         else res.status(400).json({message:'token verify failed'})
     }

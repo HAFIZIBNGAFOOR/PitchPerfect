@@ -1,0 +1,25 @@
+<button mat-raised-button color="primary" (click)="sportsDialog()">Add Sports</button>
+<ng-template #sportsDialogOpen>
+    <div fxLayoutAlign="center center" fxFlexFill class="main-div">
+    <mat-card fxFlex="100" class="card">
+        <form [formGroup]="sportsForm" fxLayoutAlign="stretch" fxLayout="column" (ngSubmit)="onSubmit()">
+            <h2 matDialogTitle class="text-center">Add Sports</h2>
+            <mat-form-field appearance="fill" class="m-1" >
+                <input matInput placeholder="Sports Name" formControlName="sportsName">
+                <mat-error *ngIf="sportsForm.get('sportsName')?.hasError('required')">Sports name is required</mat-error>
+                <mat-error *ngIf="sportsForm.get('sportsName')?.hasError('pattern')"> Sports must be 4 characters minimum</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="m-1">
+                <textarea matInput placeholder="Sports Dimension" formControlName="sportsDimension"></textarea>
+                <mat-error *ngIf="sportsForm.get('sportsDimension')?.hasError('required')">Sports Dimension is required</mat-error>
+            </mat-form-field>
+            <mat-error *ngIf="error" class="text-center">{{error}}</mat-error>
+            <mat-dialog-actions class="make-center" >
+                <button type="submit" mat-raised-button color="primary">Submit</button>
+                <button mat-raised-button color="warn" matDialogClose="no" type="submit">Cancel</button>
+            </mat-dialog-actions>
+
+        </form>
+    </mat-card>
+    </div>
+</ng-template>

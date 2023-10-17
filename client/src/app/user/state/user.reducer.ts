@@ -7,6 +7,7 @@ export {userState} from "../state/user.state"
     userState,
     on(userAction.userSignupSubmit,(state,{userData})=>({...state,userData:userData})),
     on(userAction.userSignupSuccess,(state,{userData})=>({...state,serverError:'',success:'signup success',userData:userData,otpStatus:'verified'})),
+    on(userAction.userSignupFailed,(state,{error})=>({...state,error:error})),
     on(userAction.userSendOtp,(state,{phone})=>({...state,otpStatus:phone})),
     on(userAction.userOTPSendFailed,(state,{error})=>({...state,otpStatus:error})),
     on(userAction.userOTPSendSuccess,(state,{res})=>({...state,otpStatus:res})),

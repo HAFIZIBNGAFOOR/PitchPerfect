@@ -12,8 +12,8 @@ import { NgOtpInputModule } from 'ng-otp-input';
 
 
 import { SharedModule } from '../shared/shared.module';
-import { AdminLoginComponent } from './admin-login/admin-login.component';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminLoginComponent } from '../admin/components/admin-login/admin-login.component';
+import { AdminDashboardComponent } from '../admin/components/admin-dashboard/admin-dashboard.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AdminEffects } from './admin-state/admin.effects';
 import { StoreModule } from '@ngrx/store';
@@ -23,6 +23,14 @@ import { AdminInterceptor } from '../shared/interceptor/admin-interceptor/admin.
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
+import { UserManagementComponent } from '../admin/components/admin-dashboard/user-management/user-management.component';
+import { TurfAdminManagementComponent } from '../admin/components/admin-dashboard/turf-admin-management/turf-admin-management.component';
+import { AdminHomeComponent } from './components/admin-dashboard/admin-home/admin-home.component';
+import { SportsManagementComponent } from './components/admin-dashboard/sports-management/sports-management.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
+
 
 
 @NgModule({
@@ -36,7 +44,11 @@ import {MatListModule} from '@angular/material/list';
   ],
   declarations:[
     AdminDashboardComponent,
-    AdminLoginComponent
+    AdminLoginComponent,
+    UserManagementComponent,
+    TurfAdminManagementComponent,
+    AdminHomeComponent,
+    SportsManagementComponent
   ],
   imports: [
     CommonModule,
@@ -54,7 +66,10 @@ import {MatListModule} from '@angular/material/list';
     NgOtpInputModule,
     BrowserAnimationsModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatDialogModule,
+    MatInputModule,
+    MatSnackBarModule
   ]
 })
 export class AdminModule { }

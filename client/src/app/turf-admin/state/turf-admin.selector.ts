@@ -8,3 +8,11 @@ import { TurfAdminState } from "./turf-admin.state";
     selectTurfAdmin,
     (state:TurfAdminState)=>state.turfadmin
  )
+ export const selectOTPError = createSelector(
+   selectTurfAdmin,
+   (state:TurfAdminState)=>state.error
+ )
+ export const selectTurfAdminLoginError = createSelector(
+  selectTurfAdmin,
+  (state:TurfAdminState)=>state.error
+ )

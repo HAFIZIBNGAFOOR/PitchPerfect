@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserData } from '../state/user.interface';
 import { Observable } from 'rxjs';
-import { login } from '../user-login/user-login.component';
+import { login } from '../components/user-login/user-login.component';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -27,7 +27,15 @@ export class UserService {
   getUserHome(){
     return this.http.get(`${this.url}/home`)
   }
-
+  getTurfDetails(){
+    return this.http.get(`${this.url}/turf-lists`)
+  }
+  getSportsTypes(){
+      return this.http.get(`${this.url}/turfs-types`)
+  }
+  searchTurf(userData:any){
+    return this.http.post(`${this.url}/search-turfs`,userData)
+  }
   isLoggedIn():boolean{
     let payload = this.getPayload()
     if(payload) return payload.exp > Date.now()/1000;

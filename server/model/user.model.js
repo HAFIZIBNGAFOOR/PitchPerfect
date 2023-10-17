@@ -30,6 +30,7 @@ const UserModel = new mongoose.Schema({
         type:String
     },
     isBlocked:{
+        default:false,
         type:Boolean
     }
 })

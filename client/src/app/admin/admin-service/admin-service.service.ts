@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AdminData } from '../admin-state/admin.interface';
+import { AdminData, Sports } from '../admin-state/admin.interface';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -23,6 +23,18 @@ export class AdminServiceService {
   }
   getUsersList(){
     return this.http.get(`${this.url}/dashboard`)
+  }
+  getTurfAdminsData(){
+    return this.http.get(`${this.url}/turfAdminData`)
+  }
+  blockOrUnblockUser(userId:string){
+    return this.http.post(`${this.url}/blockUnblock`,{userId})
+  }
+  verifyTurfAdmin(turfAdminId:string){
+    return this.http.post(`${this.url}/verifyTurfAdmin`,{turfAdminId})
+  }
+  addSports(sportsData:Sports){
+    return this.http.post(`${this.url}/addSports`,sportsData)
   }
   logout(){
     localStorage.removeItem('AdminToken');

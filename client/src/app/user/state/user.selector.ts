@@ -27,3 +27,7 @@ export const selectLoginError = createSelector(
     selectAuthState,
     (state:UserState)=>state.error
 )
+export const selectOtpError = createSelector(
+    selectAuthState,
+    (state:UserState)=>state.error
+)
