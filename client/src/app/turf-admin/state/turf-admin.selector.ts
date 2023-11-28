@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { TurfAdminState } from "./turf-admin.state";
+import { TurfAdminState } from "../models/turf-admin.model";
 
 
  export const selectTurfAdmin= createFeatureSelector<TurfAdminState>('turfAdmin');

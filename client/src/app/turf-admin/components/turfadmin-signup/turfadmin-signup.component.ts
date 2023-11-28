@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { TurfAdminService } from '../../turf-admin-service/turf-admin.service';
-import { TurfAdmin } from '../../state/turf-admin.state';
 import { Store } from '@ngrx/store';
 import {  turfAdminSignupSubmit } from '../../state/turf-admin.action';
-import { FirebaseService } from 'src/app/shared/firebase-service/firebase.service';
+import { FirebaseService } from '../../../shared/firebase-service/firebase.service';
+import { TurfAdmin } from '../../models/turf-admin.model';
 
 @Component({
   selector: 'app-turfadmin-signup',

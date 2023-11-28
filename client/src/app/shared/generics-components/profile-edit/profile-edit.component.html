@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-lg-10 m-5 card-div ">
+            <mat-card class="example-card">
+                    <h2 class="text-center" >  PROFILE   </h2>
+                    <form #profileForm="ngForm" (ngSubmit)="onSubmit(profileForm)">
+                        <div class="form-control">
+                                <label for="name">Name:</label>
+                                <input   type="text" id="name" name="name" [(ngModel)]="data.name" required>
+                            </div>
+                            <div *ngIf= " profileForm.controls['name'].invalid" class="error-message">
+                                Name is required.
+                            </div>
+                            <div class="form-control">
+                                <label for="email">Email:</label>
+                                <input   type="text" id="email" name="email"  [(ngModel)]="data.email" required email>
+                            </div>
+                            <div *ngIf=" profileForm.controls['email'].invalid" class="error-message">
+                                Email is required.
+                            </div>
+                            <div class="form-control">
+                                <label for="Phone">Phone:</label>
+                                <input  type="text" id="Phone" name="Phone"  [(ngModel)]="data.phone" required pattern="[0-9]{10}">
+                            </div>
+                            <div *ngIf="  profileForm.controls['Phone'].invalid" class="error-message">
+                                Enter a valid with 10 digits.
+                            </div>
+                            <div class="form-control">
+                                <label for="Age">Age:</label>
+                                <input   type="text" id="Age" name="Age" [(ngModel)]="data.age" required min="0" max="99" pattern="\d{1,2}">
+                            </div>
+                            <div *ngIf="profileForm.controls['Age'].touched && profileForm.controls['Age'].invalid" class="error-message">
+                                Enter a valid age.
+                            </div>
+                                <input hidden  type="text" id="id" name="id" [(ngModel)]="data._id" required>
+
+                        <mat-card-actions>
+                            <button type="submit" mat-raised-button class="edit-button" > SAVE </button>
+                            <button type="button" mat-raised-button class="cancel-button" (click)="onCancel()"> CANCEL </button>
+                        </mat-card-actions>
+                    </form>
+
+              </mat-card>
+              
+        </div>
+    </div>
+</div>
+ 

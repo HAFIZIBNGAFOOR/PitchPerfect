@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { UserData } from '../../state/user.interface';
+import { UserData } from '../../models/user.model';
 import { Store } from '@ngrx/store';
 import { userSignupSubmit } from '../../state/user.action';
 import { selectSignupError } from '../../state/user.selector';
-import { FirebaseService } from 'src/app/shared/firebase-service/firebase.service';
+import { FirebaseService } from '../../../shared/firebase-service/firebase.service';
 import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
 

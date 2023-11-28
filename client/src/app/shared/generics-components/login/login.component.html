@@ -19,7 +19,7 @@
                   <mat-error class="text-center mb-3" *ngIf="error">{{error}}</mat-error>
                   <button  type="submit"  mat-raised-button > Submit </button>
               </form>  
-              <ng-container  *ngIf="role =='User' ; else elseTemplate">
+              <ng-container  *ngIf="role =='USER' ; else elseTemplate">
                 <div class="mt-3 mb-2 text-center sign-up">
                   Don't have an account  <a routerLink="/signup"> Register </a> here.
                 </div> 

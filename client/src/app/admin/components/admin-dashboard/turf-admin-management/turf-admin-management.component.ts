@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { ColumnType } from 'src/app/shared/interface/interface';
+import { ColumnType } from '../../../../shared/models/shared-model';
 import { UsersType } from '../../../admin-state/admin.interface';
-import { TurfAdminService } from 'src/app/turf-admin/turf-admin-service/turf-admin.service';
-import { AdminServiceService } from '../../../admin-service/admin-service.service';
+import { AdminService } from '../../../admin-service/admin-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-turf-admin-management',
@@ -12,21 +12,23 @@ import { AdminServiceService } from '../../../admin-service/admin-service.servic
 export class TurfAdminManagementComponent {
   turfAdminData!:UsersType;
   initialised:boolean=false;
+  error :any ;
+  turfId!:string
   columnData:ColumnType={
     columns:[
       {title:'Name',dataProperty:'userName',sortable:false,filterable:false},
       {title:'Email',dataProperty:'email',sortable:false,filterable:false},
       {title:'Phone',dataProperty:'phone',sortable:false,filterable:false},
-
+      {title:'Actions',dataProperty:'actions',sortable:false,filterable:false},
     ],
     rowActions:[
       {label:"Verification", dataProperty:"isVerified",actionIdtoReturn:''},
     ],
     rowsPerPage:'3'
   };
-  error:any ;
 
-  constructor(private adminService:AdminServiceService){}
+
+  constructor(private adminService:AdminService, private router:Router ){}
   ngOnInit(): void {
     this.adminService.getTurfAdminsData().subscribe({
       next:(res:any)=>{
@@ -35,37 +37,23 @@ export class TurfAdminManagementComponent {
           email:user.email,
           phone:user.phone,
           id:user._id,
-          isVerified:user.isVerified
+          isVerified:user.isVerified ? 'Verified': 'Verify',
+          actions:'View'
         }))
         this.turfAdminData = turfAdminType
         this.initialised = true
-        
+        console.log(this.turfAdminData,turfAdminType);        
       },
       error:(err)=>{
         this.error = err;
       }
     })
   }
-  getVerifyId(turfAdminId:any){
-    console.log(turfAdminId,' this is turfadmin in event ')
-    this.adminService.verifyTurfAdmin(turfAdminId.id).subscribe(
-      {
-        next:(res:any)=>{
-          console.log(res);
-          const turfAdminType = res.turfAdminData.map((user:any)=>({
-            userName :user.turfAdminName,
-            email:user.email,
-            phone:user.phone,
-            id:user._id,
-            isVerified:user.isVerified
-          }))
-          this.turfAdminData = turfAdminType
-        },
-        error:(err:any)=>{
-          this.error = err
-        }
-      }
-    )
-  }
+  
+getTableAction(event:any){
+  console.log(event.id,' this is event');
+  this.turfId = event.id
+  this.router.navigate(['admin/turf-details',this.turfId])
+}
 
 }

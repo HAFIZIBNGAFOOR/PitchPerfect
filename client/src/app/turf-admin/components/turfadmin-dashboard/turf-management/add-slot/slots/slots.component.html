@@ -1,0 +1,44 @@
+<div class="text-center bgcolorfortext ">
+ <div class="text-black mt-5">  
+    <h2 class="colorfortext"> <b>{{turfData.turfName |uppercase}} </b></h2>
+ </div>   
+ <h3 >Pick Date to select time slots</h3>
+    <!-- <form [formGroup]="addSlotForm"> -->
+        <!-- <mat-form-field class="example-full-width">
+            <input readonly="true" [value]="selectedDate" [(ngModel)]="selectedDate" (dateInput)="getDate($event)" matInput placeholder="Select a Date" [min]="startDate" [max]="endDate" [matDatepicker]="picker">
+            <mat-hint >MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field> -->
+    <!-- </form> -->
+    <mat-form-field class="example-full-width" >
+        <div class="date-width" [matMenuTriggerFor]="calenderMenu">
+            <input readonly="true" [value]="encodedDate" [(ngModel)]="daysSelected"   matInput placeholder="Select a Date" >
+            <mat-icon  >calendar_today</mat-icon>
+        </div>
+<!-- <button mat-icon-button class="button-icon" >           
+        </button> -->
+        <mat-menu #calenderMenu="matMenu" class="drop-calendar">
+            <div (click)="$event.stopPropagation()">
+                <mat-calendar #calendar (selectedChange)="select($event,calendar)"  [dateClass]="isSelected" [minDate]=" startDate">
+                </mat-calendar>
+            </div>
+        </mat-menu>
+    </mat-form-field >
+    <p>You can select multiple dates and add slots together </p>
+
+    <mat-form-field class="example-full-width">
+        <mat-label>Select Slots</mat-label>
+        <mat-select [disabled]="daysSelected.length<1"  class="add-color" [compareWith]="compareTimeSlots" multiple [(ngModel)]="selectedTimeSlots">
+          <mat-option *ngFor="let times of timeSlots" [value]="times">{{times.start}} to {{times.end}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-error *ngIf="error">{{error}}</mat-error>
+    <p>   
+        <button class="text-success mb-3" (click)="onSubmit()"  mat-raised-button type="submit"> Submit </button>
+    </p>
+</div>
+  
+  
+
+  

@@ -2,9 +2,10 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { Form, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AdminServiceService } from 'src/app/admin/admin-service/admin-service.service';
-import { Sports } from 'src/app/admin/admin-state/admin.interface';
-import { noSpacesValidator } from 'src/app/shared/custom-validator/noSpaceValidator';
+import { AdminService } from '../../../admin-service/admin-service.service';
+import { Sports } from '../../../admin-state/admin.interface';
+import { noSpacesValidator } from '../../../../shared/custom-validator/noSpaceValidator';
+import { ColumnType } from '../../../../shared/models/shared-model';
 
 @Component({
   selector: 'app-sports-management',
@@ -19,10 +20,34 @@ export class SportsManagementComponent {
   sportsData!:Sports;
   sportsForm!:FormGroup;
   error!:string;
-  
-  constructor(private dialog:MatDialog, private fb:FormBuilder,private adminService:AdminServiceService,private snackbar:MatSnackBar ){}
+  availableSports!:any;
+  columnData:ColumnType ={
+    columns:[
+      {dataProperty:'sportsName',title:'Name of Sports',sortable:false,filterable:false},
+      {dataProperty:'sportsDimension',title:'Dimension of Sports',sortable:false,filterable:false},
+      {dataProperty:'actions',title:'Actions',sortable:false,filterable:false}
+    ],
+    rowActions:[
+      {label:'',dataProperty:'',actionIdtoReturn:''}
+    ],
+    rowsPerPage:''
+  }
+  constructor(private dialog:MatDialog, private fb:FormBuilder,private adminService:AdminService,private snackbar:MatSnackBar ){}
 
-  ngOnInit(): void {
+  ngOnInit(): void {  
+    this.adminService.getSportsList().subscribe({
+      next:(res:any)=>{
+       const sportsData = res.sports.map((sport:any)=>({
+          sportsName : sport.sportsName,
+          sportsDimension : sport.sportsDimensions,
+          actions : 'Edit' 
+      }))
+      this.availableSports =  sportsData  
+      },
+      error:(err:any)=>{
+        console.log(err);
+      }
+    }) 
     this.sportsData = {sportsName:null,sportsDimension:null};
     this.sportsForm = this.fb.group({
       sportsName:['',[Validators.required,Validators.pattern('^.{4,}$'), noSpacesValidator()]],
@@ -31,30 +56,39 @@ export class SportsManagementComponent {
   }
   sportsDialog(){
     this.dialogRef = this.dialog.open(this.sportsDialogOpen,{
-      height:'50%',
+      height:'60%',
       width:'50%',
     })
     this.dialogRef.afterClosed().subscribe({
-      next:(res:any)=>{
+      next:(res:any[])=>{
         this.sportsData.sportsName =res[0] ;
         this.sportsData.sportsDimension = res[1]
-        this.adminService.addSports(this.sportsData).subscribe({
-          next:(res:any)=>{
-            console.log(res,);    
-              this.snackbar.open('Sports Added successfully','close',{
+        if(this.sportsData.sportsDimension && this.sportsData.sportsName){
+          this.adminService.addSports(this.sportsData).subscribe({
+            next:(res:any)=>{
+                this.snackbar.open('Sports Added successfully','close',{
+                  duration:3000
+                })
+            },
+            error:(err)=>{
+              this.error = err.error.message 
+              this.snackbar.open(err.error.message,'close',{
                 duration:3000
-              })
-          },
-          error:(err)=>console.log(err)          
-        })
+              })           
+            }         
+          })
+        }        
       }
     })
   }
+
   onSubmit(){
     if(this.sportsForm.valid){
       const dimensions = this.sportsForm.value.sportsDimension.split('\n');
       const sportsName = this.sportsForm.value.sportsName
       this.dialogRef.close([sportsName,dimensions]);
+    }else{
+      this.error = 'Enter a valid field';
     }
   }
 }

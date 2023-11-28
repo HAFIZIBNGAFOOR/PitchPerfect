@@ -1,0 +1,173 @@
+
+  <mat-tab-group>
+    <mat-tab label="Completed">
+        <div class="bottom-line">
+           <h2 class="text-success"> Completed Bookings </h2>
+          <div class="mat-elevation-z8">
+            <!-- <div *ngIf="loading"></div> -->
+            <ng-container *ngIf="completedDataSource; else noTable">
+              <table  mat-table [dataSource]="completedDataSource">
+              
+                <!-- Position Column -->
+                <ng-container matColumnDef="bookedSlots">
+                  <th mat-header-cell *matHeaderCellDef> Slot Booked </th>
+                  <td mat-cell *matCellDef="let element"> {{element.bookedSlots.dateString}} :{{element.bookedSlots.slots.start}}-{{element.bookedSlots.slots.end}} </td>
+                </ng-container>
+            
+                <!-- Name Column -->
+                <ng-container matColumnDef="totalCost">
+                  <th mat-header-cell *matHeaderCellDef> Price </th>
+                  <td mat-cell *matCellDef="let element"> {{element.totalCost}} </td>
+                </ng-container>
+            
+                <!-- Weight Column -->
+                <ng-container matColumnDef="bookingStatus">
+                  <th mat-header-cell *matHeaderCellDef> Status </th>
+                  <td mat-cell *matCellDef="let element"> {{element.bookingStatus}} </td>
+                </ng-container>
+            
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="turf">
+                  <th mat-header-cell *matHeaderCellDef> Turf </th>
+                  <td mat-cell *matCellDef="let element"> {{element.turf.turfName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef> Actions </th>
+                  <td mat-cell *matCellDef="let element">
+                      <button mat-button (click)="viewDetails(element)">View</button>
+                  </td>
+                  </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+                          
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                        showFirstLastButtons
+                        >
+            </mat-paginator>
+            </ng-container>
+            <ng-template #noTable>
+              <p>No Completed Bookings available.</p>
+            </ng-template>
+
+          </div>
+        </div> 
+    </mat-tab>
+
+
+    <mat-tab label="Cancelled"> 
+      <div class="bottom-line">
+        <h2 class="text-success"> Cancelled Bookings </h2>
+       <div class="mat-elevation-z8">
+
+        <ng-container *ngIf="cancelledDataSource ; else noCancelled">
+          <table  mat-table [dataSource]="cancelledDataSource">
+       
+            <!-- Position Column -->
+            <ng-container matColumnDef="bookedSlots">
+              <th mat-header-cell *matHeaderCellDef> Booking ID </th>
+              <td mat-cell *matCellDef="let element"> {{element.bookedSlots.dateString}} :{{element.bookedSlots.slots.start}}-{{element.bookedSlots.slots.end}} </td>
+            </ng-container>
+        
+            <!-- Name Column -->
+            <ng-container matColumnDef="totalCost">
+              <th mat-header-cell *matHeaderCellDef> Price </th>
+              <td mat-cell *matCellDef="let element"> {{element.totalCost}} </td>
+            </ng-container>
+        
+            <!-- Weight Column -->
+            <ng-container matColumnDef="bookingStatus">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td mat-cell *matCellDef="let element"> {{element.bookingStatus}} </td>
+            </ng-container>
+        
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="turf">
+              <th mat-header-cell *matHeaderCellDef> Turf </th>
+              <td mat-cell *matCellDef="let element"> {{element.turf.turfName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+             <th mat-header-cell *matHeaderCellDef> Actions </th>
+             <td mat-cell *matCellDef="let element">
+                 <button mat-button (click)="viewDetails(element)">View</button>
+             </td>
+             </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                         showFirstLastButtons
+                         >
+          </mat-paginator>
+        </ng-container>
+        <ng-template #noCancelled>
+          <!-- Content to display when completedDataSource.data is empty -->
+          <p>No Cancelled Bookings available.</p>
+        </ng-template>
+         
+       </div>
+      </div>
+    </mat-tab>
+
+
+    <mat-tab label="Confirmed"> 
+      <div class="bottom-line">
+        <h2 class="text-success"> Confirmed Bookings </h2>
+       <div class="mat-elevation-z8">
+
+        <ng-container *ngIf="pendingDataSource ; else noPending">
+          <table  mat-table [dataSource]="pendingDataSource">
+<!--             
+            <ng-container matColumnDef="turf">
+              <th mat-header-cell *matHeaderCellDef> Turf Booked </th>
+              <td mat-cell *matCellDef="let element"> {{element.bookedSlots.turf.turfName }} </td>
+            </ng-container> -->
+            <!-- Position Column -->
+            <ng-container matColumnDef="bookedSlots">
+              <th mat-header-cell *matHeaderCellDef> Slot Booked </th>
+              <td mat-cell *matCellDef="let element"> {{element.bookedSlots.dateString }} :{{element.bookedSlots.slots.start}}-{{element.bookedSlots.slots.end}} </td>
+            </ng-container>
+        
+            <!-- Name Column -->
+            <ng-container matColumnDef="totalCost">
+              <th mat-header-cell *matHeaderCellDef> Price </th>
+              <td mat-cell *matCellDef="let element"> {{element.totalCost}} </td>
+            </ng-container>
+        
+            <!-- Weight Column -->
+            <ng-container matColumnDef="bookingStatus">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td mat-cell *matCellDef="let element"> {{element.bookingStatus}} </td>
+            </ng-container>
+        
+            <!-- Symbol Column -->
+             <ng-container matColumnDef="turf">
+               <th mat-header-cell *matHeaderCellDef> Turf </th>
+               <td mat-cell *matCellDef="let element"> {{element.turf.turfName}} </td>
+             </ng-container>
+ 
+            <ng-container matColumnDef="actions">
+             <th mat-header-cell *matHeaderCellDef> Actions </th>
+             <td mat-cell *matCellDef="let element">
+                 <button mat-button (click)="viewDetails(element)">View</button>
+             </td>
+             </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                         showFirstLastButtons
+                         >
+          </mat-paginator>
+        </ng-container>
+        <ng-template #noPending>
+          <!-- Content to display when completedDataSource.data is empty -->
+          <p>No Pending Bookings available.</p>
+        </ng-template>
+       </div>
+     </div>
+    </mat-tab>
+  </mat-tab-group>

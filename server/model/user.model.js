@@ -23,6 +23,11 @@ const UserModel = new mongoose.Schema({
         required:true,
         type:Number
     },
+    location:{
+        lat:String,
+        long:String,
+        address:String
+    },
     age:{
         type:Number
     },
@@ -32,6 +37,10 @@ const UserModel = new mongoose.Schema({
     isBlocked:{
         default:false,
         type:Boolean
+    },
+    wallet:{
+        default:0,
+        type:Number
     }
 })
 const User = mongoose.model('User',UserModel);

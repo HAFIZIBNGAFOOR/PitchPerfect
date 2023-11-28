@@ -11,7 +11,7 @@ import { StoreModule } from '@ngrx/store';
 import { turfadminReducer } from './state/turf-admin.reducer';
 import { TurfAdminEffects } from './state/turf-admin.effects';
 import { TurfAdminInterceptor } from '../shared/interceptor/turfAdmin-interceptor/turf-admin.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS ,HttpClientModule } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,12 +25,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
-
-
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatMenuModule} from '@angular/material/menu';
 
 import { AddTurfComponent } from './components/turfadmin-dashboard/turf-management/add-turf/add-turf.component';
-import { TurfManagementComponent } from './components/turfadmin-dashboard/turf-management/turf-management.component'
+import { TurfManagementComponent } from './components/turfadmin-dashboard/turf-management/turf-management.component';
+import { TurfDetailsComponent } from '../admin/components/admin-dashboard/turf-admin-management/turf-details/turf-details.component';
+import { AddSlotComponent } from './components/turfadmin-dashboard/turf-management/add-slot/add-slot.component';
+import { SlotsComponent } from './components/turfadmin-dashboard/turf-management/add-slot/slots/slots.component'
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { Constants } from '../config/constants';
+import { TurfAdminService } from './turf-admin-service/turf-admin.service';
 
 
 
@@ -42,6 +49,7 @@ import { TurfManagementComponent } from './components/turfadmin-dashboard/turf-m
       useClass:TurfAdminInterceptor,
       multi:true
     },
+    TurfAdminService 
   ],
   declarations: [
 
@@ -51,11 +59,15 @@ import { TurfManagementComponent } from './components/turfadmin-dashboard/turf-m
     TurfadminVerifyOtpComponent,
     AddTurfComponent,
     TurfManagementComponent,
+    TurfDetailsComponent,
+    AddSlotComponent,
+    SlotsComponent,
 
   ],
   imports: [
     CommonModule,
     SharedModule,
+    HttpClientModule,
     TurfAdminRoutingModule,
     FormsModule,
     MatToolbarModule,
@@ -63,13 +75,18 @@ import { TurfManagementComponent } from './components/turfadmin-dashboard/turf-m
     MatIconModule,
     MatCardModule,
     MatFormFieldModule,
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
     MatSidenavModule,
     MatInputModule,
     FlexLayoutModule,
     MatDialogModule ,
     MatSelectModule, 
-    ReactiveFormsModule , 
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatSnackBarModule ,
+    MatMenuModule,
+    ReactiveFormsModule, 
     StoreModule.forFeature('turfAdmin',turfadminReducer),
 
   ]

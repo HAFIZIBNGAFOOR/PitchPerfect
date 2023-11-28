@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ColumnType, Users, columnData } from '../../interface/interface';
+import { ColumnType, Users, columnData } from '../../models/shared-model';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
@@ -23,12 +23,13 @@ export class TableComponent {
 
 ngOnInit(): void {
   this.displayedColumns = this.tableConfig.columns
-  this.displayColumnName =[...this.displayedColumns.map(col=>col.dataProperty),'actions'];
+  this.displayColumnName =[...this.displayedColumns.map(col=>col.dataProperty)];
   this.actions = this.tableConfig.rowActions;
-  console.log(this.actions,this.tableConfig.rowActions,this.displayColumnName);
+  console.log(this.actions,this.tableConfig.rowActions,this.displayColumnName ,this.actionType);
   
 }
 setDataSource(data:any){
+  console.log(data,' this is inside the data source');
   this._dataSource = new MatTableDataSource<any>(data);
 }
 performAction(user:any){

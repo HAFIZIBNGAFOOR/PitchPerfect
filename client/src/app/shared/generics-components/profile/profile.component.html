@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-lg-10 m-5 card-div ">
+            <mat-card class="example-card">
+                    <mat-card-title class="text-center" >  PROFILE   </mat-card-title>
+                        <mat-label> Name :
+                            <button class="full-width" mat-button disabled > {{profileData.name}}</button> 
+                        </mat-label>
+                    <mat-label> Phone :
+                      <button class="full-width" mat-button disabled >{{profileData.phone}}</button> 
+                  </mat-label>
+                    <mat-label>Email :
+                      <button class="full-width" mat-button disabled >{{profileData.email}}</button> 
+                      <a routerLink="/book-turf" class="text-primary">Verify</a>
+                    </mat-label>                 
+                    <mat-label>Age :
+                      <button class="full-width" mat-button disabled >{{profileData.age}}  </button> 
+                    </mat-label>
+                <!-- <mat-card-content>
+                  <p>{{ profileData.location?.address }}</p>
+                </mat-card-content> -->
+                <mat-card-actions >
+                  <button mat-raised-button class="edit-button text-center" (click)="onEditUser(profileData)">EDIT</button>
+                </mat-card-actions>
+              </mat-card>
+        </div>
+    </div>
+</div>

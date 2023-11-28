@@ -1,0 +1,62 @@
+
+<mat-sidenav-container  >
+    <mat-sidenav mode="side" opened>
+      <div class="filter">
+          <div>
+            <mat-checkbox color="primary" [(ngModel)]="filterByPrice">Filter by Price</mat-checkbox>
+          </div>
+          <div *ngIf="filterByPrice">  
+            <mat-label> Min price : {{minPrice}}</mat-label>  
+              <mat-slider color="primary"  min="0" max="4999" step="5">
+                <input matSliderThumb [(ngModel)]="minPrice" placeholder="Min Price" [value]="minPrice">
+              </mat-slider>
+          </div>
+          <div *ngIf="filterByPrice">
+            <mat-label> Max price :  {{ maxPrice}}</mat-label>  
+            <mat-slider color="primary"  [min]="minPrice" max="5000" step="5">
+                <input matSliderThumb [(ngModel)]="maxPrice" placeholder="Max Price" [value]="">
+            </mat-slider>
+          </div>
+            <div>
+                <mat-form-field>
+                    <mat-select (selectionChange)="getSports($event)" [(ngModel)]="toSearchSports" placeholder="Game">
+                    <mat-option *ngFor="let sport of sports"  [value]="sport">
+                        {{sport}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <mat-select (selectionChange)="getDimension($event)" [(ngModel)]="toSearchDim" placeholder="Dimension of Game">
+                    <mat-option [value]="dimension" *ngFor="let dimension of sportsDimension" >
+                        {{dimension}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="mb-2">
+              <button disabled="true" mat-button color="primary">
+                <mat-icon matPrefix color="accent">room</mat-icon>
+                {{userCity}}
+              </button>
+            </div>
+             <button class="mr-1" mat-raised-button (click)="onApply()" color="primary">Apply</button>
+             <button mat-raised-button (click)="onClear()" color="warn">Clear</button>
+        </div>
+      </mat-sidenav>
+    <!-- <mat-grid-list  class="mat-grid-list" cols="2"  > -->
+      <ng-container *ngIf="noTurf; else elseTemplate" >
+        <h2 class="text-center text-danger mt-3">No turf found</h2>
+      </ng-container>
+      <ng-template #elseTemplate>
+          <div class="row">
+              <div class="card-container mat-grid-tile column-lg-6"    *ngFor="let turf of turfDetails">  
+                  <app-turf-card class="turf-card"  [turfData]="turf" (submitTurf)="getTurfData($event)"></app-turf-card>
+              </div>
+          </div>
+      </ng-template>
+      
+
+        <!-- </mat-grid-list> -->
+</mat-sidenav-container >

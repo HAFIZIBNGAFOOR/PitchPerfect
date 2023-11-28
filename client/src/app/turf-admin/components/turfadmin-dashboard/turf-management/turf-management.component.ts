@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { TurfAdminService } from 'src/app/turf-admin/turf-admin-service/turf-admin.service';
-interface columnData {
-  columns:any[]
-}
+import { ColumnType } from '../../../../shared/models/shared-model';
+import { TurfAdminService } from '../../../turf-admin-service/turf-admin.service';
+
 @Component({
   selector: 'app-turf-management',
   templateUrl: './turf-management.component.html',
@@ -11,13 +10,19 @@ interface columnData {
 
 export class TurfManagementComponent {
   turfLists:any ;
-//   columnData:columnData[]=[
-//     columns:[
-//       {title:'Turf Name',dataProperty:'turfName'},
-//       {title:'Turf Price',dataProperty:'turfPrice'},
-//       {title:'Turf Name',dataProperty:'turfImages'},
-//     ],
-// ];;
+  turfTable:string = 'turfTable';
+  isEmpty:boolean = true;
+  columnDatas:ColumnType={
+    columns:[
+      {title:'Turf ',dataProperty:'turfName',sortable:false,filterable:false},
+      {title:'Game',dataProperty:'sportsType',sortable:false,filterable:false},
+      {title:'Turf Price',dataProperty:'turfPrice',sortable:false,filterable:false},
+    ],
+    rowActions:[
+      {label:"View", dataProperty:"_id",actionIdtoReturn:''},
+    ],
+    rowsPerPage:'3'
+  };
   constructor(private turfAdminService:TurfAdminService){}
 
   ngOnInit(): void {
@@ -28,12 +33,13 @@ export class TurfManagementComponent {
     }
     this.turfAdminService.getTurfs().subscribe({
       next:(res:any)=>{
-        console.log(res,'this is turf lists');
         this.turfLists = res.turflists
-        console.log(this.turfLists);
-        
+        this.isEmpty = false      
       },
       error:(err)=>{
+        if(err.status == 400){
+          this.isEmpty = true
+        }
         console.log(err);        
       }
     })

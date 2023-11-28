@@ -29,6 +29,14 @@ import { AdminHomeComponent } from './components/admin-dashboard/admin-home/admi
 import { SportsManagementComponent } from './components/admin-dashboard/sports-management/sports-management.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { BookingsManagementComponent } from './components/admin-dashboard/bookings-management/bookings-management.component';
+import { SingleBookingDetailsComponent } from './components/admin-dashboard/bookings-management/single-booking-details/single-booking-details.component';
+import { MatIconModule } from '@angular/material/icon';
+import { Constants } from '../config/constants';
+import { AdminRoutingModule } from './admin-routing.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { AdminService } from './admin-service/admin-service.service';
+import { TurfManagementComponent } from './components/admin-dashboard/turf-management/turf-management.component';
 
 
 
@@ -40,7 +48,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
       provide:HTTP_INTERCEPTORS,
       useClass:AdminInterceptor,
       multi:true
-    }
+    },
+    // Constants
+    AdminService
   ],
   declarations:[
     AdminDashboardComponent,
@@ -48,12 +58,17 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     UserManagementComponent,
     TurfAdminManagementComponent,
     AdminHomeComponent,
-    SportsManagementComponent
+    SportsManagementComponent,
+    BookingsManagementComponent,
+    SingleBookingDetailsComponent,
+    TurfManagementComponent
   ],
   imports: [
+    // BrowserModule,
     CommonModule,
     SharedModule,
     HttpClientModule,
+    AdminRoutingModule,
     StoreModule.forFeature('admin',adminReducer),
     FlexLayoutModule,
     MatInputModule,
@@ -64,12 +79,12 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatToolbarModule,
     ReactiveFormsModule,
     NgOtpInputModule,
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
     MatSidenavModule,
     MatListModule,
     MatDialogModule,
-    MatInputModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatIconModule
   ]
 })
 export class AdminModule { }

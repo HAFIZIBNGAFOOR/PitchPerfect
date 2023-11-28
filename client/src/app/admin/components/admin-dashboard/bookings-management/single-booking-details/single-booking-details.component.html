@@ -1,0 +1,48 @@
+
+<div class=" m-3">
+    <button mat-raised-button color="primary" routerLink="/admin/booking-Management"> <mat-icon>arrow_back</mat-icon> Back to Booking Management</button>
+</div>
+<div class="text-center text-success">
+    <h2>Booking Details</h2>
+</div> 
+
+<div *ngIf="isInitialised && bookingDetails">
+    <mat-card class="example-card">
+        <div class="card-content">
+            <!-- Left side (header details) -->
+            <div class="left-side">
+                <mat-card-header>
+                        <h4>Game : {{ bookingDetails.turf.sportsType }}  {{ bookingDetails.turf.sportsDimension }} </h4>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>
+                      Booked Slot Date : <span class="text-success">{{bookingDetails.bookedSlots.dateString }}</span> 
+                    </p>
+                    <p>
+                     Booked Slot Time :<span class="text-success">  {{bookingDetails.bookedSlots.slots.start }} -  {{bookingDetails.bookedSlots.slots.end }}</span> 
+                    </p>
+                    <div>
+                        <h4 class="ml-4 ">Payment Details:</h4>
+                        <p>Amount : <b>Rs. {{bookingDetails.totalCost}} </b></p>
+                        <span>Payment Method : {{bookingDetails.paymentType }}</span>
+                    </div>
+                    <p>Booked On :{{bookingDetails.Time | date: 'short' }}</p>
+                  </mat-card-content>
+            </div>
+            <!-- Right side (image) -->
+            <div class="right-side">
+                <h3>                 
+                    <span class="text-black mb-1">Turf : </span> <span class="text-success mb-1"> <b>{{bookingDetails.turf.turfName}}</b> </span>
+                </h3>
+                <div class="image-div">
+                    <img mat-card-image [src]="bookingDetails.turf.turfImages[0]" alt="Photo of turf">
+                </div>
+            </div>
+        </div>
+            <div class="text-center m-3">
+                    <button disabled mat-raised-button class="bg-sucess">                     
+                        Booking Status : <span [ngClass]="{'cancel' : bookingDetails.bookingStatus =='Cancelled'}" class="text-success" > {{ bookingDetails.bookingStatus }}</span>
+                    </button>
+            </div>
+      </mat-card>
+</div>

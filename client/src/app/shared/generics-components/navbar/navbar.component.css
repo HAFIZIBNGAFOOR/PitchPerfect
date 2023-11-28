@@ -58,9 +58,8 @@ a{
 a:hover, a:active{
   color: lightgray;
 }
-/* .nav-caption{
-  display: inline-block;
-  padding-left: 17px;
-  background: #2FB563;
-} */
+.active{
+  color:white ;
+  background-color:  #2FB563;
+}
 

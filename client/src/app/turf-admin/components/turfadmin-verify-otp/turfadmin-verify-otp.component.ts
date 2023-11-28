@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { TurfAdmin } from '../../state/turf-admin.state';
-import { FirebaseService } from 'src/app/shared/firebase-service/firebase.service';
+import { FirebaseService } from '../../../shared/firebase-service/firebase.service';
 import  firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/firestore';
@@ -10,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { selectOTPError, selectTurfAdminData } from '../../state/turf-admin.selector';
 import { TurfAdminService } from '../../turf-admin-service/turf-admin.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { TurfAdmin } from '../../models/turf-admin.model';
 
 @Component({
   selector: 'app-turfadmin-verify-otp',
@@ -38,7 +38,7 @@ export class TurfadminVerifyOtpComponent {
       this.store.select(selectTurfAdminData).subscribe((data)=>{
         this.turfAdminData = data
         this.turfAdminService.turfAdminSignup(this.turfAdminData).subscribe((res)=>{
-          this.snackBar.open('User registered successfully','close',{
+          this.snackBar.open('Turf Admin registered successfully','close',{
             duration:3000
           })
           this.router.navigate(['/turf-owner/login']);

@@ -5,7 +5,7 @@ import  firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/firestore';
 import { UserService } from '../../service/user.service';
-import { UserData } from '../../state/user.interface';
+import { UserData } from '../../models/user.model';
 import { Store } from '@ngrx/store';
 import { selectOtpError, selectUserData } from '../../state/user.selector';
 import {MatSnackBar, MatSnackBarRef, MatSnackBarModule} from '@angular/material/snack-bar';

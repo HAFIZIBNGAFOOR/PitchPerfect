@@ -5,6 +5,10 @@ const jwt = require("jsonwebtoken");
 const User = require("../model/user.model");
 const TurfAdmin = require('../model/turfAdmin.model');
 const SportsModel = require("../model/sports.model");
+const Bookings = require("../model/bookings.model");
+const Turf = require('../model/turf.model')
+const formatDate = require("../helperFunctions/formatdate");
+
 
 const adminLogin = async(req,res)=>{
     try {
@@ -25,10 +29,67 @@ const adminLogin = async(req,res)=>{
 
 const getDashboardDetails=async(req,res)=>{
     try {
-        const users =await  User.find({});
-        res.status(200).json({users:users,message:'this is users list'})
+        const bookings = await Bookings.find().populate('turf');
+        const annualBookings = bookings.filter(booking=>new Date(booking.bookedSlots.date).getFullYear()== new Date().getFullYear() ) ;     
+        let annualSales = 0;
+        annualBookings.forEach(booking=>annualSales+= booking.totalCost);
+        const monthlyBookings = bookings.filter(booking => new Date(booking.bookedSlots.date).getMonth() == new Date().getMonth())
+        let monthlySales = 0;
+        monthlyBookings.forEach(booking=>monthlySales += booking.totalCost)
+        // console.log(annualBookings,annualSales,monthlySales,monthlyBookings);
+        const lastWeekDate = new Date()
+        console.log(lastWeekDate.setDate(new Date().getDate()-7),' this islast week date ',lastWeekDate,'  ');
+        const weeklyBookings = bookings.filter(booking => new Date(booking.bookedSlots.date) > lastWeekDate);
+        let weeklySales = 0 
+        weeklyBookings.forEach(booking =>weeklySales+=booking.totalCost )
+        console.log(weeklyBookings,' this is weekly ',weeklySales);
+
+        let bookingsByMonth = {};
+        let noOfBookings =0;
+        let TotalAmount= 0 
+        const currentYear = new Date().getFullYear();
+        for(let month=1 ;month<=12;month++){
+            bookingsByMonth[`${currentYear}-${month}`]={month:`${currentYear}-${month}`,noOfBookings:0,TotalAmount:0} 
+        }
+        bookings.forEach(booking=>{
+            if(booking.bookingStatus =='Completed'){
+                const bookingYear = booking.Time.getFullYear();
+                if(currentYear ==bookingYear){
+                    const month = booking.Time.getMonth()+1;
+                    const key = `${bookingYear}-${month}`
+                    if(!bookingsByMonth[key]){
+                        bookingsByMonth[key] = {month:key, noOfBookings,TotalAmount}
+                    }
+                    bookingsByMonth[key].noOfBookings++
+                    bookingsByMonth[key].TotalAmount += booking.totalCost
+                }
+            }
+        })
+
+        // pie chart based on the types of sports booked\
+        let sportsCount = {}
+        const sports = await SportsModel.find();
+        sports.forEach((sport)=>{
+            sportsCount[sport.sportsName]={sports:sport.sportsName,count:0}
+        })
+        bookings.forEach(booking=>{
+            let count =0
+            if(!sportsCount[booking.turf.sportsType]) sportsCount[booking.turf.sportsType]={sports:booking.turf.sportsType,count}   
+            sportsCount[booking.turf.sportsType].count++
+        })
+        res.status(200).json({monthlyBooking:Object.values(bookingsByMonth),weeklySales,monthlySales,annualSales,sportsTypeCount:Object.values(sportsCount)})
     } catch (error) {
+        console.log(error);
         res.status(500).json({message:'error fetching user'})
+    }
+}
+
+const usersDetails = async(req,res)=>{
+    try {
+        const users =await  User.find({});
+        res.status(200).json({users})
+    } catch (error) {
+        res.status(500).json({message:"Internal server error"})
     }
 }
 
@@ -48,6 +109,7 @@ const blockOrUnblock=async(req,res)=>{
         res.status(500).json({message:'internal server error'})
     }
 }
+
 const getTurfAdminDetails = async(req,res)=>{
     try {
         const turfAdminData = await TurfAdmin.find({})
@@ -64,7 +126,7 @@ const verifyTurfAdmin = async(req,res)=>{
             turfAdmin.isVerified = true;
             await turfAdmin.save();
         }
-        const turfAdminData = await TurfAdmin.find();
+        const turfAdminData = await TurfAdmin.findById({_id:req.body.turfAdminId});
         res.status(200).json({message:'verified successfully',turfAdminData})
     } catch (error) {
         res.status(500).json({message:'Internal server error'})
@@ -90,11 +152,36 @@ const addSports = async(req,res)=>{
         res.status(500).json({message:'Internal server error'})
     }
 }
+
+const getSingleTurfAdmin = async(req,res)=>{
+    try {
+        const turfAdmin = await TurfAdmin.findById(req.body.id)
+        console.log(turfAdmin);
+        res.status(200).json({turfAdmin})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:'internal server error'})
+    }
+}
+
+const getSports =async(req,res)=>{
+    try {
+        const sports = await SportsModel.find();
+        console.log(sports);
+        res.status(200).json({sports,message:"sports data fetched successfully"});
+    } catch (error) {
+        res.status(500).json({message:'Internal server error '})
+    }
+}
+
 module.exports = {
     adminLogin,
     getDashboardDetails,
     blockOrUnblock,
     getTurfAdminDetails,
     verifyTurfAdmin,
-    addSports
+    addSports,
+    getSingleTurfAdmin,
+    getSports,
+    usersDetails
 }

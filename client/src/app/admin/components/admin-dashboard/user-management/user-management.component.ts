@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AdminServiceService } from '../../../admin-service/admin-service.service';
-import { ColumnType, Users } from 'src/app/shared/interface/interface';
+import { AdminService } from '../../../admin-service/admin-service.service';
+import { ColumnType, Users } from '../../../../shared/models/shared-model';
 import {MatTableDataSource} from "@angular/material/table";
 import { UsersType } from '../../../admin-state/admin.interface';
 
@@ -20,6 +20,7 @@ export class UserManagementComponent {
       {title:'Email',dataProperty:'email',sortable:false,filterable:false},
       {title:'Phone',dataProperty:'phone',sortable:false,filterable:false},
       {title:'Status',dataProperty:'isBlocked',sortable:false,filterable:false},
+      {title:'Action',dataProperty:'actions',sortable:false,filterable:false},
     ],
     rowActions:[
       {label:"Action", dataProperty:"isBlocked",actionIdtoReturn:''},
@@ -28,7 +29,7 @@ export class UserManagementComponent {
   };
   err:any
 
-  constructor(private adminService:AdminServiceService){}
+  constructor(private adminService:AdminService){}
 
   ngOnInit(): void {
     this.adminService.getUsersList().subscribe(
@@ -39,7 +40,8 @@ export class UserManagementComponent {
             email:user.email,
             phone:user.phone,
             _id:user._id,
-            isBlocked:user.isBlocked?'Blocked':'Active'
+            isBlocked:user.isBlocked?'Blocked':'Active',
+            actions:user.isBlocked ? 'Unblock' :'Block'
           }))
           this.userData = usertype
         },
@@ -52,13 +54,13 @@ export class UserManagementComponent {
     this.adminService.blockOrUnblockUser(user._id).subscribe(
       { 
         next:(res:any)=>{
-          console.log(res);
           const usertype:any = res.users.map((user:any)=>({
             userName:user.userName,
             email:user.email,
             phone:user.phone,
             _id:user._id,
-            isBlocked:user.isBlocked ?'Blocked':'Active'
+            isBlocked:user.isBlocked ?'Blocked':'Active',
+            actions:user.isBlocked ?'Unblock' :'Block'
           }))
           this.userData = usertype
         },
@@ -66,7 +68,5 @@ export class UserManagementComponent {
       }
     )
   }
-  // blockUnblockUser(userId:string){
-  //   return userId
-  // }
+
 }

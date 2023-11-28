@@ -6,6 +6,8 @@ const hashPassword = require("../helperFunctions/hashpassword")
 const jwt = require("jsonwebtoken");
 const TurfModel = require('../model/turf.model');
 const SportsModel = require('../model/sports.model');
+const formatDate = require('../helperFunctions/formatdate');
+const { updateSlotWithExpiredDates } = require('./turf.controller');
 
 
 const validationChecker = [
@@ -74,77 +76,109 @@ const login= async(req,res)=>{
         res.status(500).json({message:'internal server error'})
     }
 }
-const userHome = async(req,res)=>{
-    try {
-        const user = await User.findOne({_id:req.id})
-        res.status(200).json({user:user,message:'user data retriedved successfully'})
-    } catch (error) {
-        res.status(500).json({message:"internal server error"})
-    }
-}
-const turfLists = async(req,res)=>{
-    try {
-        const turfs = await TurfModel.find({});
-        if(turfs){
-            res.status(200).json({message:'turf data fetched successfully',turfs})
-        }else{
-            console.log('not turfs to list ');
-            res.status(400).json({message:'no turfs to list '})
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}
+
 const getSportsTYpes = async(req,res)=>{
     try {
         const sportsTypes =  await SportsModel.find();
-        console.log(sportsTypes);
         if(sportsTypes){
             res.status(200).json({sportsTypes,message:'sports details'})
         }else{
             res.status(400).json({message:'no sports available'})
         }
     } catch (error) {
-        console.log(error, "this is insdie get types of sports");
         res.status(500).json({message:" internal server error "})
     }
 }
 const searchTurfs = async(req,res)=>{
     try {
-        console.log(req.body);
         const {sports, dimension,minPrice,maxPrice} = req.body;
-        let searchRes =''
-        if(sports && dimension && minPrice>0 && maxPrice>minPrice){
-            searchRes = await TurfModel.find({turfPrice:{$gte:minPrice,$lt:maxPrice},sportsType:sports,sportsDimension:dimension})
-            console.log(sports,dimension,minPrice,maxPrice,searchRes,'1');
-        }else if(sports && dimension && !minPrice &&!maxPrice){
-            searchRes = await TurfModel.find({sportsType:sports,sportsDimension:dimension})
-            console.log(sports,dimension,minPrice,maxPrice,searchRes,'2');
-        }else if(minPrice>0 && maxPrice>minPrice && !sports && !dimension){
-            searchRes = await TurfModel.find({turfPrice:{$gte:minPrice,$lt:maxPrice}});
-            console.log(sports,dimension,minPrice,maxPrice,searchRes,'3');           
-        }else if(sports && !dimension && minPrice>0 && maxPrice>minPrice){
-            searchRes = await TurfModel.find({turfPrice:{$gte:minPrice,$lt:maxPrice},sportsType:sports});  
-            console.log(sports,dimension,minPrice,maxPrice,searchRes,'4');
-        }else if(sports && !dimension && !minPrice && !maxPrice){
-            searchRes = await TurfModel.find({sportsType:sports});  
+        let filter = {};
+        if (sports) {
+            filter.sportsType = sports;
         }
-        console.log(searchRes,' this is inside the serach turfs ');
-        if(searchRes.length>0)res.status(200).json({searchRes})
+        if (dimension) {
+            filter.sportsDimension = dimension;
+        }
+        if (minPrice >= 0 && maxPrice > minPrice) {
+            filter.turfPrice = { $gte: minPrice, $lte: maxPrice }
+        }
+        const searchRes = await TurfModel.find(filter)
+        if(searchRes && searchRes.length>0)res.status(200).json({searchRes})
         else res.status(404).json({message:' no turf found'})
     } catch (error) {
-        console.log(error,' this is error from serch turfs')
         res.status(500).json({message:'internal server error'})
     }
 }
+const turfSlotsAvailable = async(req,res)=>{
+    try {
+        updateSlotWithExpiredDates(req.params.turfId)
+        const turf = await TurfModel.findById(req.params.turfId);
+        const turfData = {
+            turfName: turf.turfName,
+            turfImages:turf.turfImages,
+            turfFacilities:turf.facilities,
+            turfPrice:turf.turfPrice,
+            turfLocation:turf.turfLocation.Address,
+            sportsType : turf.sportsType,
+            sportsDimension: turf.sportsDimension
+        }
+            res.status(200).json({success:true,turfData,slots:turf.slots})
+    } catch (error) {
+        res.status(500).json({message:'Internal server error'})
+    }
+}
+const userProfile = async(req,res)=>{
+    try {
+        const userProfile = await User.findById({_id :req.id});
+        const profileData  = {
+            name:userProfile.userName,
+            email:userProfile.email,
+            phone:userProfile.phone,
+            location:userProfile.location,
+            age:userProfile.age,
+            _id:userProfile._id,
+            wallet:userProfile.wallet
+        }
+        res.status(200).json({profileData})
+    } catch (error) {
+        res.status(500).json({message:'Internal server error '})
+    }
+}
+const updateProfile = async(req,res)=>{
+    try {
+
+        const {name,email,Phone,Age,id} = req.body
+        const ageNum = parseInt(Age)
+        const user = await User.findByIdAndUpdate(id,{
+            userName:name,
+            email:email,
+            phone:Phone,
+            age:ageNum
+        })
+        const userProfile = await User.findById(id);
+        const profileData  = {
+            name:userProfile.userName,
+            email:userProfile.email,
+            phone:userProfile.phone,
+            location:userProfile.location,
+            age:userProfile.age,
+            _id:userProfile._id
+        }
+        res.status(200).json({profileData})
+    } catch (error) {
+        res.status(500).json({message:"internal server error"})
+    }
+}
+
 module.exports ={
     register,
     validationChecker,
     login,
     verifyUserBeforeOtp,
     removeNonVerified,
-    userHome,
-    turfLists,
     getSportsTYpes,
-    searchTurfs
+    searchTurfs,
+    turfSlotsAvailable,
+    userProfile,
+    updateProfile
 }

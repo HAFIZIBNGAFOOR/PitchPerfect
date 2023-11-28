@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserData } from 'src/app/user/state/user.interface';
+import { UserData } from 'src/app/user/models/user.model';
 import { FirebaseService } from 'src/app/shared/firebase-service/firebase.service';
 
 @Component({
@@ -33,7 +33,8 @@ export class SignupComponent {
         userName:this.signupForm.get('userName')?.value,
         email:this.signupForm.get('email')?.value,
         phone:this.signupForm.get("phone")?.value,
-        password:this.signupForm.get("password")?.value
+        password:this.signupForm.get("password")?.value,
+        age:null
       }
       this.formData.emit(formData)
     }

@@ -1,0 +1,31 @@
+<div class=" text-center ">
+  <a class="play-icon" routerLink=""> <b> PLAY PERFECT</b></a>
+</div>
+<mat-sidenav-container class="sidenav-container ">
+    <mat-sidenav mode="side" opened class="sidenav">
+      <mat-nav-list class="sidenav">
+        <mat-list-item class="nav-link"  routerLinkActive="active" routerLink="user-details">
+          <div class="center-button">
+            <!-- <button > Profile</button> -->
+            My Profile
+          </div>
+        </mat-list-item>
+        <mat-list-item class="nav-link" routerLinkActive="active" routerLink="bookings">
+          <div class="center-button">
+            <!-- <button >My Bookings</button> -->
+           My Bookings
+          </div>
+        </mat-list-item>
+        <mat-list-item class="nav-link" routerLink="wallet" routerLinkActive="active">
+          <div class="center-button">
+            <!-- <button >My Wallet</button> -->
+           My Wallet
+          </div>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet ></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+

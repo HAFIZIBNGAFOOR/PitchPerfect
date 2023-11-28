@@ -10,17 +10,24 @@
    <mat-sidenav-container class="sidenav-container">
     <mat-sidenav mode="side" opened>
       <mat-nav-list>
-        <mat-list-item (click)="onNavItemClicked('DashboardManagement')">
+        <mat-list-item routerLinkActive (click)="onNavItemClicked('DashboardManagement')">
           <a class="nav-link">Dashboard</a>
         </mat-list-item>
-        <mat-list-item (click)="onNavItemClicked('UserManagement')">
+        <mat-list-item routerLinkActive (click)="onNavItemClicked('UserManagement')">
           <a class="nav-link" >User Managaement</a>
         </mat-list-item>
-        <mat-list-item (click)="onNavItemClicked('TurfUserManagement')">
+
+        <mat-list-item routerLinkActive  (click)="onNavItemClicked('TurfManagement')">
+          <a class="nav-link"  >Turf Managaement</a>
+        </mat-list-item>
+        <mat-list-item routerLinkActive (click)="onNavItemClicked('TurfUserManagement')">
           <a class="nav-link"  >Turf Admin  Managaement</a>
         </mat-list-item>
-        <mat-list-item (click)="onNavItemClicked('SportsManagement')">
-          <a class="nav-link"  >Sports Management</a>
+        <mat-list-item routerLinkActive (click)="onNavItemClicked('SportsManagement')">
+          <a class="nav-link"> Sports Management</a>
+        </mat-list-item>
+        <mat-list-item routerLinkActive (click)="onNavItemClicked('BookingManagement')">
+          <a class="nav-link"> Booking Management</a>
         </mat-list-item>
       </mat-nav-list>
     </mat-sidenav>

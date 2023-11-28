@@ -1,4 +1,4 @@
-<mat-sidenav-content >
+<!-- <mat-sidenav-content > -->
     <mat-card class="example-card">
       <mat-card-header>
         <mat-card-title>{{ turfData.turfName | uppercase}}</mat-card-title>
@@ -11,7 +11,7 @@
         <h4 class="text-black"> <b>Price:{{turfData.turfPrice}} </b></h4>
       </mat-card-content>
       <mat-card-actions>
-        <button class="text-white" mat-raised-button color="primary">Book Now</button>
+        <button class="text-white" mat-raised-button color="primary" (click)="submit(turfData)">Book Now</button>
       </mat-card-actions>
     </mat-card>
-  </mat-sidenav-content>
+  <!-- </mat-sidenav-content> -->

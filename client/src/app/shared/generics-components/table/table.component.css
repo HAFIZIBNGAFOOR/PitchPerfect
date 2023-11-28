@@ -9,3 +9,7 @@ button .no-button{
   color: #000000;
   box-sizing: content-box;
 }
+/* td.mat-cell, th.mat-header-cell {
+  text-align: center;
+  justify-content:center;
+} */

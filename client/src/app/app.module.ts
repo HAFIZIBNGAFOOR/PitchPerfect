@@ -2,10 +2,11 @@ import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
+import { MatInputModule} from '@angular/material/input';
+import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatButtonModule} from '@angular/material/button';
+import { MatCardModule} from '@angular/material/card';
+import { MatTabsModule} from '@angular/material/tabs';
 
 
 
@@ -22,7 +23,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './user/state/user.effects';
 import { NgOtpInputModule } from 'ng-otp-input';
 import { AngularFireAuthModule}  from '@angular/fire/compat/auth'
-import {AngularFireModule } from '@angular/fire/compat';
+import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { TurfAdminRoutingModule } from './turf-admin/turf-admin-routing.module';
 import { TurfAdminModule } from './turf-admin/turf-admin.module';
@@ -30,6 +31,11 @@ import { AdminModule } from './admin/admin.module';
 import { AdminRoutingModule } from './admin/admin-routing.module';
 import { AdminEffects } from './admin/admin-state/admin.effects';
 import { TurfAdminEffects } from './turf-admin/state/turf-admin.effects';
+import { UserOrdersComponent } from './user/components/user-landing/user-profile/user-bookings/user-orders.component';
+import { HttpClientModule } from '@angular/common/http';
+import { Constants } from './config/constants';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDO7Rgjpl5BrlFiVy_-sQkNdcAhe7GNigs",
@@ -48,13 +54,13 @@ const firebaseConfig = {
   ],
   imports: [
     BrowserModule,
-    UserModule,
     AppRoutingModule,
-    TurfAdminModule,
-    TurfAdminRoutingModule,
-    UserRoutingModule,
-    AdminModule,
-    AdminRoutingModule,
+    // TurfAdminModule,
+    // TurfAdminRoutingModule,
+    // UserRoutingModule,
+    // AdminModule,
+    // AdminRoutingModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MatSlideToggleModule,
     FlexLayoutModule,
@@ -65,6 +71,8 @@ const firebaseConfig = {
     MatToolbarModule,
     ReactiveFormsModule,
     NgOtpInputModule,
+    MatDialogModule ,
+    MatMenuModule,
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     EffectsModule.forRoot([UserEffects,AdminEffects,TurfAdminEffects]),
@@ -73,6 +81,7 @@ const firebaseConfig = {
     AngularFirestoreModule
   ],
   providers: [
+    Constants
   ],
   bootstrap: [AppComponent]
 })

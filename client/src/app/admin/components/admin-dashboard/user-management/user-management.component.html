@@ -1,1 +1,2 @@
-<app-table *ngIf="initialized" [dataSource]="userData " actionType="block-unblock" [tableConfig]="columnData" (tableAction)="getAction($event)" ></app-table>
+<div class="text-center"> <h2>User Management</h2></div>
+<app-table *ngIf="initialized" [dataSource]="userData "  [tableConfig]="columnData" (tableAction)="getAction($event)" ></app-table>

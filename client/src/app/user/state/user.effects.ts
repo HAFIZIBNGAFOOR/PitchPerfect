@@ -4,7 +4,7 @@ import { Store } from "@ngrx/store";
 import { Actions,createEffect,ofType } from "@ngrx/effects"; 
 import{UserService} from "../service/user.service"
 import { catchError, map, merge, mergeMap, switchMap } from "rxjs";
-import { UserData } from "./user.interface";
+import { UserData } from "../models/user.model";
 import { FirebaseService } from "src/app/shared/firebase-service/firebase.service";
 
 import { userLogin, userLoginFailed, userLoginSuccess } from "./user.action";
@@ -45,7 +45,7 @@ export class UserEffects{
             return this.service.userLogin(action.data).pipe(
                 map((res:any)=>{
                     this.service.setToken(res.token)
-                    this.router.navigate(['/home'])
+                    this.router.navigate([''])
                     return userLoginSuccess(res.token)
                 }),
                 catchError((err)=>{

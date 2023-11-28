@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { MatDialog } from '@angular/material/dialog';
-import { MapDiologComponent } from 'src/app/shared/generics-components/map-diolog/map-diolog.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TurfAdminService } from 'src/app/turf-admin/turf-admin-service/turf-admin.service';
+import { MapDiologComponent } from '../../../../../shared/generics-components/map-diolog/map-diolog.component';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { TurfAdminService } from '../../../../turf-admin-service/turf-admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 interface SelectedFile {
   file: File;
   url: string; 
@@ -33,8 +34,10 @@ export class AddTurfComponent {
   sportsType!:any;
   addDimension:boolean=false;
   sportsDimension:any;
+  loading : boolean = false;
+  submitted:boolean =false;
 
-  constructor (private matDialog:MatDialog , private fb:FormBuilder, private turfAdminService:TurfAdminService,private snackBar:MatSnackBar ){}
+  constructor (private matDialog:MatDialog , private fb:FormBuilder, private turfAdminService:TurfAdminService,private snackBar:MatSnackBar ,private router:Router){}
   ngOnInit(): void {
     this.turfAdminService.getSportsType().subscribe({
       next:(res:any)=>{
@@ -42,18 +45,21 @@ export class AddTurfComponent {
         this.sports = res.sports.map((sports:any)=>sports.sportsName);
       }
     })
+   this.formValidation()
+  }
+  
+  formValidation(){
     this.turfForm = this.fb.group({
-      turfName:['',[Validators.required,Validators.minLength(4)]],
+      turfName:['',[Validators.required,Validators.pattern(/^.{4,}$/)]],
       turfLocation:['',[Validators.required]],
       turfContact:['',[Validators.required,Validators.pattern(/^\d{10}$/)]],
       turfFacilities:['',[Validators.required]],
       sportsDimension:['',[Validators.required]],
       sportsType:['',[Validators.required]],
-      turfPrice:['',[Validators.required]],
-      turfImages: [[]] 
+      turfPrice:['',[Validators.required,Validators.pattern(/^\d{1,4}$/)]],
+      turfImages: [[],[Validators.required]],
     })
   }
-  
   openMatDialog(){
     const  matDialogRef = this.matDialog.open(MapDiologComponent,{
       width:'50%',
@@ -97,12 +103,13 @@ export class AddTurfComponent {
     this.addDimension = true
   }
   onSubmit(){
-    if(this.turfForm.valid && this.selectedFile.length>0){
+    this.submitted =true
+    
+    if(this.turfForm.valid && this.selectedFile.length>0 ){
       const turfImages = this.turfForm.value.turfImages;
       const selectedLocationAsString = JSON.stringify(this.selectedLocation);
 
       const formData = new FormData();
-      const location = this.turfForm.get('sportsDimension')?.value
       formData.append('turfName',this.turfForm.get('turfName')?.value)
       formData.append('turfLocation',selectedLocationAsString)
       formData.append('turfContact',this.turfForm.get('turfContact')?.value)
@@ -114,18 +121,38 @@ export class AddTurfComponent {
       for (let i = 0; i < turfImages.length; i++) {
         formData.append('turfImages', turfImages[i], turfImages[i].name);
       }
-      console.log(this.turfForm.value.turfName,this.turfForm.value,formData);
-      formData.forEach((val)=>console.log(val))
+      this.loading = true;
+      
       this.turfAdminService.addTurf(formData).subscribe({
         next:(value)=>{
-          this.snackBar.open('New Turf added successfully ','close',{
+          this.snackBar.open('New Turf added successfully ','Close',{
             duration:3000
           })
-          console.log(value)
-          // this.router.navigate
+          this.loading = false
+          setTimeout(()=>{
+            this.router.navigate(['/turf-owner/manage-slots'])
+          },3000)
         },
-        error:(err:any)=>console.log(err)        
+        error:(err:any)=>{
+          this.loading = false
+          this.snackBar.open(err.error.message,'Close',{
+            duration:3000
+          })
+          if(err.status == 403) {
+            this.snackBar.open('Cannot add Turf ,Turf Admin Not verified ','close',{
+              duration:4000
+            })
+          }
+          if(err.status == 404){
+            this.snackBar.open('entered turf already exists','close',{
+              duration:3000
+            })
+          }
+        }       
       })
     }
+  }
+  performAction(){
+
   }
 }

@@ -2,11 +2,11 @@ export  interface AdminData{
     email:string,
     password:string
 }
-export enum NavItem{
-    User='UserManagement',
-    TurfAdmin='TurfAdminManagement',
-    Dashboard ="DashboardManagement"
-}
+// export enum NavItem{
+//     User='UserManagement',
+//     TurfAdmin='TurfAdminManagement',
+//     Dashboard ="DashboardManagement"
+// }
 export interface UsersType{
     userName:string,
     email:string,

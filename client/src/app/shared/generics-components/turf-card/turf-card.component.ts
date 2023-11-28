@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-turf-card',
@@ -7,8 +7,11 @@ import { Component, Input } from '@angular/core';
 })
 export class TurfCardComponent {
   @Input() turfData!:any;
-
+  @Output() submitTurf = new EventEmitter();
   ngOnInit(): void {
     console.log(this.turfData);
+  }
+  submit(data:any){
+    this.submitTurf.emit(data)
   }
 }

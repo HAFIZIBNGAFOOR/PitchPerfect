@@ -1,3 +1,13 @@
-<h2 mat-title class="mb-4 text-center">Turf Management</h2>
-<button class="mr-5" routerLink="add-turf" mat-raised-button color="accent"> Add new Turf</button>
-<!-- <app-table *ngIf="initialised" [dataSource]="turfDetails" actionType="Verify" [tableConfig]="columnData" " ></app-table> -->
+<h2 mat-title class="m-4 text-center ">TURF MANAGEMENT</h2>
+<div class=" text-center m-5">
+    <button class="button-color mb-2 text-white" routerLink="add-turf" mat-flat-button > Add New Turf Here</button>
+        <ng-container  *ngIf="isEmpty; else elseTemplate">
+            <div class="mt-3 ">
+                <h3 class="text-danger">No Turf Found</h3>
+            </div>
+        </ng-container>
+        <ng-template #elseTemplate>
+            <app-table [dataSource]="turfLists" [actionType]="turfTable" [tableConfig]="columnDatas"> </app-table>
+        </ng-template>   
+</div>
+

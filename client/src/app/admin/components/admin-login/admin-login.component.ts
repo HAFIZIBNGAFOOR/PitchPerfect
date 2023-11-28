@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { adminLogin } from '../../admin-state/admin.action';
 import { AdminData } from '../../admin-state/admin.interface';
 import { selectAdminLoginError } from '../../admin-state/admin.selector';
-import { AdminServiceService } from '../../admin-service/admin-service.service';
+import { AdminService } from '../../admin-service/admin-service.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,7 +18,7 @@ export class AdminLoginComponent {
   loginForm!:FormGroup;
   serverError!:string ; 
 
-  constructor(private fb:FormBuilder,private store:Store,private adminService:AdminServiceService,private router:Router){}
+  constructor(private fb:FormBuilder,private store:Store,private adminService:AdminService,private router:Router){}
   
   ngOnInit(): void {
     if(this.adminService.isAdminLoggedIn()){

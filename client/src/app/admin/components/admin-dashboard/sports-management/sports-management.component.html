@@ -1,8 +1,9 @@
-<button mat-raised-button color="primary" (click)="sportsDialog()">Add Sports</button>
+<div class="text-center pb-4 pt-3"> <button mat-raised-button color="primary" (click)="sportsDialog()">Add Sports</button></div>
+<app-table [tableConfig]="columnData" [dataSource]="availableSports" ></app-table>
 <ng-template #sportsDialogOpen>
     <div fxLayoutAlign="center center" fxFlexFill class="main-div">
     <mat-card fxFlex="100" class="card">
-        <form [formGroup]="sportsForm" fxLayoutAlign="stretch" fxLayout="column" (ngSubmit)="onSubmit()">
+        <form [formGroup]="sportsForm" fxLayoutAlign="stretch" fxLayout="column" >
             <h2 matDialogTitle class="text-center">Add Sports</h2>
             <mat-form-field appearance="fill" class="m-1" >
                 <input matInput placeholder="Sports Name" formControlName="sportsName">
@@ -15,8 +16,8 @@
             </mat-form-field>
             <mat-error *ngIf="error" class="text-center">{{error}}</mat-error>
             <mat-dialog-actions class="make-center" >
-                <button type="submit" mat-raised-button color="primary">Submit</button>
-                <button mat-raised-button color="warn" matDialogClose="no" type="submit">Cancel</button>
+                <button type="submit" mat-raised-button color="primary" (click)="onSubmit()"> Submit </button>
+                <button mat-raised-button color="warn" matDialogClose type="submit">Cancel</button>
             </mat-dialog-actions>
 
         </form>

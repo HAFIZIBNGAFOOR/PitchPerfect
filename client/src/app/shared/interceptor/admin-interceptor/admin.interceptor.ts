@@ -6,18 +6,19 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AdminServiceService } from 'src/app/admin/admin-service/admin-service.service';
+import { AdminService } from '../../../admin/admin-service/admin-service.service';
+import { Constants } from '../../../config/constants';
+
 
 @Injectable()
 export class AdminInterceptor implements HttpInterceptor {
 
-  constructor(private adminService:AdminServiceService) {}
+  constructor(private adminService:AdminService, private adminUrl:Constants) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    if(request.url.startsWith('http://localhost:3001/admin')){
+    if(request.url.startsWith(this.adminUrl.AdminAPIEndPoint)){
       const token = this.adminService.getAdminToken();
-      console.log(token,'inside intercepted admin',request.url);
       if(token){
         let clonedReq =  request.clone({
           setHeaders:{

@@ -1,1 +1,49 @@
-<p>book-turf works!</p>
+<div class=" main-div">
+    <mat-card class="example-card" *ngIf="initialized">
+      <mat-card-header class="text-center">
+        <mat-card-title>{{ turfData.turfName | uppercase}}</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+      <div class="card-image-container mb-1 ">
+        <img mat-card-image [src]="turfData.turfImages[0]" alt="Turf Images">
+      </div>
+        <h3 class="text-black"> <b>Game : {{ turfData.sportsType }}  {{ turfData.sportsDimension }} </b>  </h3>
+        <h3 class="text-black"> <b>Price per hour:{{ turfData.turfPrice }} </b>  </h3>
+        <!-- <h4 class="text-black"> <b>Price:{{turfData.turfPrice}} </b></h4> -->
+      </mat-card-content>
+      <mat-form-field class="example-full-width">
+        <input readonly="true" [value]="selectedDate" [(ngModel)]="selectedDate" (dateInput)="getDate($event)" matInput placeholder="Select a Date" [min]="startDate"  [matDatepicker]="picker">
+        <mat-hint >MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <div *ngIf="submitted && availableSlots.length<=0">
+      <mat-error class="text-center">  No slots available for selected date, Select another Date </mat-error>
+      </div>
+      <mat-card-actions class="center-button" >
+        <button class="text-white half-width mb-3 " mat-raised-button  (click)="onSubmit()"> Select Slot</button>
+      </mat-card-actions>
+      <div class="buttons"  *ngIf="submitted && availableSlots && availableSlots.length>0">
+        <ng-container *ngFor="let slot of availableSlots">
+          <button  color="primary" [ngClass]="{'active-button': selectedSlot === slot, 'not-active': selectedSlot !== slot} "  (click)="getSlots(slot)" > {{slot.start}} - {{slot.end}} </button>
+        </ng-container>
+      <div class="full-width">
+        <button  mat-button [disabled]="!selectedSlot" class="time-submit mr-3" (click)="submitSlots()"> Submit </button>
+        <button mat-button class="time-submit cancel" (click)="cancelSlot()"> Cancel</button>
+      </div>
+      </div>
+      <div  *ngIf="!submitted && selectedSlot ">
+          <div class="buttons"> 
+            <button  color="primary" class="selected-slot"> {{selectedSlot.start}} - {{selectedSlot.end}} </button>
+          </div>
+        <div class="m-2 text-center ">
+          <button  mat-raised-button  class="time-submit checkout mr-1" (click)="checkWalletAndProceed()" > Pay from Wallet </button>
+          <mat-error *ngIf="error">{{error}}</mat-error>
+          <button  mat-raised-button  class="time-submit checkout mr-3" (click)="proceedCheckout()" > Proceed to Online Pay </button>
+        </div>
+      </div>
+      
+    </mat-card>
+</div>
+ 

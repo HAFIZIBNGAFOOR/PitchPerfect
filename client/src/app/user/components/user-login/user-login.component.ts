@@ -26,7 +26,7 @@ export class UserLoginComponent {
    constructor(private store:Store,private userService:UserService,private router:Router){}
     ngOnInit(): void {
       if(this.userService.isLoggedIn()){
-        this.router.navigate(['/home'])
+        this.router.navigate([''])
       }
       this.store.select(selectLoginError).subscribe((res)=>{
         this.serverError=res

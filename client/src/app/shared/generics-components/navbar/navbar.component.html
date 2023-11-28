@@ -7,31 +7,31 @@
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item >
-        <button class="nav-caption" mat-button active [routerLink] = "isAdmin ? '/turf-owner/turf-management':'book-turf' ">
+        <button class="nav-caption" routerLinkActive="active" mat-button  [routerLink]=" isAdmin ? '/turf-owner/turf-management':'/turf-list' ">
           {{isAdmin?'ADD TURF':'BOOK TURF'}} 
      </button>
       </a>
       <a mat-list-item >
-        <button class="nav-caption" mat-button >
-          {{isAdmin?'ADD SLOT':'VISIT'}}
+        <button class="nav-caption" routerLinkActive="active" mat-button [routerLink]="isAdmin?'/turf-owner/manage-slots':'/user-profile/bookings' " >
+          {{isAdmin?'ADD SLOT':'MY BOOKINGS'}}
        </button>  
       </a>
       <a mat-list-item >
-        <button class="nav-caption" mat-button [routerLink]="isAdmin ? 'turf-owner/Services' : 'services' ">
+        <button class="nav-caption" routerLinkActive="active" mat-button [routerLink]="isAdmin ? 'turf-owner/Services' : 'services' ">
           {{isAdmin?'SERVICES':'SERVICES'}}
       </button>
       </a>
-
+ 
       <a mat-list-item >
-        <button *ngIf=" isLoggedIn;" class="nav-caption" mat-button [matMenuTriggerFor]="menu">
+        <button *ngIf=" isLoggedIn;" routerLinkActive="active"  class="nav-caption" mat-button [matMenuTriggerFor]="menu">
             <mat-icon class="icon-size">account_circle</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-              <div mat-menu-item [routerLink]="isAdmin ? 'turf-owner/profile' : 'user-profile'">
+              <div mat-menu-item  [routerLink]="isAdmin ? 'turf-owner/profile' : 'user-profile/user-details'">
                <button mat-button> Profile</button>
               </div>
               <div mat-menu-item >
-                  <button mat-button (click)="logoutClicked()" > Logout </button>
+                  <button mat-button  (click)="logoutClicked()" > Logout </button>
               </div>
             </mat-menu>
             <button *ngIf="isLoggedIn ==false" mat-button [routerLink]="isAdmin ? 'turf-owner/login':'login' " >
@@ -39,8 +39,6 @@
                   LOGIN
               </ng-template>
           </button>
-
-
       </a>
     </mat-nav-list>
   </mat-sidenav>
@@ -59,26 +57,26 @@
       <div [ngClass]="{'hidden': (isHandset$ | async )===true}">
         <ul fxLayout fxLayoutGap="15px" class="navigation-items">
           <li>
-              <button mat-button active [routerLink]="isAdmin ?'/turf-owner/turf-management':'/book-turf' ">
+              <button mat-button routerLinkActive="active"  [routerLink]="isAdmin ?'/turf-owner/turf-management':'/turf-list' ">
                   {{isAdmin?'MANAGE TURF':'BOOK TURF'}} 
              </button>
           </li>
           <li>
-              <button mat-button >
-                  {{isAdmin?'ADD SLOT':'VISIT'}}
+              <button mat-button routerLinkActive="active" [routerLink]="isAdmin?'/turf-owner/manage-slots':'/user-profile/bookings' " >
+                  {{isAdmin?'ADD SLOT':'MY BOOKINGS'}}
                </button>
           </li>
           <li>
-              <button  mat-button [routerLink]="isAdmin ?'/turf-owner/Services':'/services' ">
+              <button  mat-button routerLinkActive="active" [routerLink]="isAdmin ?'/turf-owner/Services':'/services' ">
                   {{isAdmin?'SERVICES':'SERVICES'}}
               </button>
           </li>
           <li>
-            <button *ngIf=" isLoggedIn;" class="nav-caption" mat-button [matMenuTriggerFor]="menu">
+            <button *ngIf=" isLoggedIn;" routerLinkActive="active" class="nav-caption" mat-button [matMenuTriggerFor]="menu">
                 <mat-icon class="icon-size">account_circle</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                  <div mat-menu-item [routerLink]="isAdmin ? 'turf-owner/profile' : 'user-profile'">
+                  <div mat-menu-item [routerLink]="isAdmin ? 'turf-owner/profile' : 'user-profile/user-details'">
                    <button mat-button> Profile</button>
                   </div>
                   <div mat-menu-item >

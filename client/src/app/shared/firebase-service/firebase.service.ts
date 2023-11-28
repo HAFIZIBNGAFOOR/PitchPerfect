@@ -4,9 +4,9 @@ import 'firebase/compat/auth';
 import 'firebase/firestore';
 // import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Store } from '@ngrx/store';
-import { userOTPSendFailed, userOTPSendSuccess, userSendOtp,  } from 'src/app/user/state/user.action';
+import { userOTPSendFailed, userOTPSendSuccess, userSendOtp,  } from '../../user/state/user.action';
 import { Router } from '@angular/router';
-import { turfAdminSendOTP, turfAdminSendOTPFailed, turfAdminSendOTPSuccess } from 'src/app/turf-admin/state/turf-admin.action';
+import { turfAdminSendOTP, turfAdminSendOTPFailed, turfAdminSendOTPSuccess } from '../../turf-admin/state/turf-admin.action';
 
 var config={
   apiKey: "AIzaSyDO7Rgjpl5BrlFiVy_-sQkNdcAhe7GNigs",
