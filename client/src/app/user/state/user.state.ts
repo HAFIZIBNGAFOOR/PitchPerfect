@@ -1,4 +1,4 @@
-import { UserData } from "./user.interface"
+import { UserData } from "../models/user.model"
 
 export interface UserState{
     isLoggedIn:boolean,

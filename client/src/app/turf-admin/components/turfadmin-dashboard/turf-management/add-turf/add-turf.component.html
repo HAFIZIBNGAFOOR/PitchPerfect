@@ -1,0 +1,63 @@
+<div fxLayout="column" fxLayoutAlign="center center"  class="main-div">
+    <mat-card fxFlex="75" class="container box-shadow mt-5 mb-5 p-5">
+      <mat-toolbar class="text-center toolbar mt-5 mb-5">
+        Enter your turf details
+      </mat-toolbar>
+      <form [formGroup]="turfForm" (submit)="onSubmit()" fxLayout="column" fxLayoutAlign="stretch">
+        <mat-form-field appearance="fill">
+          <mat-label>Enter Turf name</mat-label>
+          <input matInput formControlName="turfName" placeholder="Turf Name">
+          <mat-error *ngIf="turfForm.get('turfName')?.hasError('required')"> Turf Name  is required </mat-error>
+          <mat-error *ngIf="turfForm.get('turfName')?.hasError('pattern')"> Minimum 4 characters required </mat-error>
+        </mat-form-field>
+        <mat-form-field  appearance="fill">
+          <mat-label>Location Of the Turf</mat-label>
+          <input matInput placeholder="Location" formControlName="turfLocation" [(ngModel)]="location" (click)="openMatDialog()">
+          <mat-error *ngIf="turfForm.get('turfLocation')?.hasError('required')"> Turf Location  is required </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Enter the Turf Contact </mat-label>
+          <input type="tel" matInput formControlName="turfContact" placeholder="Contact Number">
+          <mat-error *ngIf="turfForm.get('turfContact')?.hasError('required')"> Turf Contact  is required </mat-error>
+          <mat-error *ngIf="turfForm.get('turfContact')?.hasError('pattern')"> Enter a valid contact  </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Facilities available </mat-label>
+          <textarea matInput formControlName="turfFacilities" placeholder="Facilities provided by turf"> </textarea>
+          <mat-error *ngIf="turfForm.get('turfFacilities')?.hasError('required')"> Turf Facilities  is required </mat-error>
+        </mat-form-field>
+        <div class="mb-3 g-2">
+            <mat-label for="image"> Add your turf Image</mat-label><br>
+            <button class="mt-1"  type="button" mat-raised-button (click)="fileInput.click()">
+                <mat-icon color="primary">attach_file</mat-icon>
+                Choose File
+             </button>
+            <input hidden name="image"  (change)="onFileSelected($event)" accept="image/*" #fileInput type="file" multiple>
+            <div class="pt-2" *ngFor="let file of selectedFile" class="image-preview">
+              <img [src]="file.url" alt="Selected Image">
+            </div>
+        </div>
+        <mat-error *ngIf="submitted  && !turfForm.get('turfImages')?.value"> Image  is required </mat-error>
+        <mat-form-field appearance="fill">
+          <mat-select formControlName="sportsType" (selectionChange)="onSelected($event)"  placeholder="Select your Game">
+            <mat-option *ngFor="let item of sports" [value]="item">{{item}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="turfForm.get('sportsType')?.hasError('required')"> Sports type is required </mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="addDimension" appearance="fill">
+          <mat-select formControlName="sportsDimension"  placeholder="Select your Game dimension">
+            <mat-option *ngFor="let dim of sportsDimension" [value]="dim">{{dim}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="turfForm.get('sportsDimension')?.hasError('required')"> Sports dimension is required </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Price Per Hour </mat-label>
+          <input matInput formControlName="turfPrice" placeholder="Price Per Hour">
+          <mat-error *ngIf="turfForm.get('turfPrice')?.hasError('required')"> Turf price per hour is required </mat-error>
+          <mat-error *ngIf="turfForm.get('turfPrice')?.hasError('pattern')"> Enter a valid price   </mat-error>
+        </mat-form-field>
+          <button type="submit" mat-raised-button color="primary" [class.spinner]="loading" [disabled]="loading"> Submit </button>
+      </form>
+    </mat-card>
+  </div>
+  

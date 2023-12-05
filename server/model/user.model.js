@@ -23,6 +23,11 @@ const UserModel = new mongoose.Schema({
         required:true,
         type:Number
     },
+    location:{
+        lat:String,
+        long:String,
+        address:String
+    },
     age:{
         type:Number
     },
@@ -30,8 +35,25 @@ const UserModel = new mongoose.Schema({
         type:String
     },
     isBlocked:{
+        default:false,
         type:Boolean
+    },
+    wallet:{
+        default:0,
+        type:Number
+    },
+    walletStatements:[
+        {
+        date:Date,
+        walletType:String,
+        amount:Number,
+        turfName:String,
+        transaction:{
+            type:String,
+            enum:['debit','credit']
+        }
     }
+]
 })
 const User = mongoose.model('User',UserModel);
 module.exports = User;

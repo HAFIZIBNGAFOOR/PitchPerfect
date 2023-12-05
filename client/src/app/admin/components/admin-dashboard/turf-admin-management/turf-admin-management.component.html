@@ -1,0 +1,2 @@
+<div class="text-center color-header"> <h2>Turf Admin Management</h2></div>
+<app-table *ngIf="initialised" [dataSource]="turfAdminData"  [tableConfig]="columnData" (tableAction)="getTableAction($event)" ></app-table>

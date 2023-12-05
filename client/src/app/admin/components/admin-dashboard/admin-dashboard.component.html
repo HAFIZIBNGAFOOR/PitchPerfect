@@ -1,0 +1,40 @@
+
+<mat-toolbar class=" " color="primary">
+    <span routerLink="admin">ADMIN PLAY PERFECT </span>
+    <div class="spacer"></div>
+     <a mat-button>Home</a>
+     <a mat-button>About</a>
+     <a mat-button>Contact</a>
+     <a mat-button (click)="logout()">Logout</a>
+   </mat-toolbar>
+   <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list>
+        <a mat-list-item  class="nav-link text-white bg-black" (click)="onNavItemClicked()" >
+          Dashboard
+        </a>
+        <a mat-list-item class="nav-link text-white" routerLinkActive="active" routerLink="user-management" >
+          User Managaement
+        </a>
+        <a mat-list-item class="nav-link text-white" routerLinkActive="active" routerLink="turf-management" >
+          Turf Managaement
+        </a>
+        <a class="nav-link text-white" mat-list-item routerLinkActive="active" routerLink="turfAdmin-Management" >
+          Turf Admin  Managaement
+        </a>
+        <a  class="nav-link text-white" mat-list-item routerLinkActive="active" routerLink="sports-Management" >
+          Sports Management
+        </a>
+        <a  mat-list-item class="nav-link text-white" routerLinkActive="active" routerLink="booking-Management" >
+          Booking Management
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <!-- <ng-container *ngIf="currentNavItem == 'UserManagement' "> -->
+        <router-outlet ></router-outlet>
+      <!-- </ng-container> -->
+      
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

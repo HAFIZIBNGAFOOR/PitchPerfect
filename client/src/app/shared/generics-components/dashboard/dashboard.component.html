@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row ">
+        <div class="col-md-12 mx-auto buttons">
+            <button class="button-class " mat-raised-button > Last 7 Days Income : {{weeklySales}} </button> 
+            <button class="button-class" mat-raised-button > Last 30 Days Income : {{monthySales}}</button> 
+            <button class="button-class" mat-raised-button > Annual Income : {{annualSales}}</button> 
+        </div>
+        <div class="col-md-12 mx-auto">
+            <h2 class="text-primary ml-5 mt-3 text-center">  Dashboard </h2>
+            <canvas  id="canvas">{{chart}}</canvas>
+        </div>
+        <div class="col-md-12 mx-auto">
+            <h2 class="text-primary ml-5 mt-3 text-center">  Bookings based on Sports Type </h2>
+            <canvas  id="pieChart">{{pieChart}}</canvas>
+        </div>
+    </div>
+</div>

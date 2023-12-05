@@ -1,6 +1,6 @@
 import {createAction,props} from '@ngrx/store';
-import { UserData } from './user.interface';
-import { login } from '../user-login/user-login.component';
+import { UserData } from '../models/user.model';
+import { login } from '../components/user-login/user-login.component';
 
 export const userSendOtp = createAction('[User Signup] Send OTP',props<{phone:string}>())
 export const userOTPSendSuccess = createAction('[User Signup] Send OTP success',props<{res:any}>());

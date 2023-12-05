@@ -1,0 +1,148 @@
+.example-card {
+    display: flex;
+    /* align-items: center; */
+}
+.image-div img{
+    width : 100%;
+    height : 100%;
+    box-shadow:  0 0 10px rgba(47, 181, 99, 0.5);
+    border-radius: 20%;
+}
+.image-div{
+    padding-bottom: 1rem;
+    max-width: 70%;
+}
+h3{
+    margin-bottom: 0%;
+}
+  
+.example-header-image {
+    background-size: cover;
+  }
+.cancel{
+    color: rgb(242, 61, 61)!important;
+}
+
+
+.card-content {
+    display: flex;
+}
+
+.left-side {
+    max-width: 50%;
+    flex: 1;
+    padding: 1rem; /* Adjust as needed */
+}
+
+.right-side {
+    max-width: 50%;
+    padding-top: 1rem;
+}
+.cancel-button {
+    background-color: rgb(228, 72, 72)!important;
+    color: white!important;
+    border:solid rgb(0, 0, 0) 2px
+
+}
+.cancel-button:hover{
+    background-color:white!important ; 
+    color: red!important;
+    border:solid red 2px
+}
+.change-button{
+    background-color: rgb(43, 88, 151)!important;
+    color: white!important;
+    border:solid rgb(0, 0, 0) 2px;
+    margin-right: 1rem;
+}
+.change-button:hover{
+    background-color:white!important;
+    color: rgb(43, 88, 151) !important;
+    border:solid rgb(43, 88, 151) 2px;
+    margin-right: 1rem;
+}
+.play-icon{
+    color:#2FB563 ;
+}
+.color{
+  color:#2FB563
+}
+.dup-nav{
+    padding-bottom : 2rem;
+    margin-top: 2rem;
+    border-bottom: solid black 3px;
+}
+h1.play-icon{
+    margin-bottom: 0px;
+}
+
+.mat-icon-button:click {
+  background: transparent!important;
+  border: none!important;
+}
+
+/* Remove background and border for mat-icon-button when focused */
+.mat-icon-button:focus {
+  background: transparent!important;
+  border: none!important;
+}
+/* for spinner */
+
+
+.box {
+    margin: 0 auto;
+    width: 40px;
+    height: 140px;
+    /* border: solid 1px black; */
+    position: relative;
+  }
+  
+  .box .shadow {
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    background-color: grey;
+    bottom: 0;
+    border-radius: 100%;
+    transform: scaleX(0.8);
+    opacity: 0.6;
+    animation: shadowScale 1s linear infinite;
+  }
+  
+  .gravity {
+    width: 40px;
+    height: 40px;
+    animation: bounce 1s cubic-bezier(0.68, 0.35, 0.29, 0.54) infinite;
+  }
+  
+  .ball {
+    width: 40px;
+    height: 40px;
+    background-image: url("https://cdn2.iconfinder.com/data/icons/activity-5/50/26BD-soccer-ball-128.png");
+    background-size: cover;
+    animation: roll 0.7s linear infinite;
+  }
+  
+  @keyframes roll {
+    0% {}
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes bounce {
+    0% {}
+    50% {
+      transform: translateY(100px);
+    }
+    100% {}
+  }
+  
+  @keyframes shadowScale {
+    0% {}
+    50% {
+      transform: scaleX(1);
+      opacity: 0.8;
+    }
+    100% {}
+  }

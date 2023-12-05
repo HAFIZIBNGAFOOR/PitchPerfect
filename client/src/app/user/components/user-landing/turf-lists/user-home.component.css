@@ -1,0 +1,39 @@
+.filter {
+    display: block;
+    margin: 1rem;
+  }
+  .card-container {
+    display:flex;
+    flex-direction: column;
+    width: fit-content;
+    margin: 8rem;
+  }
+  
+/* .card-container:hover {
+    transform: scale(1.05);
+} */
+
+
+mat-sidenav{
+  height: fit-content;
+}
+
+.mat-grid-tile{
+  height: fit-content!important;
+  width: 40%;
+  height: auto;
+  margin: 2rem;
+}
+mat-sidenav-container{
+  height: 100%
+}
+/* .container{
+  align-items: center;
+  justify-content: end;
+  background-color: aquamarine;
+} */
+.row{
+  display: flex;
+  margin: 0% !important;
+  margin-left: 5%;
+}

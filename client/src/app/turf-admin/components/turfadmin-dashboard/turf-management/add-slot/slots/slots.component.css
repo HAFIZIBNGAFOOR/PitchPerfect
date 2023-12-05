@@ -1,0 +1,26 @@
+.example-full-width{
+    width: 60%;
+}
+.date-width{
+    display: flex;
+    align-items: baseline;
+}
+.add-color{
+    color: black;
+}
+.bgcolorfortext{
+    border-radius: 5px;
+    margin-left: 5%;
+    margin-right: 5%;
+    /* border: #2FB563 solid ; */
+    box-shadow: 0px 0px 5px 5px  rgba(0, 0, 0, 0.3); /* box-shadow property */
+    background-color: #addfc0;
+    padding-bottom: 5%;
+}
+.drop-calendar{
+  width:40rem
+}
+.mat-calendar-body-cell.selected {
+  background-color:#2FB563!important;
+  border-radius: 50%
+}

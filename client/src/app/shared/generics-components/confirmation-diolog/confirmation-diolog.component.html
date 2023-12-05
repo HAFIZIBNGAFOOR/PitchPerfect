@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>
+    {{title}}
+  </h1>
+  
+  <div mat-dialog-content>
+    <p>{{message}}</p>
+  </div>
+  
+  <div mat-dialog-actions class=" text-center">
+    <button [ngClass]="{'text-danger':status=='cancel', 'text-success':status=='confirm'}" mat-raised-button (click)="onDismiss()">Cancel</button>
+    <button [ngClass]="{'text-success':status=='cancel', 'text-danger':status=='confirm'}" mat-raised-button  (click)="onConfirm()">Confirm</button>
+  </div>
+
+  

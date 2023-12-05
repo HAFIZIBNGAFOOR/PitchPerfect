@@ -23,6 +23,7 @@ export class TurfAdminEffects{
                     map((res:any)=>{
                         this.turfAdminService.setToken(res.token);
                         this.router.navigate(['/turf-owner'])
+                        window.location.reload()
                         return turfAdminLoginSuccess({token:res.token})
                     }),
                     catchError((err)=>{

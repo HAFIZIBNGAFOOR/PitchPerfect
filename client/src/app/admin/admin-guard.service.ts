@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AdminServiceService } from './admin-service/admin-service.service';
+import { AdminService } from './admin-service/admin-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminGuardService implements CanActivate{
 
-  constructor(private adminService:AdminServiceService,private router:Router) { }
+  constructor(private adminService:AdminService,private router:Router) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
       if(this.adminService.isAdminLoggedIn()){
         return true

@@ -1,0 +1,166 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="false"
+      [ngClass]="{'hidden':(isHandset$ | async) ===false}"
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item >
+        <button class="nav-caption" routerLinkActive="active" mat-button  [routerLink]=" isAdmin ? '/turf-owner/turf-management':'/turf-list' ">
+          {{isAdmin?'ADD TURF':'SHOW TURFS'}} 
+        </button>
+      </a>
+      <a mat-list-item >
+        <button class="nav-caption" routerLinkActive="active" mat-button [routerLink]="isAdmin?'/turf-owner/manage-slots':'/user-profile/bookings' " >
+          {{isAdmin?'ADD SLOT':'MY BOOKINGS'}}
+        </button>  
+      </a>
+      <a mat-list-item >
+        <button class="nav-caption" routerLinkActive="active" mat-button [routerLink]="isAdmin ? 'turf-owner/wallet' : '/user-profile/walllet' ">
+          {{isAdmin?'WALLET':'WALLET'}}
+        </button>
+      </a>
+ 
+      <a mat-list-item >
+        <button *ngIf=" isLoggedIn;" routerLinkActive="active"  class="nav-caption" mat-button [matMenuTriggerFor]="menu">
+            <mat-icon class="icon-size">account_circle</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+              <div mat-menu-item  [routerLink]="isAdmin ? 'profile' : 'user-profile/user-details'">
+               <button mat-button> Profile</button>
+              </div>
+              <div mat-menu-item >
+                  <button mat-button (click)="logoutClicked()" > Logout </button>
+              </div>
+            </mat-menu>
+            <button class="nav-caption" *ngIf="!isLoggedIn" mat-button [routerLink]="isAdmin ? 'turf-owner/login':'login' " >
+                  LOGIN
+          </button>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="mat-elevation-z5" >
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="(isHandset$ | async )">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <a class="play-icon" routerLink=""><b> TURFO </b></a>
+      <div class="spacer"></div>
+      <div [ngClass]="{'hidden': (isHandset$ | async )===true}">
+        <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+          <li>
+              <button mat-button routerLinkActive="active"  [routerLink]="isAdmin ?'/turf-owner/turf-management':'/turf-list' ">
+                  {{isAdmin?'MANAGE TURF':'SHOW TURFS'}} 
+             </button>
+          </li>
+          <li>
+              <button mat-button routerLinkActive="active" [routerLink]="isAdmin?'/turf-owner/manage-slots':'/user-profile/bookings' " >
+                  {{isAdmin?'ADD SLOT':'MY BOOKINGS'}}
+               </button>
+          </li>
+          <li>
+              <button  mat-button routerLinkActive="active" [routerLink]="isAdmin ?'/turf-owner/wallet':'/user-profile/wallet' ">
+                  {{isAdmin?'WALLET':'WALLET'}}
+              </button>
+          </li>
+          <li>
+            <button *ngIf=" isLoggedIn;" routerLinkActive="active" class="nav-caption" mat-button [matMenuTriggerFor]="menu">
+                <mat-icon class="icon-size">account_circle</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                  <div mat-menu-item [routerLink]="isAdmin ? 'turf-owner/profile' : 'user-profile/user-details'">
+                   <button mat-button > Profile</button>
+                  </div>
+                  <div mat-menu-item >
+                      <button mat-button  (click)="logoutClicked()" > Logout </button>
+                  </div>
+                </mat-menu>
+                <button  *ngIf="!isLoggedIn" mat-button [routerLink]="isAdmin ? 'turf-owner/login':'login' " >
+                      LOGIN
+              </button>
+          </li>
+      </ul> 
+      </div>
+    </mat-toolbar>
+    <ng-content>
+    </ng-content>   
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+
+
+<!-- <mat-sidenav-container class="sidenav-container">
+  <mat-toolbar color="warning" class="mat-elevation-z5">
+      <div fxHide.gt-xs>
+          <button mat-icon-button (click)=" onToggleSidenav()">
+              <mat-icon class="menu-icon">menu</mat-icon>
+          </button>
+      </div>
+      <div>
+          <span class="play-icon"><b> PLAY PERFECT</b></span>
+      </div>
+      <div class="spacer"></div>
+      <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
+          <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+              <li>
+                  <button mat-button active routerLink="isAdmin ?'/turfAdmin/Add-turf':'/book-turf' ">
+                      {{isAdmin?'ADD TURF':'BOOK TURF'}} 
+                 </button>
+              </li>
+              <li>
+                  <button mat-button >
+                      {{isAdmin?'ADD SLOT':'VISIT'}}
+                   </button>
+              </li>
+              <li>
+                  <button  mat-button routerLink="isAdmin ?'/turfAdmin/Services':'/services' ">
+                      {{isAdmin?'SERVICES':'SERVICES'}}
+                  </button>
+              </li>
+              <li class="no-border">
+                  <button mat-button  routerLink="isLoggedIn ?(isAdmin ? '/turfAdmin/profile':'/user-profile') ">
+                      <mat-icon *ngIf=" isLoggedIn; else elseTemplate" class="icon-size">account_circle</mat-icon>
+                     <ng-template #elseTemplate>
+                      LOGIN
+                     </ng-template>
+                  </button>
+              </li>
+          </ul> 
+  
+      </div>
+  </mat-toolbar>
+  <mat-sidenav  #sidenav role="navigation" class="remove-scroll" [opened]="isSidenavOpen">
+      <mat-nav-list >
+          <a mat-list-item  >
+              <button class="nav-caption" mat-button active routerLink="isAdmin ?'/turfAdmin/Add-turf':'/book-turf' ">
+                  {{isAdmin?'ADD TURF':'BOOK TURF'}} 
+             </button>
+          </a>
+          <a mat-list-item  >
+              <button class="nav-caption" mat-button >
+                  {{isAdmin?'ADD SLOT':'VISIT'}}
+               </button>  
+          </a>
+          <a mat-list-item routerLink="#" >
+              <button class="nav-caption" mat-button routerLink="isAdmin ?'/turfAdmin/Services':'/services' ">
+                  {{isAdmin?'SERVICES':'SERVICES'}}
+              </button>
+          </a>
+          <a mat-list-item routerLink="#" >
+              <button class="nav-caption" mat-button  routerLink="isLoggedIn ?(isAdmin ? '/turfAdmin/profile':'/user-profile') ">
+                  <mat-icon *ngIf=" isLoggedIn; else elseTemplate" class="icon-size">account_circle</mat-icon>
+                 <ng-template #elseTemplate>
+                  LOGIN
+                 </ng-template>
+              </button>
+          </a>
+        </mat-nav-list>
+  </mat-sidenav>
+  </mat-sidenav-container> -->

@@ -1,0 +1,10 @@
+.add-border{
+    box-shadow:  0 0 10px #2fb56380;
+    background-color:#98c0a780 ;
+}
+.add-border button{
+    color: black !important;
+}
+.add-color button{
+    color: #2FB563 !important;
+}

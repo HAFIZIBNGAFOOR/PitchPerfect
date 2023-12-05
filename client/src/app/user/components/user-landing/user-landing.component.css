@@ -1,0 +1,20 @@
+.spacer{
+    flex: 1 1 auto;
+  }
+  .mat-toolbar{
+    background-color: cornflowerblue;
+    color: white;
+  }
+  .mat-button{
+     color: white;
+  }
+  mat-icon{
+    transform: scale(2);
+ }
+ .mat-nav-list {
+  height: calc(100% - 56px); /* Adjust as needed based on your navbar height */
+  overflow-y: auto; /* Add scroll when the content overflows */
+}
+.sidenav-container {
+  height: 100%;
+}

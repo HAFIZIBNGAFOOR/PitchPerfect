@@ -1,0 +1,29 @@
+.example-card {
+    justify-content: center;
+    text-align:justify;
+    padding: 3rem;
+    /* padding-left:rem ; */
+    width:90%;
+    box-shadow:  0 0 10px rgba(47, 181, 99, 0.5);
+  }
+.card-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.full-width{
+  color: black!important;
+  text-decoration: wavy!important;
+}
+.edit-button{
+  width: 100%;
+  padding-left: 25%;
+  padding-right: 25%;
+  background-color: #2FB563 !important ;
+  color: white !important;
+}
+:hover.edit-button{
+  background-color: white !important;
+  color:#2FB563 !important;
+}
+

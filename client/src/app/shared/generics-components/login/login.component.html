@@ -1,0 +1,44 @@
+<div fxLayoutAlign="center center" fxFlexFill class="main-div">
+    
+    <mat-card fxFlex="45" class="container box-shadow mt-5 mb-5" >
+        <mat-toolbar class="text-white toolbar mt-5 mb-5"   >
+            {{role}} LOGIN  
+          </mat-toolbar>
+            <form [formGroup]="loginForm" (submit)="onSubmit()" fxLayoutAlign="stretch" fxLayout="column" class="login-form">
+                <mat-form-field appearance="fill" >
+                  <!-- <mat-label>Favorite food</mat-label> -->
+                  <input matInput formControlName="phone" placeholder="Phone" >
+                  <mat-error *ngIf="loginForm.get('phone')?.hasError('required')">Phone number is required</mat-error>
+                  <mat-error *ngIf="loginForm.get('phone')?.hasError('pattern')">Enter a valid Phone number</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill" >
+                    <input type="password" matInput formControlName="password" placeholder="Password" >
+                    <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
+                    <mat-error *ngIf="loginForm.get('password')?.hasError('onlySpaces')"> Only spaces cannot be allowed</mat-error>
+
+                    <mat-error *ngIf="loginForm.get('password')?.hasError('pattern')">Password must be 8 chaarcaters and atleast one number </mat-error>
+                  </mat-form-field>
+                  <mat-error class="text-center mb-3" *ngIf="error">{{error}}</mat-error>
+                  <button  type="submit"  mat-raised-button > Submit </button>
+              </form>  
+              <ng-container  *ngIf="role =='USER' ; else elseTemplate">
+                <div class="mt-3 mb-2 text-center sign-up">
+                  Don't have an account  <a routerLink="/signup"> Register </a> here.
+                </div> 
+               <div class=" mb-5 text-center sign-up">
+                You're TurfAdmin <a routerLink="/turf-owner/login" > Login</a>here.
+              </div> 
+
+            </ng-container>
+            <ng-template  #elseTemplate>
+              <div class="mt-3 mb-2 text-center ">
+                Don't have an account <a routerLink="/turf-owner/signup"> Register</a> here.
+              </div> 
+              <div class="mb-5  text-center sign-up"> 
+                If you're a user <a routerLink="/login">Login </a>here.
+              </div>
+            </ng-template>
+
+    </mat-card>
+</div>
+ 

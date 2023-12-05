@@ -1,0 +1,19 @@
+.full-width{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+.bottom-line{
+    border-bottom: solid green 3px;
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+}
+td{
+    width: fit-content;
+    padding-right: 0%;
+}
+.action{
+    background-color: rgb(79, 227, 151);
+    color: black;
+}

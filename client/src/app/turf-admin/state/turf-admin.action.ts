@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
-import { TurfAdmin } from "./turf-admin.state";
-import { login } from "src/app/user/user-login/user-login.component";
+import { TurfAdmin, TurfAdminState } from "../models/turf-admin.model";
+import { login } from "../../user/components/user-login/user-login.component";
 
 
 

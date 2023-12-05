@@ -1,0 +1,30 @@
+.mat-toolbar{
+    background-color: #6495ed;
+    color: white;
+  }
+  .mat-button{
+     color: white;
+  }
+  .spacer{
+    flex: 1 1 auto;
+  }
+  .sidenav-container {
+    height: 100%;
+  }
+  
+  .mat-sidenav {
+    background: #ebedef; /* Set your desired background color */
+  }
+ mat-nav-list{
+  padding:0!important;
+ } 
+  .nav-link {
+    color: #6495ed;
+    background-color: white; /* Set your desired text color */
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  }
+  .active{
+    background-color: #6495ed;
+    color: white;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  }

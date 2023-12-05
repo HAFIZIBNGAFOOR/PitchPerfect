@@ -1,0 +1,28 @@
+.edit-button{
+    width: 50%;
+    color: white;
+    background-color: green;
+    margin-right: 1rem;
+}
+.cancel-button{
+    width: 50%;
+    background-color:red;
+    color: white;
+}
+
+.form-control{
+    width:100%;
+    display:flex;
+    /* justify-content: space-between; */
+}
+label{
+    width: 25%;
+}
+input{
+    border-radius: 5px;
+    color: black;
+}
+.error-message{
+    color:red;
+    text-align: center;
+}
