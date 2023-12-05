@@ -62,21 +62,32 @@ const turfAdminDashboard = async(req,res)=>{
     try {
         const turfs = await TurfModel.find({turfOwner :req.id})
         const turfIds = turfs.map(turf=>turf._id);
-        const bookings = await Bookings.find({turf:{$in:turfIds}}).populate('turf');
-        const date = new Date()
+        const bookings = await Bookings.find({turf:{$in:turfIds},bookingStatus:'Completed'}).populate('turf');
         const annualBookings = bookings.filter(booking=> new Date(booking.bookedSlots.date).getFullYear()== new Date().getFullYear());
         let annualSales = 0;
         annualBookings.forEach(booking =>annualSales += booking.totalCost);
-        const monthlyBookings = bookings.filter(booking=>new Date(booking.bookedSlots.date).getMonth() == new Date().getMonth());
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        const today = new Date();
+        const monthlyBookings = bookings.filter(booking=>{
+            const bookingDate = new Date(booking.bookedSlots.date);
+            return bookingDate >= thirtyDaysAgo && bookingDate <= today;
+        });
         let monthlySales = 0;
         monthlyBookings.forEach(booking=>monthlySales += booking.totalCost)
-        const lastWeekDate = new Date()
-        lastWeekDate.setDate(new Date().getDate()-7)
-        const weeklyBookings = bookings.filter(booking=> new Date(booking.bookedSlots.date) > lastWeekDate);
+        const currentDay = today.getDay();
+        const diff = today.getDate() - currentDay + (currentDay === 0 ? -6 : 1);
+        const weeklyBookings = bookings.filter(booking=> {
+            const bookingDate = new Date(booking.bookedSlots.date);
+            return bookingDate > new Date(today.setDate(diff)) && bookingDate < new Date(today.setDate(diff + 6));
+        });
+
+
         let weeklySales = 0;
         weeklyBookings.forEach(booking => weeklySales += booking.totalCost);
 
         //data for chart with bookings by month
+
         let bookingsByMonth = {};
         let noOfBookings =0;
         let TotalAmount= 0 
@@ -87,7 +98,7 @@ const turfAdminDashboard = async(req,res)=>{
         bookings.forEach(booking=>{
             if(booking.bookingStatus =='Completed'){
                 const bookingYear = booking.Time.getFullYear();
-                if(currentYear ==bookingYear){
+                if(currentYear == bookingYear){
                     const month = booking.Time.getMonth()+1;
                     const key = `${bookingYear}-${month}`
                     if(!bookingsByMonth[key]){
@@ -110,7 +121,7 @@ const turfAdminDashboard = async(req,res)=>{
             if(!turfCount[booking.turf.turfName]) turfCount[booking.turf.turfName]={turfName:booking.turf.turfName,count}   
                 turfCount[booking.turf.turfName].count++
         })
-        console.log(turfCount, bookingsByMonth);
+        console.log(bookingsByMonth);
         res.status(200).json({monthlySales,weeklySales,annualSales,turfCount:Object.values(turfCount),bookingsByMonth:Object.values(bookingsByMonth)})
     } catch (error) {
         console.log(error);
@@ -123,6 +134,7 @@ const addTurf = async(req,res)=>{
         const parsedLoc = JSON.parse(turfLocation)
         const turfAdmin = await TurfAdmin.findById({_id:req.id});
         const existingTurf = await TurfModel.findOne({turfName:turfName});
+        const turfFacilitiesArray  = turfFacilities.split('\r\n')
         if(turfAdmin.isVerified ==false){
             res.status(403).json({verified:false})
         }else{
@@ -137,7 +149,7 @@ const addTurf = async(req,res)=>{
                 addTurf.turfLocation.lat =parsedLoc.lat,
                 addTurf.turfLocation.long =parsedLoc.long,
                 addTurf.turfContact = turfContact
-                addTurf.facilities = turfFacilities
+                addTurf.facilities = turfFacilitiesArray
                 addTurf.sportsDimension = sportsDimension
                 addTurf.sportsType = sportsType
                 addTurf.turfPrice = parseInt(turfPrice)
@@ -156,7 +168,7 @@ const addTurf = async(req,res)=>{
                 .then((results)=>{
                     const imageUrls = results.map((res)=>res.url)
                     addTurf.turfImages = imageUrls;
-                    addTurf.save()
+                    // addTurf.save()
                     res.status(200).json({message:'got the turf details',status:true})
                 })
             }else{
@@ -224,7 +236,26 @@ const addSlots =async(req,res)=>{
         res.status(500).json({message:'internal server error'})
     }
 }
-
+const cancelBookingByTurfAdmin = async(req,res)=>{
+    try {
+        await Bookings.findByIdAndUpdate(req.body.bookingId,{$set:{bookingStatus:'Cancelled'}});
+        res.status(200).json({message:'Booking cancelled successfully'})
+    } catch (error) {
+        console.log(error,' this is error ');
+        res.status(500).json({message:'Internal server error '})
+    }
+}
+const getProfile = async(req,res)=>{
+    try {
+        const profile = await TurfAdmin.findById(req.id);
+        console.log(profile,' thi si turf profile');
+        if(profile) res.status(200).json({profile})
+        else res.status(400).json({message:'No data found'})
+    } catch (error) {
+        console.log(error ,' this is error frm turf profile');
+        res.status(500).json({message:'Internal server error '})
+    }
+}
 
 module.exports = {
     registerTurfAdmin,
@@ -235,5 +266,7 @@ module.exports = {
     timeSlots,
     addSlots,
     turfAdminDashboard,
+    cancelBookingByTurfAdmin,
+    getProfile
     // testing
 }

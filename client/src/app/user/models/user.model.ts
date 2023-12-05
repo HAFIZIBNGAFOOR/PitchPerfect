@@ -19,12 +19,12 @@ export  interface UserProfile {
     name: string;
     email: string;
     phone: string;
-    location: {
+    location:null| {
         address:string,
         long:string,
         lat:string
     }
-    age: number;
+    age: number ;
     _id: string;
     wallet: number;
 }

@@ -8,18 +8,18 @@
     <mat-nav-list>
       <a mat-list-item >
         <button class="nav-caption" routerLinkActive="active" mat-button  [routerLink]=" isAdmin ? '/turf-owner/turf-management':'/turf-list' ">
-          {{isAdmin?'ADD TURF':'BOOK TURF'}} 
-     </button>
+          {{isAdmin?'ADD TURF':'SHOW TURFS'}} 
+        </button>
       </a>
       <a mat-list-item >
         <button class="nav-caption" routerLinkActive="active" mat-button [routerLink]="isAdmin?'/turf-owner/manage-slots':'/user-profile/bookings' " >
           {{isAdmin?'ADD SLOT':'MY BOOKINGS'}}
-       </button>  
+        </button>  
       </a>
       <a mat-list-item >
-        <button class="nav-caption" routerLinkActive="active" mat-button [routerLink]="isAdmin ? 'turf-owner/Services' : 'services' ">
-          {{isAdmin?'SERVICES':'SERVICES'}}
-      </button>
+        <button class="nav-caption" routerLinkActive="active" mat-button [routerLink]="isAdmin ? 'turf-owner/wallet' : '/user-profile/walllet' ">
+          {{isAdmin?'WALLET':'WALLET'}}
+        </button>
       </a>
  
       <a mat-list-item >
@@ -27,17 +27,15 @@
             <mat-icon class="icon-size">account_circle</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-              <div mat-menu-item  [routerLink]="isAdmin ? 'turf-owner/profile' : 'user-profile/user-details'">
+              <div mat-menu-item  [routerLink]="isAdmin ? 'profile' : 'user-profile/user-details'">
                <button mat-button> Profile</button>
               </div>
               <div mat-menu-item >
-                  <button mat-button  (click)="logoutClicked()" > Logout </button>
+                  <button mat-button (click)="logoutClicked()" > Logout </button>
               </div>
             </mat-menu>
-            <button *ngIf="isLoggedIn ==false" mat-button [routerLink]="isAdmin ? 'turf-owner/login':'login' " >
-              <ng-template >
+            <button class="nav-caption" *ngIf="!isLoggedIn" mat-button [routerLink]="isAdmin ? 'turf-owner/login':'login' " >
                   LOGIN
-              </ng-template>
           </button>
       </a>
     </mat-nav-list>
@@ -52,13 +50,13 @@
         *ngIf="(isHandset$ | async )">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <a class="play-icon" routerLink="home"><b> PLAY PERFECT</b></a>
+      <a class="play-icon" routerLink=""><b> TURFO </b></a>
       <div class="spacer"></div>
       <div [ngClass]="{'hidden': (isHandset$ | async )===true}">
         <ul fxLayout fxLayoutGap="15px" class="navigation-items">
           <li>
               <button mat-button routerLinkActive="active"  [routerLink]="isAdmin ?'/turf-owner/turf-management':'/turf-list' ">
-                  {{isAdmin?'MANAGE TURF':'BOOK TURF'}} 
+                  {{isAdmin?'MANAGE TURF':'SHOW TURFS'}} 
              </button>
           </li>
           <li>
@@ -67,8 +65,8 @@
                </button>
           </li>
           <li>
-              <button  mat-button routerLinkActive="active" [routerLink]="isAdmin ?'/turf-owner/Services':'/services' ">
-                  {{isAdmin?'SERVICES':'SERVICES'}}
+              <button  mat-button routerLinkActive="active" [routerLink]="isAdmin ?'/turf-owner/wallet':'/user-profile/wallet' ">
+                  {{isAdmin?'WALLET':'WALLET'}}
               </button>
           </li>
           <li>
@@ -77,16 +75,14 @@
               </button>
               <mat-menu #menu="matMenu">
                   <div mat-menu-item [routerLink]="isAdmin ? 'turf-owner/profile' : 'user-profile/user-details'">
-                   <button mat-button> Profile</button>
+                   <button mat-button > Profile</button>
                   </div>
                   <div mat-menu-item >
-                      <button mat-button (click)="logoutClicked()" > Logout </button>
+                      <button mat-button  (click)="logoutClicked()" > Logout </button>
                   </div>
                 </mat-menu>
-                <button *ngIf="isLoggedIn == false" mat-button [routerLink]="isAdmin ? 'turf-owner/login':'login' " >
-                  <ng-template >
+                <button  *ngIf="!isLoggedIn" mat-button [routerLink]="isAdmin ? 'turf-owner/login':'login' " >
                       LOGIN
-                  </ng-template>
               </button>
           </li>
       </ul> 

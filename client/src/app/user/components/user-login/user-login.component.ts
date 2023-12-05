@@ -36,7 +36,6 @@ export class UserLoginComponent {
    getLoginData(data:login){
     this.loginData = data;
     this.store.dispatch(userLogin({data:this.loginData}))
-    console.log(this.loginData);
    }
 
 

@@ -24,6 +24,11 @@ const Turf = new mongoose.Schema({
     facilities:{
         type: [String],
      },
+    status:{
+        type:String,
+        enum:['active','block'],
+        default:'active',
+    },
     slots:[
         {
             dateString:String,

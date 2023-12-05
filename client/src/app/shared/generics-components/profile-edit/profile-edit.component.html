@@ -6,28 +6,32 @@
                     <form #profileForm="ngForm" (ngSubmit)="onSubmit(profileForm)">
                         <div class="form-control">
                                 <label for="name">Name:</label>
-                                <input   type="text" id="name" name="name" [(ngModel)]="data.name" required>
+                                <input   type="text" id="name" name="name" [(ngModel)]="data.name"  required pattern="^\S.{2,14}\S$">
                             </div>
-                            <div *ngIf= " profileForm.controls['name'].invalid" class="error-message">
+                            <mat-error *ngIf= "profileForm.controls['name'].errors?.['required']">
                                 Name is required.
-                            </div>
+                            </mat-error> 
+                            <!-- </div> -->
+                            <mat-error *ngIf= "profileForm.controls['name'].errors?.['pattern']" class="error-message">
+                                Enter a valid Name
+                            </mat-error>
                             <div class="form-control">
                                 <label for="email">Email:</label>
-                                <input   type="text" id="email" name="email"  [(ngModel)]="data.email" required email>
+                                <input   type="text" id="email" name="email"  [(ngModel)]="data.email" required email >
                             </div>
                             <div *ngIf=" profileForm.controls['email'].invalid" class="error-message">
                                 Email is required.
                             </div>
                             <div class="form-control">
                                 <label for="Phone">Phone:</label>
-                                <input  type="text" id="Phone" name="Phone"  [(ngModel)]="data.phone" required pattern="[0-9]{10}">
+                                <input  type="text" id="Phone" name="Phone"  [(ngModel)]="data.phone" required pattern="[0-9]{10}" onlySpaces >
                             </div>
                             <div *ngIf="  profileForm.controls['Phone'].invalid" class="error-message">
                                 Enter a valid with 10 digits.
                             </div>
                             <div class="form-control">
                                 <label for="Age">Age:</label>
-                                <input   type="text" id="Age" name="Age" [(ngModel)]="data.age" required min="0" max="99" pattern="\d{1,2}">
+                                <input   type="text" id="Age" name="Age" [(ngModel)]="data.age" required min="0" max="99" pattern="\d{1,2}" onlySpaces>
                             </div>
                             <div *ngIf="profileForm.controls['Age'].touched && profileForm.controls['Age'].invalid" class="error-message">
                                 Enter a valid age.

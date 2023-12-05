@@ -4,11 +4,38 @@
             <div class="text-center">
                 <h2 class="text-center text-success">Wallet Management</h2>
                 <div class="add-border m-5 p-3">
-                   <div class="pb-2"> <button disabled mat-button > WalletAmount :{{walletAmount}}</button> </div>
-                   <div class="add-color"> <button mat-raised-button > Add to wallet</button> </div> 
-
+                   <div class="pb-2 add-color"> <button disabled mat-button > WalletAmount :{{walletAmount}}</button> </div>
+                   <!-- <div class="add-color"> <button mat-raised-button > Add to wallet</button> </div>  -->
+                   <div class="p-5" *ngIf="isInitialized && walletDetails && walletDetails.length>0" >
+                        <h4>Wallet History</h4>
+                        <div *ngFor="let wallet of walletDetails ">
+                            <div class="m-2">
+                                <mat-accordion>
+                                    <mat-expansion-panel hideToggle>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            {{wallet.transaction}}ed
+                                        </mat-panel-title>
+                                        <mat-panel-description>
+                                        {{wallet.date | date:'dd-MM-yyyy'}}
+                                        </mat-panel-description>
+                                        {{wallet.amount}}
+                                        <mat-icon *ngIf="wallet.transaction=='credit'" class="text-success">add</mat-icon>
+                                        <mat-icon *ngIf="wallet.transaction=='debit'" class="text-danger">remove</mat-icon>
+                                    </mat-expansion-panel-header>
+                                    <p>{{wallet.transaction}}ed from turf {{wallet.turfName}} on {{wallet.date | date:'dd-mm-yyyy'}} {{wallet.walletType}}</p>
+                                    </mat-expansion-panel>
+                                </mat-accordion>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="!walletDetails || walletDetails.length<=0">
+                     No Wallet history
+                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 </div>  
+                        

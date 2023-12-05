@@ -9,7 +9,7 @@
 .card-div{
     display: flex;
     justify-content: center;
-    /* align-items: center; */
+    align-items: center;
 }
 .full-width{
   color: black!important;
@@ -26,3 +26,4 @@
   background-color: white !important;
   color:#2FB563 !important;
 }
+

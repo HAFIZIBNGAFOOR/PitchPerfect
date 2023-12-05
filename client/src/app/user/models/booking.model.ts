@@ -20,5 +20,5 @@ export interface iSlots{
    slots:{
       start:string,
       end:string
-   }
+   }[]
 }

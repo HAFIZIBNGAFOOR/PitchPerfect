@@ -18,7 +18,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AdminEffects } from './admin-state/admin.effects';
 import { StoreModule } from '@ngrx/store';
 import { adminReducer } from './admin-state/admin.reducer';
-import { InterceptorInterceptor } from '../shared/interceptor/user-interceptor/interceptor.interceptor';
+import { InterceptorInterceptor } from '../shared/interceptor/user-interceptor/user.interceptor';
 import { AdminInterceptor } from '../shared/interceptor/admin-interceptor/admin.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -37,6 +37,7 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { AdminService } from './admin-service/admin-service.service';
 import { TurfManagementComponent } from './components/admin-dashboard/turf-management/turf-management.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -79,6 +80,7 @@ import { TurfManagementComponent } from './components/admin-dashboard/turf-manag
     MatToolbarModule,
     ReactiveFormsModule,
     NgOtpInputModule,
+    RouterModule,
     // BrowserAnimationsModule,
     MatSidenavModule,
     MatListModule,

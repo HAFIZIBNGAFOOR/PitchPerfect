@@ -1,8 +1,9 @@
-import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
-export function noSpacesValidator(): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: any } | null => {
-    const hasSpaces = (control.value || '').trim().indexOf(' ') !== -1;
-    return hasSpaces ? { 'spacesNotAllowed': true } : null;
-  };
-}
+// Custom validator function for checking if the field contains only empty spaces
+export const notOnlySpacesValidator = (control: AbstractControl): { [key: string]: boolean } | null => {
+  if (control.value && control.value.trim() === '') {
+    return { 'onlySpaces': true };
+  }
+  return null;
+};

@@ -14,7 +14,9 @@
                 <mat-form-field appearance="fill" >
                     <input type="password" matInput formControlName="password" placeholder="Password" >
                     <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
-                    <mat-error *ngIf="loginForm.get('password')?.hasError('minLength')">Password must be 8 chaarcaters long </mat-error>
+                    <mat-error *ngIf="loginForm.get('password')?.hasError('onlySpaces')"> Only spaces cannot be allowed</mat-error>
+
+                    <mat-error *ngIf="loginForm.get('password')?.hasError('pattern')">Password must be 8 chaarcaters and atleast one number </mat-error>
                   </mat-form-field>
                   <mat-error class="text-center mb-3" *ngIf="error">{{error}}</mat-error>
                   <button  type="submit"  mat-raised-button > Submit </button>

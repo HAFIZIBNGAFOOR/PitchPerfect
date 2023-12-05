@@ -2,7 +2,8 @@ const express = require('express');
 const userRoute = express();
 const userController = require('../controllers/user.controller');
 const turfController = require('../controllers/turf.controller');
-const bookingController = require('../controllers/bookings.controller')
+const bookingController = require('../controllers/bookings.controller');
+const ratingController = require('../controllers/rating.controller')
 const { verifyUserJwt } = require('../middlewares/jwtHelper')
 const isBlocked = require('../middlewares/isBlocked');
 
@@ -24,6 +25,7 @@ userRoute.patch('/update-slots',verifyUserJwt,isBlocked,bookingController.update
 userRoute.get('/single-booking/:bookingId',verifyUserJwt,isBlocked, bookingController.singleBooking);
 userRoute.get('/get-location/:turfId',verifyUserJwt,isBlocked,bookingController.getTurfLocation);
 userRoute.post('/book-wallet',verifyUserJwt,isBlocked,bookingController.checkWalletAndBook)
-
+userRoute.post('/turf-rating', verifyUserJwt,isBlocked,ratingController.turfRating)
+userRoute.post('/add-rating',verifyUserJwt,isBlocked,ratingController.addRating)
 
 module.exports = userRoute;

@@ -29,6 +29,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 
 import { AddTurfComponent } from './components/turfadmin-dashboard/turf-management/add-turf/add-turf.component';
 import { TurfManagementComponent } from './components/turfadmin-dashboard/turf-management/turf-management.component';
@@ -38,6 +40,9 @@ import { SlotsComponent } from './components/turfadmin-dashboard/turf-management
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Constants } from '../config/constants';
 import { TurfAdminService } from './turf-admin-service/turf-admin.service';
+import { TurfHomeComponent } from './components/turfadmin-dashboard/turf-home/turf-home.component';
+import { TurfProfileComponent } from './components/turfadmin-dashboard/turf-profile/turf-profile.component';
+import { TurfWalletComponent } from './components/turfadmin-dashboard/turf-wallet/turf-wallet.component';
 
 
 
@@ -62,6 +67,9 @@ import { TurfAdminService } from './turf-admin-service/turf-admin.service';
     TurfDetailsComponent,
     AddSlotComponent,
     SlotsComponent,
+    TurfHomeComponent,
+    TurfProfileComponent,
+    TurfWalletComponent,
 
   ],
   imports: [
@@ -77,6 +85,7 @@ import { TurfAdminService } from './turf-admin-service/turf-admin.service';
     MatFormFieldModule,
     // BrowserAnimationsModule,
     MatSidenavModule,
+    MatExpansionModule,
     MatInputModule,
     FlexLayoutModule,
     MatDialogModule ,

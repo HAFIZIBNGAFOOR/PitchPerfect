@@ -41,7 +41,8 @@ export class UserManagementComponent {
             phone:user.phone,
             _id:user._id,
             isBlocked:user.isBlocked?'Blocked':'Active',
-            actions:user.isBlocked ? 'Unblock' :'Block'
+            actions:user.isBlocked ? 'Unblock' :'Block',
+            color:user.isBlocked?'green':'red'
           }))
           this.userData = usertype
         },

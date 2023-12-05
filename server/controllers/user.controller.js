@@ -6,6 +6,7 @@ const hashPassword = require("../helperFunctions/hashpassword")
 const jwt = require("jsonwebtoken");
 const TurfModel = require('../model/turf.model');
 const SportsModel = require('../model/sports.model');
+const RatingModel = require('../model/rating.model');
 const formatDate = require('../helperFunctions/formatdate');
 const { updateSlotWithExpiredDates } = require('./turf.controller');
 
@@ -112,18 +113,47 @@ const searchTurfs = async(req,res)=>{
 const turfSlotsAvailable = async(req,res)=>{
     try {
         updateSlotWithExpiredDates(req.params.turfId)
-        const turf = await TurfModel.findById(req.params.turfId);
-        const turfData = {
-            turfName: turf.turfName,
-            turfImages:turf.turfImages,
-            turfFacilities:turf.facilities,
-            turfPrice:turf.turfPrice,
-            turfLocation:turf.turfLocation.Address,
-            sportsType : turf.sportsType,
-            sportsDimension: turf.sportsDimension
+        const allRatings = await RatingModel.find({turfId:req.params.turfId}).populate('userId');
+        console.log(allRatings,' this is ratings   ');
+        if(allRatings){
+            const turf = await TurfModel.findById(req.params.turfId);
+            const turfData = {
+                turfName: turf.turfName,
+                turfImages:turf.turfImages,
+                turfFacilities:turf.facilities,
+                turfPrice:turf.turfPrice,
+                turfLocation:turf.turfLocation.Address,
+                sportsType : turf.sportsType,
+                sportsDimension: turf.sportsDimension
+            }
+            const ratings = allRatings.map(rating=>({
+                rating:rating.rating,
+                message:rating.message,
+                user:rating.userId.userName
+            }))
+            let totalRating =0
+             ratings.forEach(rating=>{
+                totalRating+= rating.rating
+            })
+            let avgRating = totalRating/(ratings.length);
+            console.log(ratings,'this is ratings',avgRating,ratings.length);
+                res.status(200).json({turfData,slots:turf.slots,ratings,avgRating})
+        }else{
+            const turf = await TurfModel.findById(req.params.turfId);
+            const turfData = {
+                turfName: turf.turfName,
+                turfImages:turf.turfImages,
+                turfFacilities:turf.facilities,
+                turfPrice:turf.turfPrice,
+                turfLocation:turf.turfLocation.Address,
+                sportsType : turf.sportsType,
+                sportsDimension: turf.sportsDimension
+            }
+                res.status(200).json({success:true,turfData,slots:turf.slots})
         }
-            res.status(200).json({success:true,turfData,slots:turf.slots})
+
     } catch (error) {
+        console.log(error );
         res.status(500).json({message:'Internal server error'})
     }
 }
@@ -137,8 +167,10 @@ const userProfile = async(req,res)=>{
             location:userProfile.location,
             age:userProfile.age,
             _id:userProfile._id,
-            wallet:userProfile.wallet
+            wallet:userProfile.wallet,
+            walletStatements:userProfile.walletStatements
         }
+        console.log(userProfile.walletStatements);
         res.status(200).json({profileData})
     } catch (error) {
         res.status(500).json({message:'Internal server error '})

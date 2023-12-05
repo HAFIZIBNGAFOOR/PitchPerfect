@@ -8,6 +8,7 @@ import { Slot } from '../models/slots.model';
 import { Constants } from '../../config/constants';
 import { iTurfData } from '../models/turf.model';
 import {map} from  'rxjs';
+import { iRating } from '../models/rating.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,21 +29,10 @@ export class UserService {
   // getUserHome():Observable<any>{
   //   return this.http.get(`${this.API.UserAPIEndPoint}/home`)
   // }
-  getSampleApi():Observable<FakeApiModel>{
-    return this.http.get<FakeApiModel>(`https://jsonplaceholder.typicode.com/todos/1`).pipe(
-      map((res:FakeApiModel)=>{
-        console.log(res,'response from fake api model ');
-        return res;
-      })
-    );
-    
-  }
+
   getTurfDetails():Observable<iTurfData>{
-    console.log('inside the get turf  service ',this.API.UserAPIEndPoint);
-    
     return this.http.get <iTurfData>(`${this.API.UserAPIEndPoint}/turf-lists`).pipe(
       map((res:iTurfData)=>{
-        console.log(res,' this is response');
         return  res
       })
     )
@@ -56,8 +46,8 @@ export class UserService {
   getTurfSlots(turfID:string):Observable<any>{
     return this.http.get(`${this.API.UserAPIEndPoint}/turf-slots/${turfID}`);
   }
-  getProfile():Observable<ProfileResponse>{
-    return this.http.get<ProfileResponse>(`${this.API.UserAPIEndPoint}/profile`);
+  getProfile():Observable<any>{
+    return this.http.get<any>(`${this.API.UserAPIEndPoint}/profile`);
   }
   updateProfile(data:UserProfile ):Observable<any>{
     return this.http.patch(`${this.API.UserAPIEndPoint}/updateProfile`,data)
@@ -80,12 +70,20 @@ export class UserService {
   userDetails():Observable<any>{
     return this.http.get(`${this.API.UserAPIEndPoint}/userDetails`);
   }
-  getWalletDetails(turfId:string,slot:any):Observable<any>{
-    return this.http.post(`${this.API.UserAPIEndPoint}/book-wallet`,{turfId,slot})
+  getWalletDetails(turfId:string,slot:any,totalCost:any):Observable<any>{
+    return this.http.post(`${this.API.UserAPIEndPoint}/book-wallet`,{turfId,slot,totalCost})
   }
   changeSlots(bookingId:string,newSlot:Slot):Observable<any>{
     return this.http.patch(`${this.API.UserAPIEndPoint}/update-slots`,{bookingId,newSlot})
   }
+  getRatings(turfID:string):Observable<any>{
+    return this.http.post(`${this.API.UserAPIEndPoint}/turf-rating`,{turfID})
+  }
+  addRating(rating:number,turfId:string|null,message?:string|null):Observable<any>{
+    if (message) return this.http.post(`${this.API.UserAPIEndPoint}/add-rating`,{rating,message,turfId})
+    else return this.http.post(`${this.API.UserAPIEndPoint}/add-rating`,{rating,turfId});
+  }
+
   isLoggedIn():boolean{
     let payload = this.getPayload()
     if(payload) return payload.exp > Date.now()/1000;

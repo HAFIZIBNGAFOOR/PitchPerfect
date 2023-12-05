@@ -16,8 +16,11 @@ turfAdminRoute.post('/turfAdmin/testingCloudinary',jwtHelper.verifyTurfAdminJwt,
 // turfAdminRoute.post('/turfAdmin/testingCloudinary',jwtHelper.verifyTurfAdminJwt,upload.array('turfImages',5),turfAdminController.testing)
 
 turfAdminRoute.get('/turfAdmin/turf-lists',jwtHelper.verifyTurfAdminJwt,turfController.listTurfs)
+turfAdminRoute.post('/turfAdmin/blockUnblockTurf',jwtHelper.verifyTurfAdminJwt,turfController.blockOrUnblockTurf)
 turfAdminRoute.get('/turfAdmin/getSingleTurf/:turfId',jwtHelper.verifyTurfAdminJwt,turfController.getSingleTurf)
 turfAdminRoute.get('/turfAdmin/timeSlots/:turfId/:date',jwtHelper.verifyTurfAdminJwt,turfAdminController.timeSlots)
 turfAdminRoute.post('/turfAdmin/addSlots',jwtHelper.verifyTurfAdminJwt,turfAdminController.addSlots)
+turfAdminRoute.patch('/turfAdmin/cancel-booking',jwtHelper.verifyTurfAdminJwt,turfAdminController.cancelBookingByTurfAdmin);
+turfAdminRoute.get('/turfAdmin/getProfile',jwtHelper.verifyTurfAdminJwt,turfAdminController.getProfile)
 
 module.exports = turfAdminRoute

@@ -1,0 +1,83 @@
+<div class=" main-div">
+    <mat-card class="example-card " *ngIf="initialized" >
+      <mat-card-header class="text-center">
+        <mat-card-title>{{ turfData.turfName | uppercase}}</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content >
+      <div class="card-image-container mb-1 ">
+        <img mat-card-image [src]="turfData.turfImages[0]" alt="Turf Images">
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6 col-lg-6">
+          <h3 class="text-black"> <b>Game : {{ turfData.sportsType }}  {{ turfData.sportsDimension }} </b> </h3>
+        </div>
+        <div class="col-md-6 col-lg-6">
+          <h3 class="text-black">
+            <mat-icon class="icon" *ngFor="let _ of [1, 2, 3, 4, 5]">
+              {{ avgRating >= _ ? 'star' : avgRating + 0.5 >= _ ? 'star_half' : 'star_border' }}
+            </mat-icon>
+          </h3>
+        </div>
+      </div>
+       <h3 class="text-black"> <b>Price per hour:{{ turfData.turfPrice }} </b>  </h3>
+
+        <!-- <h4 class="text-black"> <b>Price:{{turfData.turfPrice}} </b></h4> -->
+        <!-- <p>Facilities : {{ turfData.facilities }} </p> -->
+      </mat-card-content>
+      <mat-form-field class="example-full-width">
+        <input readonly="true" [value]="selectedDate" [(ngModel)]="selectedDate" (dateInput)="getDate($event)" matInput placeholder="Select a Date" [min]="startDate"  [matDatepicker]="picker">
+        <mat-hint >MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    <div class="row" *ngIf="submitted && times.length<=0">
+      <mat-error class="text-center">  No slots available for selected date, Select another Date </mat-error>
+      </div>
+      <mat-card-actions class="center-button" >
+        <button class="text-white half-width mb-3 " mat-raised-button  (click)="onSubmit()"> Select Slot</button>
+      </mat-card-actions>
+      <div class="buttons" *ngIf="submitted && times && times.length>0">
+        <mat-form-field class="example-full-width">
+          <h4>Enter Your Start Time</h4> 
+          <mat-select [(ngModel)]="startTime" (ngModelChange)="onStartTimeChange($event)">
+            <mat-option *ngFor="let time of times" [value]="time" >{{ time }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <h4>Enter Your End Time</h4>
+          <mat-select [(ngModel)]="endTime" (ngModelChange)="onCalculateCost($event)">
+            <mat-option *ngFor="let time of endTimes" [value]="time">{{ time }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div  *ngIf="startTime && endTime ">
+          <div class="buttons"> 
+            <button  color="primary" class="selected-slot"> {{startTime}} - {{endTime}} </button>
+            <button   class="selected-amount">Amount to Pay {{totalCost}} </button>
+          </div>
+        <div class="m-2 text-center ">
+          <button  mat-raised-button  class="time-submit checkout mr-3" (click)="checkWalletAndProceed()" > Pay from Wallet </button>
+          <mat-error *ngIf="error">{{error}}</mat-error>
+          <button  mat-raised-button  class="time-submit checkout mr-3" (click)="proceedCheckout()" > Proceed to  Pay Online </button>
+        </div>
+      </div>
+    </mat-card>
+    <div class="row justify-content-center ">
+      <div class="col-md-8 col-lg-8 mt-3">
+        <h3 class="text-center text-primary" *ngIf="ratings && ratings.length>0"> Reviews and Ratings</h3>
+        <div  *ngFor="let rating of ratings" class="rating-container">
+          <div class="user-name">{{ rating.user }}</div>
+          <div class="star-container">
+            <mat-icon class="icon" *ngFor="let star of getStarCount(rating.rating)">
+              {{ star ? 'star' : 'star_border' }}
+            </mat-icon>
+          </div>
+          <div *ngIf="rating.message" class="comment"> comments : {{ rating.message }}</div>
+        </div>
+        
+      </div>
+    </div>
+
+</div>
+ 

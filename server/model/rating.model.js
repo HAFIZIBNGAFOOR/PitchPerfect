@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Rating = new mongoose.Schema({
+const RatingSchema  = new mongoose.Schema({
     userId:{
         type:mongoose.Types.ObjectId,
         ref:'User',
@@ -10,5 +10,19 @@ const Rating = new mongoose.Schema({
         type:mongoose.Types.ObjectId,
         ref:'Turf',
         required:true
+    },
+    rating:{
+        type:Number,
+        required:true
+    },
+    message:{
+        type:String,
+    },
+    time:{
+        // default:new Date()
+        required:true,
+        type:Date
     }
 })
+const Rating = mongoose.model('Rating',RatingSchema);
+module.exports = Rating;

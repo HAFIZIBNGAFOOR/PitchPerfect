@@ -38,7 +38,8 @@ export class BookingsManagementComponent {
             bookingStatus:booking.bookingStatus,
             price:booking.totalCost,
             _id:booking._id,
-            actions:'View'
+            actions:'View',
+            color:'green'
         }))
         this.tableData = bookingsData
       }

@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MapboxService } from 'src/app/shared/mapbox-service/mapbox-service.service';
 import { iTurfData } from 'src/app/user/models/turf.model';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -13,6 +14,9 @@ import { iTurfData } from 'src/app/user/models/turf.model';
   styleUrls: ['./user-home.component.css']
 })
 export class UserHomeComponent {
+  turfSubscription!:Subscription
+  sportsSubscription!:Subscription
+
   location:Location={
     long:0,
     lat:0
@@ -34,18 +38,21 @@ export class UserHomeComponent {
       console.log('inside ngoninit');
       
       this.getLocation();
-      this.service.getTurfDetails().subscribe({
+      this.turfSubscription= this.service.getTurfDetails().subscribe({
         next:((val:any)=>{
           console.log(val);
           
           this.turfDetails = val.turfs
-        })
+        }),
+        error:(err)=>console.log(err,'get turf types')
+        
       })
-      this.service.getSportsTypes().subscribe({
+      this.sportsSubscription=this.service.getSportsTypes().subscribe({
         next:(val:any)=>{
           this.sportsType = val.sportsTypes
           this.sports = val.sportsTypes.map((res:any)=>res.sportsName)       
-        }
+        },
+        error:(err)=>console.log(err,'get sportstypes')
       })
      }
 
@@ -102,5 +109,9 @@ export class UserHomeComponent {
     getTurfData(data:any){
       const turfId = data._id
       this.router.navigate(['/book-turf/',turfId])
+    }
+    ngOnDestroy(): void {
+      if(this.turfSubscription) this.turfSubscription.unsubscribe()
+      if(this.sportsSubscription) this.sportsSubscription.unsubscribe()
     }
   }

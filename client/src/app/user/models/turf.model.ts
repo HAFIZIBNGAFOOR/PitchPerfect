@@ -12,6 +12,7 @@ export interface iTurfData {
     sportsDimension: string;
     sportsType: string;
     turfPrice: number;
+    status:string;
   }
   export interface iSlot {
     dateString: string;

@@ -29,19 +29,24 @@ const adminLogin = async(req,res)=>{
 
 const getDashboardDetails=async(req,res)=>{
     try {
-        const bookings = await Bookings.find().populate('turf');
+        const bookings = await Bookings.find({bookingStatus:'Completed'}).populate('turf');
         const annualBookings = bookings.filter(booking=>new Date(booking.bookedSlots.date).getFullYear()== new Date().getFullYear() ) ;     
         let annualSales = 0;
         annualBookings.forEach(booking=>annualSales+= booking.totalCost);
-        const monthlyBookings = bookings.filter(booking => new Date(booking.bookedSlots.date).getMonth() == new Date().getMonth())
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        const monthlyBookings = bookings.filter(booking => new Date(booking.bookedSlots.date) >= thirtyDaysAgo)
         let monthlySales = 0;
         monthlyBookings.forEach(booking=>monthlySales += booking.totalCost)
         // console.log(annualBookings,annualSales,monthlySales,monthlyBookings);
-        const lastWeekDate = new Date()
-        console.log(lastWeekDate.setDate(new Date().getDate()-7),' this islast week date ',lastWeekDate,'  ');
-        const weeklyBookings = bookings.filter(booking => new Date(booking.bookedSlots.date) > lastWeekDate);
+        const today = new Date();
+        const currentDay = today.getDay();
+        const diff = today.getDate() - currentDay + (currentDay === 0 ? -6 : 1);
+
+        console.log(diff,' this islast week date ',new Date(today.setDate(diff)),currentDay,'  ');
+        const weeklyBookings = bookings.filter(booking =>  new Date(today.setDate(diff + 6)) < new Date(booking.bookedSlots.date) < new Date(today.setDate(diff)));
         let weeklySales = 0 
-        weeklyBookings.forEach(booking =>weeklySales+=booking.totalCost )
+        weeklyBookings.forEach(booking =>weeklySales += booking.totalCost )
         console.log(weeklyBookings,' this is weekly ',weeklySales);
 
         let bookingsByMonth = {};

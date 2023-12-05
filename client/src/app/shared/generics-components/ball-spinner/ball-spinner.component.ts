@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-ball-spinner',
@@ -6,11 +7,33 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./ball-spinner.component.css']
 })
 export class BallSpinnerComponent {
-  @Input()loader!:boolean;
-  // laoding:boolean=false
+  // @Input()loader!:boolean;
+  @Input() showSpinner:boolean = false;
+
+  constructor( private cdRef:ChangeDetectorRef){}
   ngOnInit(): void {
-    console.log(this.loader,' iniside loader');
+    console.log(' iniside loader');
+    this.spinner()
+  }
+
+  spinner(){
+    console.log( 'loginn user sericeiadfna,knsdfnlknlaknsdn',);
     
+    // this.spinnerService.getSpinnerObserver()
+    // .subscribe({
+    //   next:res=>{
+    //     console.log(res,' this is response from spinner service');
+    //     this.showSpinner = res;
+    //     console.log(this.showSpinner);
+        
+    //     this.cdRef.detectChanges();
+    //   },
+    //   error:err=>console.log(' error in get spinner subscription')
+      
+    // })
+  }
+  ngAfterViewInit(): void {
+    this.spinner()
   }
 
 }

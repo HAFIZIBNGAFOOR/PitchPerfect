@@ -64,6 +64,9 @@ h3{
 .play-icon{
     color:#2FB563 ;
 }
+.color{
+  color:#2FB563
+}
 .dup-nav{
     padding-bottom : 2rem;
     margin-top: 2rem;
@@ -73,7 +76,16 @@ h1.play-icon{
     margin-bottom: 0px;
 }
 
+.mat-icon-button:click {
+  background: transparent!important;
+  border: none!important;
+}
 
+/* Remove background and border for mat-icon-button when focused */
+.mat-icon-button:focus {
+  background: transparent!important;
+  border: none!important;
+}
 /* for spinner */
 
 

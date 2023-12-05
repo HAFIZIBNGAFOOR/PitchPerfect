@@ -15,16 +15,17 @@ export class ProfileEditComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data:UserProfile){
   }
-  ngOnInit(): void {
-    console.log(this.data,' this is data');
-    
-  }
   onCancel(){
     this.cancelClicked.emit()
   }
+  onlySpacesValidator(value: string): { [key: string]: boolean } | null {
+    if (value.trim() === '') {
+      return { 'onlySpaces': true };
+    }
+    return null;
+  }
   onSubmit(form:NgForm){
     if(form.valid){
-      console.log('valid' ,form.value);
       this.saveProfile.emit(form.value)
     }
   }

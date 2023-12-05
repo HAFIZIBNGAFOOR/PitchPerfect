@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AdminService } from '../../../admin-service/admin-service.service';
 import { Sports } from '../../../admin-state/admin.interface';
-import { noSpacesValidator } from '../../../../shared/custom-validator/noSpaceValidator';
 import { ColumnType } from '../../../../shared/models/shared-model';
 
 @Component({
@@ -40,7 +39,8 @@ export class SportsManagementComponent {
        const sportsData = res.sports.map((sport:any)=>({
           sportsName : sport.sportsName,
           sportsDimension : sport.sportsDimensions,
-          actions : 'Edit' 
+          actions : 'Edit' ,
+          color:"primary"
       }))
       this.availableSports =  sportsData  
       },
@@ -50,7 +50,7 @@ export class SportsManagementComponent {
     }) 
     this.sportsData = {sportsName:null,sportsDimension:null};
     this.sportsForm = this.fb.group({
-      sportsName:['',[Validators.required,Validators.pattern('^.{4,}$'), noSpacesValidator()]],
+      sportsName:['',[Validators.required,Validators.pattern('^.{4,}$')]],
       sportsDimension:['',[Validators.required]]
     })
   }

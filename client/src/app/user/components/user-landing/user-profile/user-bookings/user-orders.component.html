@@ -1,3 +1,4 @@
+<app-ball-spinner></app-ball-spinner>
 
   <mat-tab-group>
     <mat-tab label="Completed">
@@ -11,7 +12,7 @@
                 <!-- Position Column -->
                 <ng-container matColumnDef="bookedSlots">
                   <th mat-header-cell *matHeaderCellDef> Slot Booked </th>
-                  <td mat-cell *matCellDef="let element"> {{element.bookedSlots.dateString}} :{{element.bookedSlots.slots.start}}-{{element.bookedSlots.slots.end}} </td>
+                  <td mat-cell *matCellDef="let element"> {{element.bookedSlots.dateString}} :{{element.bookedSlots.slots[0].start}}-{{element.bookedSlots.slots[element.bookedSlots.slots.length-1].end}}  </td>
                 </ng-container>
             
                 <!-- Name Column -->
@@ -33,16 +34,14 @@
                 </ng-container>
                 <ng-container matColumnDef="actions">
                   <th mat-header-cell *matHeaderCellDef> Actions </th>
-                  <td mat-cell *matCellDef="let element">
-                      <button mat-button (click)="viewDetails(element)">View</button>
+                  <td mat-cell  *matCellDef="let element">
+                      <button class="action" mat-button (click)="viewDetails(element)">View</button>
                   </td>
                   </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              </table>
-                          
-          
-            <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+              </table>         
+            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]"
                         showFirstLastButtons
                         >
             </mat-paginator>
@@ -67,7 +66,7 @@
             <!-- Position Column -->
             <ng-container matColumnDef="bookedSlots">
               <th mat-header-cell *matHeaderCellDef> Booking ID </th>
-              <td mat-cell *matCellDef="let element"> {{element.bookedSlots.dateString}} :{{element.bookedSlots.slots.start}}-{{element.bookedSlots.slots.end}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.bookedSlots.dateString}} :{{element.bookedSlots.slots[0].start}}-{{element.bookedSlots.slots[element.bookedSlots.slots.length-1].end}}  </td>
             </ng-container>
         
             <!-- Name Column -->
@@ -90,14 +89,14 @@
             <ng-container matColumnDef="actions">
              <th mat-header-cell *matHeaderCellDef> Actions </th>
              <td mat-cell *matCellDef="let element">
-                 <button mat-button (click)="viewDetails(element)">View</button>
+                 <button class="action" mat-button (click)="viewDetails(element)">View</button>
              </td>
              </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
         
-          <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+          <mat-paginator #cancelledpaginator [pageSizeOptions]="[5, 10, 20]"
                          showFirstLastButtons
                          >
           </mat-paginator>
@@ -127,7 +126,7 @@
             <!-- Position Column -->
             <ng-container matColumnDef="bookedSlots">
               <th mat-header-cell *matHeaderCellDef> Slot Booked </th>
-              <td mat-cell *matCellDef="let element"> {{element.bookedSlots.dateString }} :{{element.bookedSlots.slots.start}}-{{element.bookedSlots.slots.end}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.bookedSlots.dateString }} :{{element.bookedSlots.slots[0].start}}-{{element.bookedSlots.slots[element.bookedSlots.slots.length-1].end}} </td>
             </ng-container>
         
             <!-- Name Column -->
@@ -151,14 +150,14 @@
             <ng-container matColumnDef="actions">
              <th mat-header-cell *matHeaderCellDef> Actions </th>
              <td mat-cell *matCellDef="let element">
-                 <button mat-button (click)="viewDetails(element)">View</button>
+                 <button class="action" mat-button (click)="viewDetails(element)">View</button>
              </td>
              </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
         
-          <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+          <mat-paginator #confirmedpaginator [pageSizeOptions]="[5, 10, 20]"
                          showFirstLastButtons
                          >
           </mat-paginator>

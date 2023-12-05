@@ -9,20 +9,26 @@ import { TurfAdminGuard } from './turf-admin-service/turf-admin.guard';
 import { TurfManagementComponent } from './components/turfadmin-dashboard/turf-management/turf-management.component';
 import { AddSlotComponent } from './components/turfadmin-dashboard/turf-management/add-slot/add-slot.component';
 import { SlotsComponent } from './components/turfadmin-dashboard/turf-management/add-slot/slots/slots.component';
+import { TurfHomeComponent } from './components/turfadmin-dashboard/turf-home/turf-home.component';
+import { TurfProfileComponent } from './components/turfadmin-dashboard/turf-profile/turf-profile.component';
+import { TurfWalletComponent } from './components/turfadmin-dashboard/turf-wallet/turf-wallet.component';
 
 const routes: Routes = [
-    {path:'',component:TurfadminDashboardComponent,canActivate:[TurfAdminGuard],
+    {path:'',component:TurfadminDashboardComponent,
       children:[
-        {path:'turf-management',component:TurfManagementComponent},
-        {path:'turf-management/add-turf',component:AddTurfComponent},
-        {path:'manage-slots',component:AddSlotComponent},
-        {path:'manage-slots/add-slots/:turfId',component:SlotsComponent},
+        {path:'login',component:TurfadminLoginComponent},
+        {path:'signup',component:TurfadminSignupComponent},
+        {path:'verify',component:TurfadminVerifyOtpComponent},
+        {path:'',component:TurfHomeComponent,canActivate:[TurfAdminGuard]},
+        {path:"profile",component:TurfProfileComponent,canActivate:[TurfAdminGuard]},
+        {path:'wallet',component:TurfWalletComponent,canActivate:[TurfAdminGuard]},
+        {path:'turf-management',component:TurfManagementComponent,canActivate:[TurfAdminGuard]},
+        {path:'turf-management/add-turf',component:AddTurfComponent,canActivate:[TurfAdminGuard]},
+        {path:'manage-slots',component:AddSlotComponent,canActivate:[TurfAdminGuard]},
+        {path:'manage-slots/add-slots/:turfId',component:SlotsComponent,canActivate:[TurfAdminGuard]},
         {path:'dashboard',redirectTo:'turf-owner'},
       ]
     },
-    {path:'login',component:TurfadminLoginComponent},
-    {path:'signup',component:TurfadminSignupComponent},
-    {path:'verify',component:TurfadminVerifyOtpComponent}
   ];
 
 @NgModule({

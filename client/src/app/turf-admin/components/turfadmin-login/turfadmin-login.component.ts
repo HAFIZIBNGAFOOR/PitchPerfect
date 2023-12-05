@@ -4,6 +4,7 @@ import { TurfAdminService } from '../../turf-admin-service/turf-admin.service';
 import { Store } from '@ngrx/store';
 import { turfAdminLogin, } from '../../state/turf-admin.action';
 import { selectTurfAdminLoginError } from '../../state/turf-admin.selector';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-turfadmin-login',
@@ -16,8 +17,8 @@ export class TurfadminLoginComponent {
   loginData!:login;
   loginError!:string;
 
-  constructor(private turfAdminService:TurfAdminService,private store:Store){}
-
+  constructor(private turfAdminService:TurfAdminService,private store:Store, private router:Router ){}
+  
   getLoginData(data:login){
     this.loginData = data;   
     this.store.dispatch(turfAdminLogin({data:this.loginData}))
@@ -26,5 +27,10 @@ export class TurfadminLoginComponent {
         this.loginError = res
       }
     })
+  }
+  ngOnInit(): void {
+    if(this.turfAdminService.isLoggedIn()){
+      this.router.navigate(['turf-owner'])
+    }
   }
 }

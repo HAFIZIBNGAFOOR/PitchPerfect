@@ -1,19 +1,36 @@
-<table class="table table-striped" mat-table [dataSource]="_dataSource">
-    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column.dataProperty">
-            <th class="text-center" mat-header-cell *matHeaderCellDef>
-                {{column.title}}
-            </th>
-            <td mat-cell class="text-center" *matCellDef="let row">
-              <ng-container *ngIf="column.dataProperty === 'actions'; else otherColumn">
-                <button mat-flat-button color="primary" (click)="performAction(row)">
-                  {{ row[column.dataProperty] }}
-                </button>
-              </ng-container>
-              <ng-template #otherColumn>
-                {{ row[column.dataProperty] }}
-              </ng-template>
-            </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayColumnName"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayColumnName;"></tr>
-</table>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <div class="table">
+        <table  mat-table [dataSource]="_dataSource">
+          <ng-container *ngFor="let column of displayedColumns; let columnIndex = index" [matColumnDef]="column.dataProperty" >
+                  <th  mat-header-cell *matHeaderCellDef>
+                      {{column.title}}
+                  </th>
+                  <td mat-cell [ngClass]="textColor"  *matCellDef="let row ">
+                    <ng-container *ngIf="column.dataProperty === 'actions' ; else otherColumn "  >
+                      <button mat-flat-button [ngClass]="rowClass(row)" (click)="performAction(row)">
+                        {{ row[column.dataProperty] }}
+                      </button>
+                    </ng-container>
+                    <ng-template #otherColumn>
+                      <ng-container *ngIf="column.dataProperty === 'action2' ; else nextColumn "  >
+                        <button mat-flat-button [ngClass]="secondClass(row)" (click)="performSecondAction(row)"  >
+                          {{ row[column.dataProperty] }}
+                        </button>
+                      </ng-container>
+                      <ng-template #nextColumn>
+                        {{ row[column.dataProperty] }}
+                      </ng-template>
+                    </ng-template>
+                  </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayColumnName"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayColumnName;"></tr>
+      </table>
+      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" 
+      showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

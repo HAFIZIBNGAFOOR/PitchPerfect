@@ -41,11 +41,11 @@ export class UserEffects{
     this.action$.pipe(
         ofType(userLogin),
         switchMap(action=>{
-            console.log(action, action.data);
             return this.service.userLogin(action.data).pipe(
                 map((res:any)=>{
                     this.service.setToken(res.token)
                     this.router.navigate([''])
+                    window.location.reload();
                     return userLoginSuccess(res.token)
                 }),
                 catchError((err)=>{

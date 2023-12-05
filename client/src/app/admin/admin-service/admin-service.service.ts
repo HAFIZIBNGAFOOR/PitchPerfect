@@ -49,13 +49,18 @@ getBookingDetails(){
 getDashboardDetails(){
     return this.http.get(`${this.adminUrl.AdminAPIEndPoint}/dashboard`)
 }
-getTurfLists():Observable<iTurfData>{
-    return this.http.get<iTurfData >(`${this.adminUrl}/get-turfs`)
+getTurfLists():Observable<iTurfData[]>{
+    return this.http.get<iTurfData[] >(`${this.adminUrl.AdminAPIEndPoint}/get-turfs`)
+}
+blockOrunblockTurf(turfId:string):Observable<iTurfData[]>{
+    return this.http.patch<iTurfData[]>(`${this.adminUrl.AdminAPIEndPoint}/blockUnblock-turf`,{turfId})
+}
+getSingleBooking(bookingId:string):Observable<iTurfData>{
+    return this.http.get<iTurfData>(`${this.adminUrl.AdminAPIEndPoint}/single-booking/${bookingId}`)
 }
 logout(){
     localStorage.removeItem('AdminToken');
     this.router.navigate(['admin/login']);
-
 }
 setAdminToken(token:string){
     localStorage.setItem('AdminToken',token);

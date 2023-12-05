@@ -10,24 +10,30 @@
                   <input matInput placeholder="Name" formControlName="userName" >
                   <mat-error *ngIf="signupForm.get('userName')?.hasError('required')">Name is required</mat-error>
                   <mat-error *ngIf="signupForm.get('userName')?.hasError('minlLength')">Name is required</mat-error>
+                  <mat-error *ngIf="signupForm.get('userName')?.hasError('onlySpaces')"> Only spaces cannot be allowed </mat-error>
+
                 </mat-form-field>  
                 <mat-form-field appearance="fill" >
                     <mat-label>Email</mat-label>
                     <input matInput placeholder="Email" formControlName="email" >
                     <mat-error *ngIf="signupForm.get('email')?.hasError('required')"> Email is required </mat-error>
                     <mat-error *ngIf="signupForm.get('email')?.hasError('email')"> Enter a valid email </mat-error>
+                    <mat-error *ngIf="signupForm.get('email')?.hasError('onlySpaces')"> Only spaces cannot be allowed </mat-error>
+
                   </mat-form-field>
                   <mat-form-field appearance="fill" >
                     <mat-label>Phone</mat-label>
                     <input matInput placeholder="Phone" formControlName="phone" >
                     <mat-error *ngIf="signupForm.get('phone')?.hasError('required')">Phone is required</mat-error>
                     <mat-error *ngIf="signupForm.get('phone')?.hasError('pattern')">Enter a valid phone number </mat-error>
+                    <mat-error *ngIf="signupForm.get('phone')?.hasError('onlySpaces')">Only spaces cannot be allowed </mat-error>
                   </mat-form-field>
                 <mat-form-field appearance="fill" >
                    <mat-label>Password</mat-label>
                     <input type="password" matInput placeholder="Password" formControlName="password">
                     <mat-error *ngIf="signupForm.get('password')?.hasError('required')"> Password is required </mat-error>
                     <mat-error *ngIf="signupForm.get('passsword')?.hasError('minLength')">Password should be atlesat 8 characters long</mat-error>
+                    <mat-error *ngIf="signupForm.get('passsword')?.hasError('onlySpaces')">Only spaces cannot be allowed </mat-error>
                   </mat-form-field>
                   <mat-error  *ngIf="errorMessage">
                     <p>{{errorMessage}}</p>

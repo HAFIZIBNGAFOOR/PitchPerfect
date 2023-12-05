@@ -42,6 +42,9 @@ import { DashboardComponent } from './generics-components/dashboard/dashboard.co
 
 
 @NgModule({
+  providers:[
+    
+  ],
   declarations: [
     LoginComponent,
     SignupComponent,
@@ -58,6 +61,7 @@ import { DashboardComponent } from './generics-components/dashboard/dashboard.co
     NavigationMapComponent,
     BallSpinnerComponent,
     DashboardComponent,
+    // SpinnerComponent,
   ],
   imports: [
     CommonModule,

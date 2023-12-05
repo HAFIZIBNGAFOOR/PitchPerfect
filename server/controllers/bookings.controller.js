@@ -2,8 +2,12 @@ const formatDate = require("../helperFunctions/formatdate");
 const BookingModel = require("../model/bookings.model");
 const TurfModel = require('../model/turf.model')
 const UserModel = require('../model/user.model');
+const RatingModel = require('../model/rating.model');
 const dotenv = require('dotenv');
 const { updateSlotWithExpiredDates } = require("./turf.controller");
+const { convert12HourTo24Hour, convert12HourTo24HourNumber } = require("../helperFunctions/convertTIme");
+const AdminModel = require("../model/admin.model");
+const TurfAdmin = require("../model/turfAdmin.model");
 dotenv.config()
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
@@ -11,47 +15,82 @@ const bookingTurf = async(data, metadata,req,res)=>{
     try {
         const body = req.body
         const bookings =new BookingModel()
-        const slot = JSON.parse(data.slotTiming)
-        if(body && data && metadata){
+        const slots = JSON.parse(data.slotTiming)
+        const date = formatDate(data.bookingDate);
+        const turf = await TurfModel.findById(data.turf);
+        const user = await UserModel.findById(data.userId);
+        const dateIndex = turf.slots.findIndex((slot)=>slot.dateString === date);
+        const slotToRemove = {
+          end:slots.end,
+          start:slots.start
+        }
+        const startRangeTime = convert12HourTo24HourNumber(slotToRemove.start)
+        const endRangeTime = convert12HourTo24HourNumber(slotToRemove.end)
+        if(dateIndex !== -1){
+          const  bookedSlots = turf.slots[dateIndex].timeSlots.filter((slot)=>{
+            return convert12HourTo24HourNumber(slot.start) >= startRangeTime &&convert12HourTo24HourNumber(slot.end) <= endRangeTime
+          } )
+          if(body && data && metadata && bookedSlots.length>0){
             bookings.user = data.userId,
             bookings.turf = data.turf,
             bookings.Time = new Date(),
             bookings.bookingId = body.id,
             bookings.bookedSlots ={
-                slots : slot,
+                slots : bookedSlots.map(slot=>({start:slot.start,end:slot.end})),
                 date:new Date(data.bookingDate),
                 dateString:data.bookingDate
             },
             bookings.paymentType = metadata.payment_method_types[0],
             bookings.totalCost = (metadata.amount/100);
-            await bookings.save();
-            const date = formatDate(data.bookingDate);
-            const slotToRemove = {
-              end:slot.end,
-              start:slot.start
-            }
-            console.log(slotToRemove,' this is the slots to remove',slot);
+            // await bookings.save();
+
             // updating with removing expired dates and times;
+
             updateSlotWithExpiredDates(data.turf);
-            const turf = await TurfModel.findById(data.turf);
             const dateIndex = turf.slots.findIndex((slot)=>slot.dateString === date);
             if(dateIndex !== -1){
-              turf.slots[dateIndex].timeSlots = turf.slots[dateIndex].timeSlots.filter((slot)=>slotToRemove.start !==slot.start && slotToRemove.end !==slot.end )
-              turf.bookedSlots.push({
-                date:new Date(date),
-                dateString:date,
-                timeSlots:slotToRemove
-              }) 
-              await turf.save();
+              turf.slots[dateIndex].timeSlots = turf.slots[dateIndex].timeSlots.filter((slot)=>{
+                return  convert12HourTo24HourNumber(slot.start) < startRangeTime || convert12HourTo24HourNumber(slot.end) > endRangeTime
+              } )
+              console.log(turf.slots[dateIndex],' turf slots in date index ');
+              // await turf.save();
             } 
+            const turfAdmin = await TurfAdmin.findOne({_id:turf.turfOwner});
+            turfAdmin.wallet += (bookings.totalCost * 0.95);
+            turfAdmin.walletStatements.push({ 
+              turfName:turf.turfName,
+              walletType:'credited from booking',
+              amount:(bookings.totalCost * 0.95),
+              user:user.userName,
+              date:new Date(),
+              transaction:'credit'
+            });
+            console.log(bookings.totalCost * 0.95,turfAdmin,' before turf admin saveeeeeee');
+            await turfAdmin.save()
+
+            let admin = await AdminModel.findOne({email:'pitchperfect@gmail.com'});
+            admin.wallet += (bookings.totalCost * 0.05);
+            admin.walletStatements.push({
+              turfName:turf.turfName,
+              walletType:'credited from booking',
+              user:user.userName,
+              amount:(bookings.totalCost * 0.05),
+              date:new Date(),
+              transaction:'credit'
+            })
+            console.log(admin.wallet,(bookings.totalCost * 0.05),admin.walletStatements,' vefore admin walett saveeeee ddddd');
+            await admin.save()
+            res.status(200).json({message:' sucsess'})
         }
+        } res.status(404).json({message:'No data found'})
+ 
     } catch (error) {
+        console.log(error,' this is error in booking');
         res.status(500).json({message:''})
     }
 }
 const checkoutSession = async(req,res)=>{
     try {
-        updateSlotWithExpiredDates(req.body.turfId)
         const turf = await TurfModel.findById(req.body.turfId)
         const slots = req.body.selectedSlots.slots
         const customer = await stripe.customers.create({
@@ -62,6 +101,8 @@ const checkoutSession = async(req,res)=>{
                 slotTiming:JSON.stringify(slots)
             }
         })
+        const quantity =convert12HourTo24HourNumber(slots.end)- convert12HourTo24HourNumber(slots.start);
+        console.log(quantity);
         const session = await stripe.checkout.sessions.create({
             payment_method_types:['card'],
             line_items: [
@@ -73,7 +114,7 @@ const checkoutSession = async(req,res)=>{
                     },
                     unit_amount: turf.turfPrice * 100,
                   },
-                  quantity:1,
+                  quantity:quantity,
                 },
             ],
             customer:customer.id,
@@ -105,6 +146,7 @@ const webhooks = async(req,res)=>{
         eventType=req.body.type
       if(eventType === "payment_intent.succeeded"){
         stripe.customers.retrieve(data.customer).then((customer)=>{
+          // console.log(customer.metadata,data,req,res);
             bookingTurf(customer.metadata, data, req,res);
         })
       }
@@ -144,7 +186,7 @@ const bookingDetails = async(req,res)=>{
 const cancelBooking = async(req,res)=>{
   try {
     console.log(req.body,);
-    const booking = await BookingModel.findOne({_id:req.body.bookingId,bookingStatus:'Confirmed'});
+    const booking = await BookingModel.findOne({_id:req.body.bookingId,bookingStatus:'Confirmed'}).populate('turf');
     const today = formatDate(new Date());
     let refundAmount = 0;
     if(booking){
@@ -153,6 +195,7 @@ const cancelBooking = async(req,res)=>{
       const currentTime = new Date().getTime()
       const timeDifference = bookingTime.getTime() - currentTime ;
       const hourDiff = timeDifference / (1000 * 60 * 60);
+      console.log(hourDiff);
       if(hourDiff>24){
         refundPercentage = 100
       }else if(hourDiff >= 8 ){
@@ -162,36 +205,57 @@ const cancelBooking = async(req,res)=>{
       }else if(hourDiff >= 5 ){
         refundPercentage = 70
       }else if(hourDiff >= 4 ){
-        refundPercentage = 65
-      }else if(hourDiff >= 3 ){
         refundPercentage = 60
-      }else if(hourDiff >= 1){
+      }else if(hourDiff >= 3 ){
         refundPercentage = 50
       }else refundPercentage = 0
        refundAmount = (refundPercentage / 100) * booking.totalCost;
       booking.bookingStatus = 'Cancelled';
       const user = await UserModel.findOne({ _id: booking.user });
-    if (user) {
+      const admin = await AdminModel.findOne({email:'pitchperfect@gmail.com'})
+      const turfAdmin = await TurfAdmin.findOne({_id:booking.turf.turfOwner})
+    if (user && admin && turfAdmin) {
+      const walletDetails = {
+        turfName:booking.turf.turfName,
+        walletType:'Refund from cancellation',
+        amount:refundAmount,
+        date:new Date(),
+        transaction:'credit'
+      }
       user.wallet += refundAmount;
-      await user.save();
+      user.walletStatements.push(walletDetails);
+      admin.wallet -= refundAmount * 0.05;
+      admin.walletStatements.push({
+        turfName:booking.turf.turfName,
+        walletType:'Refund for cancellation of turf',
+        amount:refundAmount * 0.05,
+        date:new Date(),
+        transaction:'debit'
+      })
+      turfAdmin.wallet-= refundAmount * 0.95
+      turfAdmin.walletStatements.push({
+        user:user.userName,
+        turfName:booking.turf.turfName,
+        walletType:'Refund for cancellation of turf',
+        amount:refundAmount * 0.95,
+        date:new Date(),
+        transaction:'debit'
+      })
+      // await user.save();
     }
     // updating with removing expired dates and times;
     updateSlotWithExpiredDates(booking.turf);
+    const slotToAdd = booking.bookedSlots.slots
     const turf = await TurfModel.findOne({ _id: booking.turf });
       if (turf) {
-        const matchingIndex = turf.slots.findIndex(
-          (timeSlot) => timeSlot.dateString === booking.bookedSlots.dateString
-        )
+        const matchingIndex = turf.slots.findIndex((timeSlot) => timeSlot.dateString === booking.bookedSlots.dateString);
+        console.log(matchingIndex);
         if (matchingIndex !== -1) {
-          const slotToAdd = {
-            start: booking.bookedSlots.slots.start,
-            end: booking.bookedSlots.slots.end
-          };
-          turf.timeSlot[matchingIndex].slots.push(slotToAdd);
-          await turf.save();
+          turf.slots[matchingIndex].timeSlots.push(...slotToAdd);
+          // await turf.save();
         }
       }
-      await booking.save()
+      // await booking.save()
     } else{
       res.status(404).json({message:'No booking Found with provided id '})
     }
@@ -199,19 +263,29 @@ const cancelBooking = async(req,res)=>{
     const updatedBooking = await BookingModel.findById(req.body.bookingId).populate('user').populate('turf')
     res.status(200).json({message:`Amount ${refundAmount}  will be refunded to your wallet soon`,status:true,updatedBooking})
   } catch (error) {
+    console.log(error);
     res.status(500).json({message:'Internal server error '})
   }
 }
+
+
 const singleBooking = async(req,res)=>{
   try {
+    console.log('inside single boooking ');
     const bookingId = req.params.bookingId
     const bookings =  await BookingModel.findById(bookingId).populate('user').populate('turf');
-    if (bookings) res.status(200).json({bookings})
-    else res.status(400).json({message:'No bookings found'})
+    const rating = await RatingModel.findOne({userId:req.id,turfId:bookings.turf._id});
+      if (bookings) {
+        if(rating)res.status(200).json({bookings,rating})
+        else res.status(200).json({bookings})
+      }else res.status(400).json({message:'No bookings found'})
   } catch (error) {
+    console.log(error);
     res.status(500).json({message:'internal server error '})
   }
 }
+
+
 const updateSlots = async(req,res)=>{
   try {
     const bookings = await BookingModel.findById(req.body.bookingId);
@@ -253,7 +327,6 @@ const updateSlots = async(req,res)=>{
       const indexToAdd = turf.slots.findIndex(slot=>slot.dateString == timeSlot.dateString);
       if(indexToAdd!== -1){
         const newSlots = turf.slots[indexToAdd].timeSlots.filter(slot=>slot.end !==timeSlot.timeSlots.end && slot.start !==timeSlot.timeSlots.start)
-        const mappedSlots = newSlots.map(slot=>({start:slot.start,end:slot.end}))
        turf.slots[indexToAdd].timeSlots = newSlots.map(slot=>({start:slot.start,end:slot.end}))
       }
       const toAddIndex = turf.bookedSlots.findIndex(slot=>slot.dateString == timeSlot.dateString);
@@ -295,40 +368,60 @@ const checkWalletAndBook = async(req,res)=>{
     const slotToRemove = req.body.slot.slots
     const amountToProceed = turf.turfPrice
     const user = await UserModel.findById({_id:req.id});
+
+    // const bookedSlots = turfToUpdate.slots[dateIndex].timeSlots
+
     if(user.wallet >= amountToProceed){
-      const booking = new BookingModel();
-      booking.turf = req.body.turfId;
-      booking.user= req.id;
-      booking.bookingId = `bid${turf._id}${req.id}`
-      booking.paymentType = 'Wallet';
-      booking.bookedSlots = {
-        date:new Date(req.body.slot.date),
-        dateString:formatDate(req.body.slot.date),
-        slots:{start:slotToRemove.start,end:slotToRemove.end}
-      };
-      booking.totalCost = amountToProceed;
-      booking.Time = new Date()
-      await booking.save()
-      user.wallet = user.wallet - amountToProceed
-      await user.save()
-      // updateSlotWithExpiredDates(req.body.turfId);
       const turfToUpdate = await TurfModel.findById(req.body.turfId);
       const dateIndex = turfToUpdate.slots.findIndex((slot)=>slot.dateString === req.body.slot.dateString);
       if(dateIndex !== -1){
-        turfToUpdate.slots[dateIndex].timeSlots = turfToUpdate.slots[dateIndex].timeSlots.filter((slot)=>slotToRemove.start !==slot.start && slotToRemove.end !==slot.end )
-        const dateIndexOfBookedSlots = turf.bookedSlots.findIndex(slot=>slot.dateString === req.body.slot.dateString);
-        if(dateIndexOfBookedSlots!== -1){
-          turfToUpdate.bookedSlots[dateIndexOfBookedSlots].timeSlots = slotToRemove
-        }else {
-          turfToUpdate.bookedSlots.push({
-            date:new Date(req.body.slot.date),
-            dateString:req.body.slot.dateString,
-            timeSlots:{start:slotToRemove.start, end:slotToRemove.end}
-          }) 
+        const  bookedSlots = turf.slots[dateIndex].timeSlots.filter((slot)=>{
+          const startTime = convert12HourTo24HourNumber(slot.start);
+          const endTime = convert12HourTo24HourNumber(slot.end);
+          const startRangeTime = convert12HourTo24HourNumber(slotToRemove.start)
+          const endRangeTime = convert12HourTo24HourNumber(slotToRemove.end)
+          return startTime >= startRangeTime && endTime <= endRangeTime
+        } )
+        const booking = new BookingModel();
+        booking.turf = req.body.turfId;
+        booking.user= req.id;
+        booking.bookingId = `bid.${req.id}`
+        booking.paymentType = 'Wallet';
+        booking.bookedSlots = {
+          date:new Date(req.body.slot.dateString),
+          dateString:req.body.slot.dateString,
+          slots : bookedSlots.map(slot=>({start:slot.start,end:slot.end})),
+        };
+        booking.totalCost = req.body.totalCost;
+        booking.Time = new Date()
+        await booking.save()
+        user.wallet = user.wallet - amountToProceed
+        const walletDetails = {
+          turfName:turfToUpdate.turfName,
+          walletType:'booked a turf',
+          transaction:'debit',
+          date:new Date(),
+          amount:amountToProceed
         }
-        await turfToUpdate.save();
-      } 
+        user.walletStatements.push(walletDetails)
+        await user.save()
+        // updateSlotWithExpiredDates(req.body.turfId);
+        const turf = await TurfModel.findById(req.body.turfId);
+        const dateIndexToRemove = turf.slots.findIndex((slot)=>slot.dateString === date);
+        if(dateIndexToRemove !== -1){
+          turf.slots[dateIndexToRemove].timeSlots = turf.slots[dateIndex].timeSlots.filter((slot)=>{
+            const startTime = convert12HourTo24HourNumber(slot.start);
+            const endTime = convert12HourTo24HourNumber(slot.end);
+            const startRangeTime = convert12HourTo24HourNumber(slotToRemove.start)
+            const endRangeTime = convert12HourTo24HourNumber(slotToRemove.end)
+            return startTime < startRangeTime || endTime > endRangeTime
+          } )
+          console.log(turf.slots[dateIndexToRemove].timeSlots,'after changing slots ');
+          await turf.save();
+        } 
       res.status(200).json({message:'successfully updated'})
+      }
+      
     }else res.status(402).json({message:'not enough wallet amount'})
   } catch (error) {
     res.status(500).json({message:'Internal server error '})

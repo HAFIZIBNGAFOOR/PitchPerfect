@@ -38,7 +38,8 @@ export class TurfAdminManagementComponent {
           phone:user.phone,
           id:user._id,
           isVerified:user.isVerified ? 'Verified': 'Verify',
-          actions:'View'
+          actions:'View',
+          color:'primary'
         }))
         this.turfAdminData = turfAdminType
         this.initialised = true

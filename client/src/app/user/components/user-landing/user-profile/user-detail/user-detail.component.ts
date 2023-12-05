@@ -19,7 +19,6 @@ export class UserDetailComponent {
   ngOnInit(): void {
     this.userService.getProfile().subscribe({
       next:(res:ProfileResponse)=>{
-        console.log(res,' this is response ');
         this.userProfile = res.profileData;
         this.isInitialized = true;
       }

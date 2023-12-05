@@ -13,7 +13,7 @@ import { SingleBookingDetailsComponent } from './components/admin-dashboard/book
 import { TurfManagementComponent } from './components/admin-dashboard/turf-management/turf-management.component';
 
 const routes: Routes = [
-  {path:"",component:AdminDashboardComponent,
+  {path:"",component:AdminDashboardComponent,canActivate:[AdminGuardService],
    children:[
     {path:'',component:AdminHomeComponent},
     {path:'user-management',component:UserManagementComponent},

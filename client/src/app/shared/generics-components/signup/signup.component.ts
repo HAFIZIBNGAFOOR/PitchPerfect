@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserData } from 'src/app/user/models/user.model';
 import { FirebaseService } from 'src/app/shared/firebase-service/firebase.service';
+import { notOnlySpacesValidator } from '../../custom-validator/noSpaceValidator';
 
 @Component({
   selector: 'app-signup',
@@ -20,10 +21,10 @@ export class SignupComponent {
 
     this.signupForm = this.formBuilder.group(
       {
-        userName:['',[Validators.required,Validators.minLength(4)]],
-        email:['',[Validators.required,Validators.email]],
-        phone:['',[Validators.required,Validators.pattern(/^\d{10}$/)]],
-        password:['',[Validators.required, Validators.minLength(8)]]
+        userName:['',[Validators.required,Validators.minLength(4),notOnlySpacesValidator]],
+        email:['',[Validators.required,Validators.email,notOnlySpacesValidator]],
+        phone:['',[Validators.required,Validators.pattern(/^\d{10}$/),notOnlySpacesValidator]],
+        password:['',[Validators.required, Validators.minLength(8),notOnlySpacesValidator]]
       }
     )
   }

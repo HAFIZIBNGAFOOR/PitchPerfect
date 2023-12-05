@@ -1,6 +1,6 @@
 
 <mat-toolbar class=" " color="primary">
-    <span>ADMIN</span>
+    <span routerLink="admin">ADMIN PLAY PERFECT </span>
     <div class="spacer"></div>
      <a mat-button>Home</a>
      <a mat-button>About</a>
@@ -10,25 +10,24 @@
    <mat-sidenav-container class="sidenav-container">
     <mat-sidenav mode="side" opened>
       <mat-nav-list>
-        <mat-list-item routerLinkActive (click)="onNavItemClicked('DashboardManagement')">
-          <a class="nav-link">Dashboard</a>
-        </mat-list-item>
-        <mat-list-item routerLinkActive (click)="onNavItemClicked('UserManagement')">
-          <a class="nav-link" >User Managaement</a>
-        </mat-list-item>
-
-        <mat-list-item routerLinkActive  (click)="onNavItemClicked('TurfManagement')">
-          <a class="nav-link"  >Turf Managaement</a>
-        </mat-list-item>
-        <mat-list-item routerLinkActive (click)="onNavItemClicked('TurfUserManagement')">
-          <a class="nav-link"  >Turf Admin  Managaement</a>
-        </mat-list-item>
-        <mat-list-item routerLinkActive (click)="onNavItemClicked('SportsManagement')">
-          <a class="nav-link"> Sports Management</a>
-        </mat-list-item>
-        <mat-list-item routerLinkActive (click)="onNavItemClicked('BookingManagement')">
-          <a class="nav-link"> Booking Management</a>
-        </mat-list-item>
+        <a mat-list-item  class="nav-link text-white bg-black" (click)="onNavItemClicked()" >
+          Dashboard
+        </a>
+        <a mat-list-item class="nav-link text-white" routerLinkActive="active" routerLink="user-management" >
+          User Managaement
+        </a>
+        <a mat-list-item class="nav-link text-white" routerLinkActive="active" routerLink="turf-management" >
+          Turf Managaement
+        </a>
+        <a class="nav-link text-white" mat-list-item routerLinkActive="active" routerLink="turfAdmin-Management" >
+          Turf Admin  Managaement
+        </a>
+        <a  class="nav-link text-white" mat-list-item routerLinkActive="active" routerLink="sports-Management" >
+          Sports Management
+        </a>
+        <a  mat-list-item class="nav-link text-white" routerLinkActive="active" routerLink="booking-Management" >
+          Booking Management
+        </a>
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>

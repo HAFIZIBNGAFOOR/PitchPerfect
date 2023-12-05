@@ -17,7 +17,7 @@ export interface TurfData{
     turfName:string,
     turfLocation:string,
     turfPrice:string,
-    turfFacilities:string | null,
+    turfFacilities:string[] | null,
     turfImages:string[]|[],
     turfContact:string | null,
     sportsDimension:string | null,

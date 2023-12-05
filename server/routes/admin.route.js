@@ -17,5 +17,6 @@ adminRoute.post('/getTurfAdmin',verifyAdminJwt,adminController.getSingleTurfAdmi
 adminRoute.get('/getSports',verifyAdminJwt,adminController.getSports);
 adminRoute.get('/get-bookings',verifyAdminJwt,bookingController.getFullTurfDetails);
 adminRoute.get('/get-turfs',verifyAdminJwt,turfController.turfLists);
-
+adminRoute.patch('/blockUnblock-turf',verifyAdminJwt,turfController.blockOrUnblockTurf);
+adminRoute.get('/single-booking/:bookingId',verifyAdminJwt, bookingController.singleBooking)
 module.exports = adminRoute

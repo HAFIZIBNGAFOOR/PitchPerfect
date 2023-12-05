@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {FormBuilder, FormControl,FormGroup,Validators} from "@angular/forms"
 import { login } from '../../../user/components/user-login/user-login.component';
+import { notOnlySpacesValidator } from '../../custom-validator/noSpaceValidator';
 // import {RouterLink} from '@angular/router'
 
 @Component({
@@ -12,6 +13,7 @@ export class LoginComponent {
   @Output() loginData:EventEmitter<any> = new EventEmitter();
   @Input() role ='';
   @Input() error = '';
+  @Input() isLoggedIn!:boolean
 
   loginForm! :FormGroup;
 
@@ -20,8 +22,8 @@ export class LoginComponent {
    ngOnInit(): void {
       this.loginForm = this.formBuilder.group (
         {
-          phone:['',[Validators.required,Validators.pattern(/^\d{10}$/)]],
-          password:['',[Validators.required,Validators.minLength(8),Validators.maxLength(16)]]
+          phone:['',[Validators.required,Validators.pattern(/^\d{10}$/),notOnlySpacesValidator]],
+          password:['',[Validators.required,Validators.pattern(/^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/),notOnlySpacesValidator]]
         }
       )
    }

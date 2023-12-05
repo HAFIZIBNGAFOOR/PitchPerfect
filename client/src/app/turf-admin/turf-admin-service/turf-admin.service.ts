@@ -50,10 +50,19 @@ export class TurfAdminService {
       catchError((error: HttpErrorResponse) => this.handleError(error))
       )
   }
+  blockUnblockTurf(turfId:string){
+    return this.http.post(`${this.turfAdminUrl.TurfOwnerAPIEndPoint}/blockUnblockTurf`,{turfId})
+  }
+  getTurfAdminProfile():Observable<any>{
+      return this.http.get<any>(`${this.turfAdminUrl.TurfOwnerAPIEndPoint}/getProfile`)
+  }
+  updateProfile(data:any){
+    return this.http.patch(`${this.turfAdminUrl.TurfOwnerAPIEndPoint}/update-profile`,data)
+  }
+
   handleError(err:HttpErrorResponse): Observable<any>{
     console.log(err,' error ');
-    return throwError('Something bad happened; please try again later.');
-
+    return throwError(()=>{new Error('Something bad happened; please try again later.')});
   }
   isLoggedIn(){
     let payload = this.getPayload();

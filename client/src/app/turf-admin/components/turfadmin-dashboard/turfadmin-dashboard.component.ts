@@ -24,23 +24,24 @@ export class TurfadminDashboardComponent {
     if(this.turfAdminService.isLoggedIn()){
       this.isLoggedIn = true
     }
-    this.turfAdminService.getTurfAdminDashboard().subscribe({
-      next:(res:any)=>{
-        this.chartData = res.bookingsByMonth.map((month:any)=>Number(month.TotalAmount));
-        this.chartLabels = res.bookingsByMonth.map((month:any)=>`${month.month}`)
-        this.pieChartData = res.turfCount.map((turf:any) => turf.count);
-        this.pieLabels = res.turfCount.map((turf:any)=>turf.turfName)
-        this.weeklySales = res.weeklySales;
-        this.monthySales = res.monthlySales;
-        this.annualSales = res.annualSales;
+    // this.turfAdminService.getTurfAdminDashboard().subscribe({
+    //   next:(res:any)=>{
+    //     this.chartData = res.bookingsByMonth.map((month:any)=>Number(month.TotalAmount));
+    //     this.chartLabels = res.bookingsByMonth.map((month:any)=>`${month.month}`)
+    //     this.pieChartData = res.turfCount.map((turf:any) => turf.count);
+    //     this.pieLabels = res.turfCount.map((turf:any)=>turf.turfName)
+    //     this.weeklySales = res.weeklySales;
+    //     this.monthySales = res.monthlySales;
+    //     this.annualSales = res.annualSales;
         
-      },
-      error:err=>{console.log(err,' this isthe error');
-      }
-    })
+    //   },
+    //   error:err=>{console.log(err,' this isthe error');
+    //   }
+    // })
   }
   logout(event:string){
     if(event != 'user'){
+      this.isLoggedIn = false
       this.turfAdminService.logout()
     }
   }

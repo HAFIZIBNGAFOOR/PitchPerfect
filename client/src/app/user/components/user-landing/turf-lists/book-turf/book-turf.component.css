@@ -66,7 +66,6 @@
 .time-submit{
   width: 40%;
   margin-top: 2rem;
-  margin-bottom: 2rem;
   background-color: #2e7f4d;
   color: rgb(255, 255, 255);
   margin-left: 1rem;
@@ -93,7 +92,10 @@
   border-radius: 5px;
 }
 .buttons{
-  margin-left: 2rem;
+  /* margin-left: 2rem; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .main-div{
   width: 80%;
@@ -113,4 +115,37 @@
   border: #2FB563 solid 1px;
   color: #000000;
   margin: 5px;
+}
+.selected-amount{
+  width: 50%;
+  height: 3rem;
+  border-radius: 5px;
+  border: #2FB563 solid 1px;
+  color: #ffffff;
+  background-color: #2FB563;
+  margin: 5px;
+}
+.rating-container {
+  height: fit-content;
+  padding: 3% 25%;
+  margin-bottom: 2%;
+  box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+}
+
+.user-name {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.star-container {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.comment {
+  color: #555;
+}
+.icon{
+  color: gold;
+  font-size: 100%;
 }

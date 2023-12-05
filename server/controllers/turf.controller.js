@@ -1,11 +1,10 @@
 const { convert12HourTo24Hour } = require("../helperFunctions/convertTIme");
 const formatDate = require("../helperFunctions/formatdate");
 const TurfModel = require("../model/turf.model");
-const stripe = require('stripe')('sk_test_51OADBiSICdW4biAoXtJw43gGIEOWavpxJ3dkFcmumlIVTKPI97q9BPVhXuabFhkvmcSaYGk2XRW05UxnTVgTwoL800nZ4QssiF');
 
 const turfLists = async(req,res)=>{
     try {
-        const turfs = await TurfModel.find({});
+        const turfs = await TurfModel.find({status:'active'});
         if(turfs){
             res.status(200).json({turfs})
         }else{
@@ -55,11 +54,24 @@ const updateSlotWithExpiredDates  = async(turfId)=>{
         console.log(error);
     }
 }
-
+const blockOrUnblockTurf = async(req,res)=>{
+    try {
+        const turfToUpdate = await TurfModel.findById(req.body.turfId);
+        if(turfToUpdate.status === 'active') turfToUpdate.status = 'block'
+        else turfToUpdate.status = 'active';
+        await turfToUpdate.save()
+        const turfs  = await TurfModel.find({turfOwner:req.id}); 
+        res.status(200).json({turfs});
+    } catch (error) {
+        console.log(error,' this is eror ');
+        res.status(500).json({message:'Internal server error'});
+    }
+}
 
 module.exports = {
     listTurfs,
     getSingleTurf,
     turfLists,
-    updateSlotWithExpiredDates
+    updateSlotWithExpiredDates,
+    blockOrUnblockTurf
 }

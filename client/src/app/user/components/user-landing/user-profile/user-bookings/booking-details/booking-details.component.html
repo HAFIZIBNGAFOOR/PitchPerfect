@@ -32,7 +32,7 @@
                       Booked Slot Date : <span class="text-success">{{bookingDetails.bookedSlots.dateString }}</span> 
                     </p>
                     <p>
-                     Booked Slot Time :<span class="text-success">  {{bookingDetails.bookedSlots.slots.start }} -  {{bookingDetails.bookedSlots.slots.end }}</span> 
+                     Booked Slot Time :<span class="text-success">  {{bookedSlot.start}} -  {{bookedSlot.end }}</span> 
                     </p>
                     <div>
                         <h4 class="ml-4 ">Payment Details:</h4>
@@ -52,17 +52,68 @@
                 </div>
             </div>
         </div>
-            <div class="text-center m-3">
-                <button mat-raised-button class="change-button" (click)="showDirection()" > SHOW DIRECTION </button>
-                <ng-container *ngIf="bookingDetails.bookingStatus =='Confirmed'; else elseTemplate">
-                    <button mat-raised-button class="change-button" (click)="changeSlot()" > CHANGE SLOT </button>
-                    <button mat-raised-button class="cancel-button" (click)="confirmDiolog()" > CANCEL BOOKING </button>
+            <div class="text-center m-3 row justify-content-center">
+                <div class="col-md-12 mb-3">
+                    <button mat-raised-button class="change-button" (click)="showDirection()" > SHOW DIRECTION </button>
+                    <ng-container *ngIf="bookingDetails.bookingStatus =='Confirmed'; else elseTemplate">
+                        <!-- <button mat-raised-button class="change-button" (click)="changeSlot()" > CHANGE SLOT </button> -->
+                        <button mat-raised-button class="cancel-button" (click)="confirmDiolog()" > CANCEL BOOKING </button>
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                        <button disabled mat-raised-button class="bg-sucess">                     
+                            Booking Status : <span [ngClass]="{'cancel' : bookingDetails.bookingStatus =='Cancelled'}" class="text-success" > {{ bookingDetails.bookingStatus }}</span>
+                        </button>
+                    </ng-template>
+                </div>
+                <div class="col-md-6 pt-2" >
+                    <ng-container *ngIf="bookingDetails && bookingDetails.bookingStatus == 'Completed' " >
+                        <h3 class="text-center text-success"> Add Rating</h3>
+                        <mat-stepper #stepper [linear]="isLinear">
+                            <mat-step [stepControl]="firstFormGroup" >
+                            <form [formGroup]="firstFormGroup">
+                                <ng-template matStepLabel>Rate our turf</ng-template>
+                                <button mat-icon-button class="mat-icon-button" ngClass="color"  *ngFor="let ratingId of ratingArr;index as i" [id]="'star_'+i" (click)="onClick(i+1)"  >
+                                    <mat-icon >
+                                      {{showIcon(i)}}
+                                    </mat-icon>
+                                  </button>
+                                <div>
+                                <p *ngIf="rating ==0">Add your rating here</p>
+                                <div *ngIf="rating !== 0">
+                                    <p class="text-success">Your Rating: {{ rating }}/5 </p>
+                                </div>
+                                <p class="text-danger" *ngIf="error">{{error}}</p>
+                                <button  class="bg-success" mat-button matStepperNext (click)="showError()">Next</button>
+                                </div>
+                            </form>
+                            </mat-step>
+                            <mat-step [optional]="isOptional" >
+                            <form [formGroup]="secondFormGroup">
+                                <ng-template matStepLabel> Add your review</ng-template>
+                                <mat-form-field class="mt-2">
+                                <mat-label>Comment</mat-label>
+                                <input type="text" matInput placeholder="Comments on turf" formControlName="secondCtrl"
+                                        required>
+                                </mat-form-field>
+                                <div>
+                                <p>Add your comment here </p>
+                                <button class="bg-warning mr-3"  mat-button matStepperPrevious>Back</button>
+                                <button class="bg-success" mat-button matStepperNext (click)="changeMessage()">Next</button>
+                                </div>
+                            </form>
+                            </mat-step>
+                            <mat-step>
+                            <ng-template matStepLabel>Submit</ng-template>
+                            <p>Your rating : {{rating}}/5</p>
+                            <p> Comment :- {{message}}</p>
+                            <div>
+                                <button class="bg-warning mr-3" mat-button matStepperPrevious>Back</button>
+                                <button class="bg-success" mat-button (click)="addRating()">Submit Rating</button>
+                            </div>
+                            </mat-step>
+                        </mat-stepper>
                 </ng-container>
-                <ng-template #elseTemplate>
-                    <button disabled mat-raised-button class="bg-sucess">                     
-                        Booking Status : <span [ngClass]="{'cancel' : bookingDetails.bookingStatus =='Cancelled'}" class="text-success" > {{ bookingDetails.bookingStatus }}</span>
-                    </button>
-                </ng-template>
+                </div>
             </div>
       </mat-card>
 </div>

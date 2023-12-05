@@ -7,13 +7,17 @@ import { UserService } from 'src/app/user/service/user.service';
   styleUrls: ['./wallet.component.css']
 })
 export class WalletComponent{
-
-   walletAmount:string=''
+    isInitialized:boolean =false;
+    walletDetails:any;
+    walletAmount!:number
    constructor(private userService:UserService){}
    ngOnInit(): void {
     this.userService.getProfile().subscribe({
-      next:(res:any)=>{
+      next:res=>{
+        console.log(res,' tis is response ');
+        this.isInitialized = true
         this.walletAmount = res.profileData.wallet
+        this.walletDetails = res.profileData.walletStatements
       },
       error:(err:any) =>{
         console.log(err);

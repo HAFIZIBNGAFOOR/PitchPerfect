@@ -41,7 +41,19 @@ const UserModel = new mongoose.Schema({
     wallet:{
         default:0,
         type:Number
+    },
+    walletStatements:[
+        {
+        date:Date,
+        walletType:String,
+        amount:Number,
+        turfName:String,
+        transaction:{
+            type:String,
+            enum:['debit','credit']
+        }
     }
+]
 })
 const User = mongoose.model('User',UserModel);
 module.exports = User;

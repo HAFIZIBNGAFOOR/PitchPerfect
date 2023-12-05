@@ -11,7 +11,7 @@ import { UserLandingComponent } from './user/components/user-landing/user-landin
 
 
 const routes: Routes = [
-  {path:'',component:UserLandingComponent,loadChildren:()=>import('../app/user/user.module').then(m=>m.UserModule)},
+  {path:'',loadChildren:()=>import('../app/user/user.module').then(m=>m.UserModule)},
   {path:'admin',loadChildren:()=>import('../app/admin/admin.module').then(m=>m.AdminModule)},
   {path:'turf-owner',loadChildren:()=>import('../app/turf-admin/turf-admin.module').then(m=>m.TurfAdminModule)},
   // {path:"blocked",component:IsBlockedComponent},

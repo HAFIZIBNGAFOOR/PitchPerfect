@@ -5,6 +5,7 @@ import { Slot, Slots, timeSlotsActive } from '../../../../../../models/slots.mod
 import { UserService } from '../../../../../../service/user.service';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-change-slots',
@@ -16,7 +17,7 @@ export class ChangeSlotsComponent {
     turfContact:'',
     turfName:'',
     turfImages:[],
-    turfFacilities:'',
+    turfFacilities:[],
     turfLocation:'',
     turfPrice:'',
     sportsDimension:'',
@@ -33,13 +34,15 @@ export class ChangeSlotsComponent {
   selectedDate: Date = new Date();
   startDate:Date= new Date()
   selectedStringDate: string | null =new Date().toISOString().split('T')[0]
+  singleBookingSubscription!:Subscription;
+
   constructor(private userService:UserService, private route :ActivatedRoute ,private _snackBar:MatSnackBar,private router:Router){}
     ngOnInit(): void {
       this.route.paramMap.subscribe(param=>{
         this.bookingId = param.get('bookingId') as string;
         
       })
-      this.userService.getSingleBooking(this.bookingId).subscribe({
+      this.singleBookingSubscription = this.userService.getSingleBooking(this.bookingId).subscribe({
         next:(res:any)=>{
           this.initialized = true
           this.turfData = res.bookings.turf;
@@ -115,5 +118,8 @@ export class ChangeSlotsComponent {
         
       }
     })
+  }
+  ngOnDestroy(): void {
+   if(this.singleBookingSubscription) this.singleBookingSubscription.unsubscribe()
   }
 }

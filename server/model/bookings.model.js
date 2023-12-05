@@ -27,10 +27,10 @@ const BookingsSchema = new mongoose.Schema({
     bookedSlots:{
         dateString:String,
         date:Date,
-        slots:{
+        slots:[{
             start:String,
             end:String,
-        }
+        }]
     },
     paymentType:{
         required:true,

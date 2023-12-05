@@ -6,17 +6,12 @@ import { MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatButtonModule} from '@angular/material/button';
 import { MatCardModule} from '@angular/material/card';
-import { MatTabsModule} from '@angular/material/tabs';
-
-
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { UserRoutingModule } from './user/user-routing.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ReactiveFormsModule } from '@angular/forms';
-import { UserModule } from './user/user.module';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
@@ -25,17 +20,13 @@ import { NgOtpInputModule } from 'ng-otp-input';
 import { AngularFireAuthModule}  from '@angular/fire/compat/auth'
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { TurfAdminRoutingModule } from './turf-admin/turf-admin-routing.module';
-import { TurfAdminModule } from './turf-admin/turf-admin.module';
-import { AdminModule } from './admin/admin.module';
-import { AdminRoutingModule } from './admin/admin-routing.module';
 import { AdminEffects } from './admin/admin-state/admin.effects';
 import { TurfAdminEffects } from './turf-admin/state/turf-admin.effects';
-import { UserOrdersComponent } from './user/components/user-landing/user-profile/user-bookings/user-orders.component';
 import { HttpClientModule } from '@angular/common/http';
 import { Constants } from './config/constants';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyDO7Rgjpl5BrlFiVy_-sQkNdcAhe7GNigs",
@@ -55,11 +46,6 @@ const firebaseConfig = {
   imports: [
     BrowserModule,
     AppRoutingModule,
-    // TurfAdminModule,
-    // TurfAdminRoutingModule,
-    // UserRoutingModule,
-    // AdminModule,
-    // AdminRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MatSlideToggleModule,
@@ -81,7 +67,7 @@ const firebaseConfig = {
     AngularFirestoreModule
   ],
   providers: [
-    Constants
+    Constants,
   ],
   bootstrap: [AppComponent]
 })

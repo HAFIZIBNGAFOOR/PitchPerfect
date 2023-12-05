@@ -3,7 +3,7 @@ button{
     height: 2rem;    
 }
 button .no-button{
-    border: none; /* Remove border */
+  border: none; /* Remove border */
   padding: 10px 20px; /* Add padding to provide spacing */
   background-color: #e0e0e0; /* Add a background color if needed */
   color: #000000;
@@ -13,3 +13,27 @@ button .no-button{
   text-align: center;
   justify-content:center;
 } */
+.table{
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
+}
+.default-class{
+  background-color:#5c70d3 ;
+  color: #000000;
+}
+.green-class{
+  background-color: #45c676;
+  color: #ffffff;
+}
+.red-class{
+  background-color: #be4e4e;
+  color: #ffffff;
+}
+.primary-class{
+  background-color: #85a1d1;
+  color: #080707;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+.blue{
+  color: #6496ED;
+  font-size: medium;
+}

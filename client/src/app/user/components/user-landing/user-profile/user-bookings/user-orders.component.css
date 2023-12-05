@@ -13,3 +13,7 @@ td{
     width: fit-content;
     padding-right: 0%;
 }
+.action{
+    background-color: rgb(79, 227, 151);
+    color: black;
+}

@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/user/service/user.service';
 
 
@@ -12,31 +13,38 @@ import { UserService } from 'src/app/user/service/user.service';
 })
 export class UserOrdersComponent {
   bookingDetails :any
-  cancelledDataSource = new MatTableDataSource<any>();
-  pendingDataSource = new MatTableDataSource<any>();
-  completedDataSource = new MatTableDataSource<any>();
+  bookingSubscription!:Subscription
+  cancelledDataSource = new MatTableDataSource<any>([]);
+  pendingDataSource = new MatTableDataSource<any>([]);
+  completedDataSource = new MatTableDataSource<any>([]);
   displayedColumns:string[] =['turf','bookedSlots','totalCost','bookingStatus','actions'];
   tonavigate:string[]=[]
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('paginator') completedPaginator!: MatPaginator;
+  @ViewChild('confirmedpaginator') confirmedPaginator!: MatPaginator;
+  @ViewChild('cancelledpaginator') cancelledPaginator!: MatPaginator;
 
+  
   constructor( private userService:UserService, private router:Router){}
   ngOnInit(): void {
-    this.userService.getBookingDetails().subscribe({
+    this.bookingSubscription = this.userService.getBookingDetails().subscribe({
       next:(res:any)=>{
-        console.log(res);
         this.bookingDetails = res.bookings;
-        this.completedDataSource = this.bookingDetails.filter((booking:any) =>booking.  bookingStatus ==='Completed');
-        this.pendingDataSource = this.bookingDetails.filter((booking:any) =>booking.  bookingStatus ==='Confirmed');
-        this.cancelledDataSource = this.bookingDetails.filter((booking:any) =>booking.  bookingStatus ==='Cancelled');
-        console.log(this.cancelledDataSource,' cancellllll',this.completedDataSource,' compleeee',this.pendingDataSource,' confiremddddd');
-        
+        this.completedDataSource = new MatTableDataSource(this.bookingDetails.filter((booking:any) =>booking.  bookingStatus ==='Completed'))
+        this.completedDataSource.paginator = this.completedPaginator;
+        this.pendingDataSource = new MatTableDataSource(this.bookingDetails.filter((booking:any) =>booking.  bookingStatus ==='Confirmed')) ;
+        this.pendingDataSource.paginator = this.confirmedPaginator
+        this.cancelledDataSource = new MatTableDataSource( this.bookingDetails.filter((booking:any) =>booking.  bookingStatus ==='Cancelled'));
+        this.cancelledDataSource.paginator = this.cancelledPaginator 
       }
     })
   }
-  ngAfterViewInit() {
-    this.completedDataSource.paginator = this.paginator;
-  }
+  // ngAfterViewInit() {
+  //   this.completedDataSource.paginator = this.paginator;
+  // }
   viewDetails(row:any){
      this.router.navigate([`booking-details/${row._id}`]);
+  }
+  ngOnDestroy(): void {
+    if(this.bookingSubscription) this.bookingSubscription.unsubscribe()
   }
 }
